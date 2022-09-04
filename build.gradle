@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group 'com.tecknobit'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.tecknobit.txnotes'
+            artifactId = 'TxNotes'
+            version = '1.0.0'
+            from components.java
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
