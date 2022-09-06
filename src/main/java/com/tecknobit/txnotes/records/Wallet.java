@@ -18,6 +18,8 @@ import static com.tecknobit.apimanager.Tools.Trading.TradingTools.textualizeAsse
 
 public class Wallet {
 
+    // TODO: 06/09/2022 IMPLEMENT CORRECTLY CRYPTOCURRENCYTOOL
+
     /**
      * {@code index} is instance that memorizes index value
      **/

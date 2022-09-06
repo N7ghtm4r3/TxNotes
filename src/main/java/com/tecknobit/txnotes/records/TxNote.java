@@ -22,9 +22,13 @@ import static java.util.concurrent.TimeUnit.DAYS;
 public class TxNote extends Transaction {
 
     /**
-     * {@code initialBalance} is instance that memorizes initial balance value
+     * {@code startPrice} is instance that memorizes start price value
      **/
-    private final double initialBalance;
+    private final double startPrice;
+    /**
+     * {@code status} is instance that memorizes status of transaction -> BUY or SELL
+     **/
+    private String status;
 
     /**
      * {@code sellPrice} is instance that memorizes sell price value
@@ -46,178 +50,201 @@ public class TxNote extends Transaction {
      **/
     private double lastPrice;
 
+    // TODO: 06/09/2022 SET NULL SIDE OF TRANSACTION NOT BUY AND USE CONSTANTS BY LIBRARY
+
     /**
      * Constructor to init {@link TxNote}
      *
-     * @param symbol:     symbol used in transaction es. BTCBUSD or BTC-USD
-     * @param status:     status of transaction BUY or SELL
-     * @param buyDate:    date when this transaction has being done in long format es. 1656623302000
-     * @param startPrice: price when this transaction has being done
-     * @param quantity:   quantity transfered in transaction
-     * @param lastPrice:  last price value
+     * @param symbol:         symbol used in transaction es. BTCBUSD or BTC-USD
+     * @param status:         status of transaction BUY or SELL
+     * @param buyDate:        date when this transaction has being done in long format es. 1656623302000
+     * @param initialBalance: initial balance when this transaction has being done
+     * @param quantity:       quantity transfered in transaction
+     * @param lastPrice:      last price value
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, long buyDate, double startPrice, double quantity, double lastPrice) {
-        super(symbol, status, buyDate, startPrice, quantity);
+    public TxNote(String symbol, String status, long buyDate, double initialBalance, double quantity, double lastPrice) {
+        super(symbol, "BUY", buyDate, initialBalance, quantity);
+        this.status = status;
         this.lastPrice = lastPrice;
-        initialBalance = startPrice * quantity;
+        startPrice = initialBalance / quantity;
     }
 
     /**
      * Constructor to init {@link TxNote}
      *
-     * @param symbol:     symbol used in transaction es. BTCBUSD or BTC-USD
-     * @param status:     status of transaction BUY or SELL
-     * @param buyDate:    date when this transaction has being done in {@link String} format es. 21:08:22 30/06/2022
-     * @param startPrice: price when this transaction has being done
-     * @param quantity:   quantity transfered in transaction
-     * @param lastPrice:  last price value
+     * @param symbol:         symbol used in transaction es. BTCBUSD or BTC-USD
+     * @param status:         status of transaction BUY or SELL
+     * @param buyDate:        date when this transaction has being done in {@link String} format es. 21:08:22 30/06/2022
+     * @param initialBalance: initial balance when this transaction has being done
+     * @param quantity:       quantity transfered in transaction
+     * @param lastPrice:      last price value
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, String buyDate, double startPrice, double quantity, double lastPrice) {
-        super(symbol, status, buyDate, startPrice, quantity);
+    public TxNote(String symbol, String status, String buyDate, double initialBalance, double quantity, double lastPrice) {
+        super(symbol, "BUY", buyDate, initialBalance, quantity);
+        this.status = status;
         this.lastPrice = lastPrice;
-        initialBalance = startPrice * quantity;
+        startPrice = initialBalance / quantity;
     }
 
     /**
      * Constructor to init {@link TxNote}
      *
-     * @param symbol:     symbol used in transaction es. BTCBUSD or BTC-USD
-     * @param status:     status of transaction BUY or SELL
-     * @param buyDate:    date when this transaction has being done in long format es. 1656623302000
-     * @param startPrice: price when this transaction has being done
-     * @param quantity:   quantity transfered in transaction
-     * @param lastPrice:  last price value
-     * @param sellPrice:  sell price value
-     * @param sellDate:   date when this trade has being sold in long format es. 1656624150000
+     * @param symbol:         symbol used in transaction es. BTCBUSD or BTC-USD
+     * @param status:         status of transaction BUY or SELL
+     * @param buyDate:        date when this transaction has being done in long format es. 1656623302000
+     * @param initialBalance: initial balance when this transaction has being done
+     * @param quantity:       quantity transfered in transaction
+     * @param lastPrice:      last price value
+     * @param sellPrice:      sell price value
+     * @param sellDate:       date when this trade has being sold in long format es. 1656624150000
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, long buyDate, double startPrice, double quantity, double lastPrice,
+    public TxNote(String symbol, String status, long buyDate, double initialBalance, double quantity, double lastPrice,
                   double sellPrice, long sellDate) {
-        super(symbol, status, buyDate, startPrice, quantity);
+        super(symbol, "BUY", buyDate, initialBalance, quantity);
+        this.status = status;
         this.lastPrice = lastPrice;
         this.sellPrice = sellPrice;
         this.sellDateTimestamp = sellDate;
         this.sellDate = getDate(sellDateTimestamp);
-        initialBalance = startPrice * quantity;
+        startPrice = initialBalance / quantity;
     }
 
     /**
      * Constructor to init {@link TxNote}
      *
-     * @param symbol:     symbol used in transaction es. BTCBUSD or BTC-USD
-     * @param status:     status of transaction BUY or SELL
-     * @param buyDate:    date when this transaction has being done in {@link String} format es. 21:08:22 30/06/2022
-     * @param startPrice: price when this transaction has being done
-     * @param quantity:   quantity transfered in transaction
-     * @param lastPrice:  last price value
-     * @param sellPrice:  sell price value
-     * @param sellDate:   date when this trade has being sold in {@link String} format es. 21:22:30 30/06/2022
+     * @param symbol:         symbol used in transaction es. BTCBUSD or BTC-USD
+     * @param status:         status of transaction BUY or SELL
+     * @param buyDate:        date when this transaction has being done in {@link String} format es. 21:08:22 30/06/2022
+     * @param initialBalance: initial balance when this transaction has being done
+     * @param quantity:       quantity transfered in transaction
+     * @param lastPrice:      last price value
+     * @param sellPrice:      sell price value
+     * @param sellDate:       date when this trade has being sold in {@link String} format es. 21:22:30 30/06/2022
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, String buyDate, double startPrice, double quantity, double lastPrice,
+    public TxNote(String symbol, String status, String buyDate, double initialBalance, double quantity, double lastPrice,
                   double sellPrice, String sellDate) {
-        super(symbol, status, buyDate, startPrice, quantity);
+        super(symbol, "BUY", buyDate, initialBalance, quantity);
+        this.status = status;
         this.lastPrice = lastPrice;
         this.sellPrice = sellPrice;
         this.sellDate = sellDate;
         sellDateTimestamp = getDateTimestamp(sellDate);
-        initialBalance = startPrice * quantity;
+        startPrice = initialBalance / quantity;
     }
 
     /**
      * Constructor to init {@link TxNote}
      *
-     * @param symbol:     symbol used in transaction es. BTCBUSD or BTC-USD
-     * @param status:     status of transaction BUY or SELL
-     * @param buyDate:    date when this transaction has being done in long format es. 1656623302000
-     * @param startPrice: price when this transaction has being done
-     * @param quantity:   quantity transfered in transaction
-     * @param lastPrice:  last price value
-     * @param baseAsset:  base asset used in that transaction es. BTC
-     * @param quoteAsset: quote asset used in that transaction es. EUR
+     * @param symbol:         symbol used in transaction es. BTCBUSD or BTC-USD
+     * @param status:         status of transaction BUY or SELL
+     * @param buyDate:        date when this transaction has being done in long format es. 1656623302000
+     * @param initialBalance: initial balance when this transaction has being done
+     * @param quantity:       quantity transfered in transaction
+     * @param lastPrice:      last price value
+     * @param baseAsset:      base asset used in that transaction es. BTC
+     * @param quoteAsset:     quote asset used in that transaction es. EUR
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, long buyDate, double startPrice, double quantity, double lastPrice,
+    public TxNote(String symbol, String status, long buyDate, double initialBalance, double quantity, double lastPrice,
                   String baseAsset, String quoteAsset) {
-        super(symbol, status, buyDate, startPrice, quantity, baseAsset, quoteAsset);
+        super(symbol, "BUY", buyDate, initialBalance, quantity, baseAsset, quoteAsset);
+        this.status = status;
         this.lastPrice = lastPrice;
-        initialBalance = startPrice * quantity;
+        startPrice = initialBalance / quantity;
     }
 
     /**
      * Constructor to init {@link TxNote}
      *
-     * @param symbol:     symbol used in transaction es. BTCBUSD or BTC-USD
-     * @param status:     status of transaction BUY or SELL
-     * @param buyDate:    date when this transaction has being done in {@link String} format es. 21:08:22 30/06/2022
-     * @param startPrice: price when this transaction has being done
-     * @param quantity:   quantity transfered in transaction
-     * @param lastPrice:  last price value
-     * @param baseAsset:  base asset used in that transaction es. BTC
-     * @param quoteAsset: quote asset used in that transaction es. EUR
+     * @param symbol:         symbol used in transaction es. BTCBUSD or BTC-USD
+     * @param status:         status of transaction BUY or SELL
+     * @param buyDate:        date when this transaction has being done in {@link String} format es. 21:08:22 30/06/2022
+     * @param initialBalance: initial balance when this transaction has being done
+     * @param quantity:       quantity transfered in transaction
+     * @param lastPrice:      last price value
+     * @param baseAsset:      base asset used in that transaction es. BTC
+     * @param quoteAsset:     quote asset used in that transaction es. EUR
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, String buyDate, double startPrice, double quantity, double lastPrice,
+    public TxNote(String symbol, String status, String buyDate, double initialBalance, double quantity, double lastPrice,
                   String baseAsset, String quoteAsset) {
-        super(symbol, status, buyDate, startPrice, quantity, baseAsset, quoteAsset);
+        super(symbol, "BUY", buyDate, initialBalance, quantity, baseAsset, quoteAsset);
+        this.status = status;
         this.lastPrice = lastPrice;
-        initialBalance = startPrice * quantity;
+        startPrice = initialBalance / quantity;
     }
 
     /**
      * Constructor to init {@link TxNote}
      *
-     * @param symbol:     symbol used in transaction es. BTCBUSD or BTC-USD
-     * @param status:     status of transaction BUY or SELL
-     * @param buyDate:    date when this transaction has being done in long format es. 1656623302000
-     * @param startPrice: price when this transaction has being done
-     * @param quantity:   quantity transfered in transaction
-     * @param lastPrice:  last price value
-     * @param sellPrice:  sell price value
-     * @param sellDate:   date when this trade has being sold in long format es. 1656624150000
-     * @param baseAsset:  base asset used in that transaction es. BTC
-     * @param quoteAsset: quote asset used in that transaction es. EUR
+     * @param symbol:         symbol used in transaction es. BTCBUSD or BTC-USD
+     * @param status:         status of transaction BUY or SELL
+     * @param buyDate:        date when this transaction has being done in long format es. 1656623302000
+     * @param initialBalance: initial balance when this transaction has being done
+     * @param quantity:       quantity transfered in transaction
+     * @param lastPrice:      last price value
+     * @param sellPrice:      sell price value
+     * @param sellDate:       date when this trade has being sold in long format es. 1656624150000
+     * @param baseAsset:      base asset used in that transaction es. BTC
+     * @param quoteAsset:     quote asset used in that transaction es. EUR
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, long buyDate, double startPrice, double quantity, double lastPrice,
+    public TxNote(String symbol, String status, long buyDate, double initialBalance, double quantity, double lastPrice,
                   double sellPrice, long sellDate, String baseAsset, String quoteAsset) {
-        super(symbol, status, buyDate, startPrice, quantity);
+        super(symbol, "BUY", buyDate, initialBalance, quantity);
+        this.status = status;
         this.lastPrice = lastPrice;
         this.sellPrice = sellPrice;
         this.sellDateTimestamp = sellDate;
         this.sellDate = getDate(sellDateTimestamp);
-        initialBalance = startPrice * quantity;
+        startPrice = initialBalance / quantity;
     }
 
     /**
      * Constructor to init {@link TxNote}
      *
-     * @param symbol:     symbol used in transaction es. BTCBUSD or BTC-USD
-     * @param status:     status of transaction BUY or SELL
-     * @param buyDate:    date when this transaction has being done in {@link String} format es. 21:08:22 30/06/2022
-     * @param startPrice: price when this transaction has being done
-     * @param quantity:   quantity transfered in transaction
-     * @param lastPrice:  last price value
-     * @param sellPrice:  sell price value
-     * @param sellDate:   date when this trade has being sold in {@link String} format es. 21:22:30 30/06/2022
-     * @param baseAsset:  base asset used in that transaction es. BTC
-     * @param quoteAsset: quote asset used in that transaction es. EUR
+     * @param symbol:         symbol used in transaction es. BTCBUSD or BTC-USD
+     * @param status:         status of transaction BUY or SELL
+     * @param buyDate:        date when this transaction has being done in {@link String} format es. 21:08:22 30/06/2022
+     * @param initialBalance: initial balance when this transaction has being done
+     * @param quantity:       quantity transfered in transaction
+     * @param lastPrice:      last price value
+     * @param sellPrice:      sell price value
+     * @param sellDate:       date when this trade has being sold in {@link String} format es. 21:22:30 30/06/2022
+     * @param baseAsset:      base asset used in that transaction es. BTC
+     * @param quoteAsset:     quote asset used in that transaction es. EUR
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, String buyDate, double startPrice, double quantity, double lastPrice,
+    public TxNote(String symbol, String status, String buyDate, double initialBalance, double quantity, double lastPrice,
                   double sellPrice, String sellDate, String baseAsset, String quoteAsset) {
-        super(symbol, status, buyDate, startPrice, quantity, baseAsset, quoteAsset);
+        super(symbol, "BUY", buyDate, initialBalance, quantity, baseAsset, quoteAsset);
+        this.status = status;
         this.lastPrice = lastPrice;
         this.sellPrice = sellPrice;
         this.sellDate = sellDate;
         sellDateTimestamp = getDateTimestamp(sellDate);
-        initialBalance = startPrice * quantity;
+        startPrice = initialBalance / quantity;
     }
 
     public String getStatus() {
-        return side;
+        return status;
+    }
+
+    /**
+     * This method is used set status of transaction as SELL <br>
+     * Any params required
+     *
+     * @throws IllegalStateException when transaction is already in a SELL status
+     **/
+    public void markAsSold() {
+        if (!status.equals("SELL"))
+            status = "SELL";
+        else
+            throw new IllegalStateException("This transaction were already mark as sold");
     }
 
     public String getBuyDate() {
@@ -236,7 +263,7 @@ public class TxNote extends Transaction {
     }
 
     public double getStartPrice() {
-        return value;
+        return startPrice;
     }
 
     /**
@@ -247,22 +274,22 @@ public class TxNote extends Transaction {
      * @throws IllegalArgumentException if decimalDigits is negative
      **/
     public double getStartPrice(int decimals) {
-        return roundValue(value, decimals);
+        return roundValue(startPrice, decimals);
     }
 
     public double getInitialBalance() {
-        return initialBalance;
+        return value;
     }
 
     /**
-     * This method is used get {@link #initialBalance} instance
+     * This method is used get initial balance value
      *
      * @param decimals: number of decimal digits es. 2
-     * @return {@link #initialBalance} formatted as 21.22
+     * @return initial balance value formatted as 21.22
      * @throws IllegalArgumentException if decimalDigits is negative
      **/
     public double getInitialBalance(int decimals) {
-        return roundValue(initialBalance, decimals);
+        return roundValue(value, decimals);
     }
 
     public double getSellPrice() {
@@ -303,7 +330,6 @@ public class TxNote extends Transaction {
      * Any params required
      *
      * @return buy date timestamp as long
-     * @implNote when {@link ParseException} has been thrown return value will be -1 as default
      **/
     public long getSellDateTimestamp() {
         return sellDateTimestamp;
@@ -349,7 +375,7 @@ public class TxNote extends Transaction {
         double lastValue = lastPrice;
         if (sellPrice != 0)
             lastValue = sellPrice;
-        return computeAssetPercent(value, lastValue);
+        return computeAssetPercent(startPrice, lastValue);
     }
 
     /**
@@ -413,20 +439,20 @@ public class TxNote extends Transaction {
 
     @Override
     public String toString() {
-        return "TxNote{" +
-                "initialBalance=" + initialBalance +
-                ", sellPrice=" + sellPrice +
-                ", sellDate=" + sellDate +
-                ", sellPrice=" + sellPrice +
-                ", lastPrice=" + lastPrice +
+        String txNote = "initialBalance=" + value +
                 ", symbol='" + symbol + '\'' +
-                ", status='" + side + '\'' +
+                ", status='" + status + '\'' +
                 ", buyDate='" + transactionDate + '\'' +
-                ", startPrice=" + value +
+                ", startPrice=" + startPrice +
                 ", quantity=" + quantity +
                 ", incomePercent=" + getIncomePercent() +
                 ", value=" + getValue() +
                 '}';
+        if(sellPrice != 0) {
+            return "TxNote{sellPrice=" + sellPrice +
+                    ", sellDate=" + sellDate + ", " + txNote;
+        }else
+            return "TxNote{" + txNote;
     }
 
 }
