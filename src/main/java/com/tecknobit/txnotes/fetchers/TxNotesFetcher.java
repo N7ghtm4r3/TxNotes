@@ -1,5 +1,9 @@
 package com.tecknobit.txnotes.fetchers;
 
+import com.tecknobit.traderbot.Records.Portfolio.Transaction;
+import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
+import com.tecknobit.traderbot.Traders.Interfaces.Native.BinanceTraderBot;
+import com.tecknobit.txnotes.fetchers.autonomous.TxNotesAutoFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.BinanceFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.CoinbaseFetcher;
 import com.tecknobit.txnotes.records.TxNote;
@@ -23,6 +27,11 @@ import static com.tecknobit.traderbot.Records.Portfolio.Transaction.getDateTimes
 public abstract class TxNotesFetcher {
 
     /**
+     * {@code fetcherPlatform} is instance of {@link TraderCoreRoutines} to use to fetch transactions
+     **/
+    protected final TraderCoreRoutines fetcherPlatform;
+
+    /**
      * {@code txNotesDeleted} is instance of {@link Long} helpful to indicate which {@link TxNote} must not available to be reinserted
      *
      * @implNote when you delete a {@link TxNote} that will be deleted only in {@code TxNotes} infrastructure not on
@@ -36,15 +45,45 @@ public abstract class TxNotesFetcher {
     protected final HashMap<Long, TxNote> txNotes = new HashMap<>();
 
     /**
+     * Constructor to init {@link TxNotesAutoFetcher}
+     *
+     * @param fetcherPlatform: fetcher platform to fetch transactions
+     * @implNote these keys will NOT store by library anywhere.
+     **/
+    public TxNotesFetcher(TraderCoreRoutines fetcherPlatform) {
+        this.fetcherPlatform = fetcherPlatform;
+    }
+
+    // TODO: 06/09/2022 TEST AFTER FIXED TRADERBOT AND USE CONSTANT IN DOCU STRING FOR SELL AND BUY
+    // TODO: 07/09/2022 REMOVE UNNECESSARY CAST TO BINANCE TRADER BOT
+
+    /**
      * This method is used to assemble a {@link TxNote}'s list fetched from your exchange's account<br>
      * Any params required
      *
      * @return list as {@link Collection} of {@link TxNote}
      * @throws Exception when an operation fails
      **/
-    public abstract Collection<TxNote> fetchTxNotesList() throws Exception;
-
-    // TODO: 06/09/2022 TEST AFTER FIXED TRADERBOT AND USE CONSTANT IN DOCU STRING FOR SELL AND BUY
+    public Collection<TxNote> fetchTxNotesList() throws Exception {
+        for (Transaction transaction : ((BinanceTraderBot) fetcherPlatform).getAllTransactions(false)) {
+            String status = transaction.getSide();
+            long timestamp = transaction.getTransactionTimestamp();
+            double lastPrice = 2; // TODO: 06/09/2022 FETCH FROM LIBRARY METHOD
+            if (!txNotesDeleted.contains(timestamp) && txNotes.get(timestamp) == null) {
+                double value = transaction.getValue();
+                double quantity = transaction.getQuantity();
+                TxNote txNote = new TxNote(transaction.getSymbol(), status, timestamp, value, quantity, lastPrice);
+                // TODO: 06/09/2022 USE LIBRARY CONSTANTS
+                if (status.equals("SELL")) {
+                    txNote.setSellDate(timestamp);
+                    txNote.setSellPrice(value / quantity);
+                }
+                txNotes.put(timestamp, txNote);
+            }
+        }
+        mergeTxNotesList();
+        return txNotes.values();
+    }
 
     /**
      * This method is used to create and reorganize a {@link TxNote}'s list.<br>
@@ -107,13 +146,18 @@ public abstract class TxNotesFetcher {
      * This method is used to get error of any requests<br>
      * Any params required
      **/
-    public abstract String getErrorMessage();
+    public String getErrorMessage() {
+        return ((BinanceTraderBot) fetcherPlatform).getErrorResponse();
+    }
 
     /**
-     * Method to print error response<br>
+     * Method to print error response <br>
      * Any params required
      **/
-    public abstract void printErrorMessage();
+    public void printErrorMessage() {
+        // TODO: 06/09/2022 TO IMPLEMENT FROM LIBRARY
+        System.out.println("to implement");
+    }
 
     // TODO: 06/09/2022 INSERT RIGHT CONSTANT FOR BUY AND SELL 
 

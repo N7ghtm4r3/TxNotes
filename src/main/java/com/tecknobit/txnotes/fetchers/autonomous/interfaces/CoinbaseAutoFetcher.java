@@ -1,26 +1,24 @@
-package com.tecknobit.txnotes.fetchers.interfaces;
+package com.tecknobit.txnotes.fetchers.autonomous.interfaces;
 
 import com.tecknobit.traderbot.Traders.Interfaces.Native.CoinbaseTraderBot;
-import com.tecknobit.txnotes.fetchers.TxNotesFetcher;
-import com.tecknobit.txnotes.records.TxNote;
+import com.tecknobit.txnotes.fetchers.autonomous.TxNotesAutoFetcher;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
- * The {@code CoinbaseFetcher} class is useful to fetch all transactions from your Coinbase's account. <br>
- * Extends its methods from {@link TxNotesFetcher}
+ * The {@code CoinbaseAutoFetcher} class is useful to fetch all transactions from your Coinbase's account autonomously <br>
+ * Extends its methods from {@link TxNotesAutoFetcher}
  *
  * @author Tecknobit N7ghtm4r3
  * @implSpec this class work with {@link CoinbaseTraderBot}
  * @apiNote origin library at: <a href="https://github.com/N7ghtm4r3/TraderBot">https://github.com/N7ghtm4r3/TraderBot</a>
- * @see TxNotesFetcher
+ * @see TxNotesAutoFetcher
  **/
 
-public class CoinbaseFetcher extends TxNotesFetcher {
+public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:              your Coinbase's api key
      * @param apiSecret:           your Coinbase's secret key
@@ -29,13 +27,13 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @param timeout:             custom timeout for request
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                           int timeout) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
+                               int timeout) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:     your Coinbase's api key
      * @param apiSecret:  your Coinbase's secret key
@@ -43,12 +41,12 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @param timeout:    custom timeout for request
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int timeout) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, int timeout) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:              your Coinbase's api key
      * @param apiSecret:           your Coinbase's secret key
@@ -56,24 +54,24 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @param defaultErrorMessage: custom error to show when is not a request error
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:     your Coinbase's api key
      * @param apiSecret:  your Coinbase's secret key
      * @param passphrase: your Coinbase's api passphrase
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:              your Coinbase's api key
      * @param apiSecret:           your Coinbase's secret key
@@ -83,14 +81,14 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage, int timeout,
-                           ArrayList<String> quoteCurrencies) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage, int timeout,
+                               ArrayList<String> quoteCurrencies) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout,
                 quoteCurrencies));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:          your Coinbase's api key
      * @param apiSecret:       your Coinbase's secret key
@@ -99,13 +97,13 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int timeout,
-                           ArrayList<String> quoteCurrencies) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, int timeout,
+                               ArrayList<String> quoteCurrencies) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, quoteCurrencies));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:              your Coinbase's api key
      * @param apiSecret:           your Coinbase's secret key
@@ -114,13 +112,13 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                           ArrayList<String> quoteCurrencies) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
+                               ArrayList<String> quoteCurrencies) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, quoteCurrencies));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:          your Coinbase's api key
      * @param apiSecret:       your Coinbase's secret key
@@ -128,13 +126,13 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase,
-                           ArrayList<String> quoteCurrencies) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase,
+                               ArrayList<String> quoteCurrencies) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, quoteCurrencies));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:              your Coinbase's api key
      * @param apiSecret:           your Coinbase's secret key
@@ -145,13 +143,13 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                           int timeout, int refreshTime) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
+                               int timeout, int refreshTime) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout, refreshTime));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:      your Coinbase's api key
      * @param apiSecret:   your Coinbase's secret key
@@ -161,12 +159,12 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int timeout, int refreshTime) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, int timeout, int refreshTime) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, refreshTime));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:              your Coinbase's api key
      * @param apiSecret:           your Coinbase's secret key
@@ -176,13 +174,13 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                           short refreshTime) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
+                               short refreshTime) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, refreshTime));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:      your Coinbase's api key
      * @param apiSecret:   your Coinbase's secret key
@@ -191,12 +189,12 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, short refreshTime) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, short refreshTime) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, refreshTime));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:              your Coinbase's api key
      * @param apiSecret:           your Coinbase's secret key
@@ -208,14 +206,14 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage, int timeout,
-                           ArrayList<String> quoteCurrencies, int refreshTime) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage, int timeout,
+                               ArrayList<String> quoteCurrencies, int refreshTime) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout,
                 quoteCurrencies, refreshTime));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:          your Coinbase's api key
      * @param apiSecret:       your Coinbase's secret key
@@ -226,13 +224,13 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int timeout,
-                           ArrayList<String> quoteCurrencies, int refreshTime) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, int timeout,
+                               ArrayList<String> quoteCurrencies, int refreshTime) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, quoteCurrencies, refreshTime));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:              your Coinbase's api key
      * @param apiSecret:           your Coinbase's secret key
@@ -243,14 +241,14 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                           ArrayList<String> quoteCurrencies, int refreshTime) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
+                               ArrayList<String> quoteCurrencies, int refreshTime) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, quoteCurrencies,
                 refreshTime));
     }
 
     /**
-     * Constructor to init {@link CoinbaseFetcher}
+     * Constructor to init {@link CoinbaseAutoFetcher}
      *
      * @param apiKey:          your Coinbase's api key
      * @param apiSecret:       your Coinbase's secret key
@@ -260,21 +258,9 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, ArrayList<String> quoteCurrencies,
-                           int refreshTime) throws Exception {
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, ArrayList<String> quoteCurrencies,
+                               int refreshTime) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, quoteCurrencies, refreshTime));
-    }
-
-    /**
-     * This method is used to assemble a {@link TxNote}'s list fetched from your Coinbase's account<br>
-     * Any params required
-     *
-     * @return list as {@link Collection} of {@link TxNote}
-     * @throws Exception when an operation fails
-     **/
-    @Override
-    public Collection<TxNote> fetchTxNotesList() throws Exception {
-        return super.fetchTxNotesList();
     }
 
 }
