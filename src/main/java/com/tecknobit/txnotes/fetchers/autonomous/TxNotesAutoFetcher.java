@@ -6,14 +6,12 @@ import com.tecknobit.txnotes.fetchers.TxNotesFetcher;
 import com.tecknobit.txnotes.fetchers.autonomous.interfaces.BinanceAutoFetcher;
 import com.tecknobit.txnotes.fetchers.autonomous.interfaces.CoinbaseAutoFetcher;
 import com.tecknobit.txnotes.records.TxNote;
+import com.tecknobit.txnotes.records.Wallet;
 
 import java.util.Collection;
 
-import static com.tecknobit.traderbot.Records.Portfolio.Transaction.getDate;
-import static java.lang.System.currentTimeMillis;
-
 /**
- * The {@code TxNotesFetcher} class is useful to fetch all transactions from exchange's account autonomously<br>
+ * The {@code TxNotesAutoFetcher} class is useful to fetch all transactions from exchange's account autonomously<br>
  * This class give basic methods for auto fetcher's workflow inherited from {@link TxNotesFetcher}
  *
  * @author Tecknobit N7ghtm4r3
@@ -31,18 +29,29 @@ public abstract class TxNotesAutoFetcher extends TxNotesFetcher implements Routi
 
     /**
      * {@code runningFetcher} is instance that memorizes flag that indicates if the fetcher is running or not
+     *
+     * @apiNote default value is {@code false}
      **/
     protected boolean runningFetcher;
 
     /**
+     * {@code autoLoadWalletList} is flag that allows the library to autoload {@link #wallets} list
+     **/
+    protected boolean autoLoadWalletList;
+
+    /**
      * Constructor to init {@link TxNotesAutoFetcher}
      *
-     * @param autoFetcherPlatform: fetcher platform to fetch transactions
+     * @param autoFetcherPlatform:  fetcher platform to fetch transactions
+     * @param autoLoadWalletList:   flag that allows the library to autoload {@link #wallets} list
+     * @param printRoutineMessages: flag to insert to print or not routine messages
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public TxNotesAutoFetcher(TraderCoreRoutines autoFetcherPlatform) {
+    public TxNotesAutoFetcher(TraderCoreRoutines autoFetcherPlatform, boolean autoLoadWalletList, boolean printRoutineMessages) {
         super(autoFetcherPlatform);
-        printRoutineMessages = true;
+        this.printRoutineMessages = printRoutineMessages;
+        this.autoLoadWalletList = autoLoadWalletList;
+        runningFetcher = false;
     }
 
     /**
@@ -50,6 +59,7 @@ public abstract class TxNotesAutoFetcher extends TxNotesFetcher implements Routi
      * Any params required
      **/
     public void start() {
+        runningFetcher = true;
         new Thread() {
             @Override
             public void run() {
@@ -57,18 +67,27 @@ public abstract class TxNotesAutoFetcher extends TxNotesFetcher implements Routi
                 try {
                     while (true) {
                         while (runningFetcher) {
-                            printLog("FETCHING", true);
+                            printLog("FETCHING", ANSI_GREEN);
+                            fetchTxNotesList();
                             if (printRoutineMessages) {
-                                Collection<TxNote> notes = txNotes.values();
-                                if (notes.size() > 0)
+                                Collection<TxNote> notes = getTxNotesFetched();
+                                if (notes.size() > 0) {
+                                    printLog("### Transaction notes list", ANSI_RED);
                                     for (TxNote txNote : notes)
-                                        System.out.println(txNote);
-                                else
-                                    printLog("Empty list", false);
+                                        txNote.printDetails();
+                                } else
+                                    printLog("Empty notes list");
+                                Collection<Wallet> wallets = getWallets();
+                                if (wallets.size() > 0) {
+                                    printLog("### Wallet list", ANSI_RED);
+                                    for (Wallet wallet : wallets)
+                                        wallet.printDetails();
+                                } else
+                                    printLog("Empty wallet list");
                             }
-                            sleep(fetcherPlatform.getRefreshPricesTime());
+                            sleep(fetcherPlatform.getRefreshTime());
                         }
-                        printLog("WAITING", false);
+                        printLog("WAITING", ANSI_RED);
                         sleep(1000);
                     }
                 } catch (Exception e) {
@@ -79,24 +98,29 @@ public abstract class TxNotesAutoFetcher extends TxNotesFetcher implements Routi
     }
 
     /**
+     * This method is used to assemble a {@link TxNote}'s list fetched from your exchange's account<br>
+     * Any params required
+     *
+     * @return list as {@link Collection} of {@link TxNote}
+     * @throws Exception when an operation fails
+     * @apiNote if {@link #autoLoadWalletList} is set to true will be automatically call {@link #loadWalletList()} method
+     **/
+    @Override
+    public Collection<TxNote> fetchTxNotesList() throws Exception {
+        Collection<TxNote> txNotes = super.fetchTxNotesList();
+        if (autoLoadWalletList)
+            loadWalletList();
+        return txNotes;
+    }
+
+    /**
      * This method is used to set time to refresh data
      *
      * @param refreshTime: is time in seconds to set to refresh data
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      **/
-    public void setRefreshTime(long refreshTime) {
-        fetcherPlatform.setRefreshPricesTime((int) refreshTime);
-    }
-
-    /**
-     * This method is used to get list of {@link TxNote} already fetched
-     *
-     * @return list as {@link Collection} of {@link TxNote}
-     * @implNote this method avoid the loading of the list if you need to use list already fetched but with past loading
-     * cycle values
-     **/
-    public Collection<TxNote> getTxNotesFetched() {
-        return txNotes.values();
+    public void setRefreshTime(int refreshTime) {
+        fetcherPlatform.setRefreshTime(refreshTime);
     }
 
     /**
@@ -141,21 +165,27 @@ public abstract class TxNotesAutoFetcher extends TxNotesFetcher implements Routi
         return printRoutineMessages;
     }
 
-    // TODO: 07/09/2022 IMPLEMENT FROM LIBRARY
+    /**
+     * This method is used to get {@link #autoLoadWalletList} flag
+     *
+     * @return flag that allows the library to autoload {@link #wallets} list
+     **/
+    public boolean canAutoLoadWalletList() {
+        return autoLoadWalletList;
+    }
 
     /**
-     * This method is used to print message about an operation made<br>
-     *
-     * @param msg:        message to print out
-     * @param greenPrint: flag to print green or red
+     * This method is used to enable autoload of the {@link #wallets} list
      **/
-    private void printLog(String msg, boolean greenPrint) {
-        if (printRoutineMessages) {
-            if (greenPrint) {
-                printGreen(getDate(currentTimeMillis()) + " -> " + msg);
-            } else
-                printRed(getDate(currentTimeMillis()) + " -> " + msg);
-        }
+    public void enableAutoLoadWalletList() {
+        autoLoadWalletList = true;
+    }
+
+    /**
+     * This method is used to disable autoload of the {@link #wallets} list
+     **/
+    public void disableAutoLoadWalletList() {
+        autoLoadWalletList = false;
     }
 
 }

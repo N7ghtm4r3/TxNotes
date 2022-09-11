@@ -1,12 +1,18 @@
 package com.tecknobit.txnotes.records;
 
 import com.tecknobit.traderbot.Records.Portfolio.Transaction;
+import com.tecknobit.traderbot.Routines.Interfaces.RecordDetails;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.*;
+import static com.tecknobit.traderbot.Routines.Interfaces.RoutineMessages.*;
+import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.BUY;
+import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.SELL;
 import static java.lang.Math.toIntExact;
+import static java.lang.System.out;
 import static java.util.concurrent.TimeUnit.DAYS;
 
 /**
@@ -19,7 +25,7 @@ import static java.util.concurrent.TimeUnit.DAYS;
  * @see Transaction
  **/
 
-public class TxNote extends Transaction {
+public class TxNote extends Transaction implements RecordDetails {
 
     /**
      * {@code startPrice} is instance that memorizes start price value
@@ -50,8 +56,6 @@ public class TxNote extends Transaction {
      **/
     private double lastPrice;
 
-    // TODO: 06/09/2022 SET NULL SIDE OF TRANSACTION NOT BUY AND USE CONSTANTS BY LIBRARY
-
     /**
      * Constructor to init {@link TxNote}
      *
@@ -64,10 +68,10 @@ public class TxNote extends Transaction {
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
     public TxNote(String symbol, String status, long buyDate, double initialBalance, double quantity, double lastPrice) {
-        super(symbol, "BUY", buyDate, initialBalance, quantity);
+        super(symbol, null, buyDate, initialBalance, quantity);
         this.status = status;
         this.lastPrice = lastPrice;
-        startPrice = initialBalance / quantity;
+        startPrice = roundValue(initialBalance / quantity, 8);
     }
 
     /**
@@ -82,10 +86,10 @@ public class TxNote extends Transaction {
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
     public TxNote(String symbol, String status, String buyDate, double initialBalance, double quantity, double lastPrice) {
-        super(symbol, "BUY", buyDate, initialBalance, quantity);
+        super(symbol, null, buyDate, initialBalance, quantity);
         this.status = status;
         this.lastPrice = lastPrice;
-        startPrice = initialBalance / quantity;
+        startPrice = roundValue(initialBalance / quantity, 8);
     }
 
     /**
@@ -103,13 +107,13 @@ public class TxNote extends Transaction {
      **/
     public TxNote(String symbol, String status, long buyDate, double initialBalance, double quantity, double lastPrice,
                   double sellPrice, long sellDate) {
-        super(symbol, "BUY", buyDate, initialBalance, quantity);
+        super(symbol, null, buyDate, initialBalance, quantity);
         this.status = status;
         this.lastPrice = lastPrice;
         this.sellPrice = sellPrice;
         this.sellDateTimestamp = sellDate;
         this.sellDate = getDate(sellDateTimestamp);
-        startPrice = initialBalance / quantity;
+        startPrice = roundValue(initialBalance / quantity, 8);
     }
 
     /**
@@ -127,13 +131,13 @@ public class TxNote extends Transaction {
      **/
     public TxNote(String symbol, String status, String buyDate, double initialBalance, double quantity, double lastPrice,
                   double sellPrice, String sellDate) {
-        super(symbol, "BUY", buyDate, initialBalance, quantity);
+        super(symbol, null, buyDate, initialBalance, quantity);
         this.status = status;
         this.lastPrice = lastPrice;
         this.sellPrice = sellPrice;
         this.sellDate = sellDate;
         sellDateTimestamp = getDateTimestamp(sellDate);
-        startPrice = initialBalance / quantity;
+        startPrice = roundValue(initialBalance / quantity, 8);
     }
 
     /**
@@ -151,10 +155,10 @@ public class TxNote extends Transaction {
      **/
     public TxNote(String symbol, String status, long buyDate, double initialBalance, double quantity, double lastPrice,
                   String baseAsset, String quoteAsset) {
-        super(symbol, "BUY", buyDate, initialBalance, quantity, baseAsset, quoteAsset);
+        super(symbol, null, buyDate, initialBalance, quantity, quoteAsset, baseAsset);
         this.status = status;
         this.lastPrice = lastPrice;
-        startPrice = initialBalance / quantity;
+        startPrice = roundValue(initialBalance / quantity, 8);
     }
 
     /**
@@ -172,10 +176,10 @@ public class TxNote extends Transaction {
      **/
     public TxNote(String symbol, String status, String buyDate, double initialBalance, double quantity, double lastPrice,
                   String baseAsset, String quoteAsset) {
-        super(symbol, "BUY", buyDate, initialBalance, quantity, baseAsset, quoteAsset);
+        super(symbol, null, buyDate, initialBalance, quantity, quoteAsset, baseAsset);
         this.status = status;
         this.lastPrice = lastPrice;
-        startPrice = initialBalance / quantity;
+        startPrice = roundValue(initialBalance / quantity, 8);
     }
 
     /**
@@ -195,13 +199,13 @@ public class TxNote extends Transaction {
      **/
     public TxNote(String symbol, String status, long buyDate, double initialBalance, double quantity, double lastPrice,
                   double sellPrice, long sellDate, String baseAsset, String quoteAsset) {
-        super(symbol, "BUY", buyDate, initialBalance, quantity);
+        super(symbol, null, buyDate, initialBalance, quantity, quoteAsset, baseAsset);
         this.status = status;
         this.lastPrice = lastPrice;
         this.sellPrice = sellPrice;
         this.sellDateTimestamp = sellDate;
         this.sellDate = getDate(sellDateTimestamp);
-        startPrice = initialBalance / quantity;
+        startPrice = roundValue(initialBalance / quantity, 8);
     }
 
     /**
@@ -221,13 +225,13 @@ public class TxNote extends Transaction {
      **/
     public TxNote(String symbol, String status, String buyDate, double initialBalance, double quantity, double lastPrice,
                   double sellPrice, String sellDate, String baseAsset, String quoteAsset) {
-        super(symbol, "BUY", buyDate, initialBalance, quantity, baseAsset, quoteAsset);
+        super(symbol, null, buyDate, initialBalance, quantity, quoteAsset, baseAsset);
         this.status = status;
         this.lastPrice = lastPrice;
         this.sellPrice = sellPrice;
         this.sellDate = sellDate;
         sellDateTimestamp = getDateTimestamp(sellDate);
-        startPrice = initialBalance / quantity;
+        startPrice = roundValue(initialBalance / quantity, 8);
     }
 
     public String getStatus() {
@@ -235,16 +239,19 @@ public class TxNote extends Transaction {
     }
 
     /**
-     * This method is used set status of transaction as SELL <br>
-     * Any params required
+     * This method is used to get detail of {@link TxNote} coloured
      *
-     * @throws IllegalStateException when transaction is already in a SELL status
+     * @param tail:  tail of detail
+     * @param value: value of detail
+     * @return details coloured
      **/
-    public void markAsSold() {
-        if (!status.equals("SELL"))
-            status = "SELL";
-        else
-            throw new IllegalStateException("This transaction were already mark as sold");
+    public static String getDetailsColoured(String tail, String value) {
+        String color = "";
+        if (value.equals(BUY) || value.contains("+"))
+            color = ANSI_GREEN;
+        else if (!value.contains("="))
+            color = ANSI_RED;
+        return "## " + tail + ": " + color + value + ANSI_RESET + "\n";
     }
 
     public String getBuyDate() {
@@ -365,17 +372,16 @@ public class TxNote extends Transaction {
     }
 
     /**
-     * This method is used get transaction income value <br>
+     * This method is used set status of transaction as SELL <br>
      * Any params required
      *
-     * @return transaction income value as double
+     * @throws IllegalStateException when transaction is already in a SELL status
      **/
-    @Override
-    public double getIncomePercent() {
-        double lastValue = lastPrice;
-        if (sellPrice != 0)
-            lastValue = sellPrice;
-        return computeAssetPercent(startPrice, lastValue);
+    public void markAsSold() {
+        if (!status.equals(SELL))
+            status = SELL;
+        else
+            throw new IllegalStateException("This transaction were already mark as sold");
     }
 
     /**
@@ -412,17 +418,18 @@ public class TxNote extends Transaction {
     }
 
     /**
-     * This method is used get transaction value <br>
+     * This method is used get transaction income value <br>
      * Any params required
      *
-     * @return transaction value as double
+     * @return transaction income value as double
      **/
     @Override
-    public double getValue() {
-        double price = lastPrice;
+    public double getIncomePercent() {
+        double lastValue = lastPrice;
         if (sellPrice != 0)
-            price = sellPrice;
-        return quantity * price;
+            lastValue = sellPrice;
+        // TODO: 11/09/2022 TO REMOVE +100 USING ANOTHER METHOD BY LIBRARY
+        return computeAssetPercent(startPrice, lastValue, 8) + 100;
     }
 
     /**
@@ -437,6 +444,44 @@ public class TxNote extends Transaction {
         return roundValue(getValue(), decimals);
     }
 
+    /**
+     * This method is used get transaction value <br>
+     * Any params required
+     *
+     * @return transaction value as double
+     **/
+    @Override
+    public double getValue() {
+        double price = lastPrice;
+        if (sellPrice != 0)
+            price = sellPrice;
+        return roundValue(quantity * price, 8);
+    }
+
+    /**
+     * This method is used to print details of {@link TxNote} object <br>
+     * Any params required
+     **/
+    @Override
+    public void printDetails() {
+        String txNote = "## [" + symbol + "]\n" +
+                getDetailsColoured("Status", status) +
+                "## Initial balance: " + value + "\n" +
+                "## Buy-Date: " + transactionDate + "\n" +
+                "## Start price: " + startPrice + "\n" +
+                "## Amount value: " + getValue() + "\n" +
+                "## Quantity: " + quantity + "\n" +
+                getDetailsColoured("Income percent", getIncomePercentText()) +
+                "## Base asset: " + baseAsset + "\n" +
+                "## Quote asset: " + quoteAsset + "\n";
+        if (sellPrice != 0) {
+            txNote += "## Sell-Date: " + sellDate + "\n" +
+                    "## Sell price: " + sellPrice + "\n" +
+                    "## Days traded: " + getTradeDays() + "\n";
+        }
+        out.println(txNote + "######################");
+    }
+
     @Override
     public String toString() {
         String txNote = "initialBalance=" + value +
@@ -447,12 +492,95 @@ public class TxNote extends Transaction {
                 ", quantity=" + quantity +
                 ", incomePercent=" + getIncomePercent() +
                 ", value=" + getValue() +
+                ", baseAsset=" + baseAsset +
+                ", quoteAsset=" + quoteAsset +
                 '}';
-        if(sellPrice != 0) {
+        if (sellPrice != 0) {
             return "TxNote{sellPrice=" + sellPrice +
-                    ", sellDate=" + sellDate + ", " + txNote;
-        }else
+                    ", sellDate=" + sellDate +
+                    ", tradeDays=" + getTradeDays() + ", " + txNote;
+        } else
             return "TxNote{" + txNote;
+    }
+
+    /**
+     * The {@code TxNotesListManager} interface allows to manage a list of {@link TxNote} giving base methods to work
+     * on it
+     **/
+    public interface TxNotesListManager {
+
+        /**
+         * This method is used to fetch a transaction note from list of {@link TxNote}
+         *
+         * @param checkDate: timestamp of the date to fetch from list of {@link TxNote}
+         * @return transaction note as {@link TxNote} custom object
+         **/
+        TxNote fetchTxNote(long checkDate);
+
+        /**
+         * This method is used to fetch a transaction note from list of {@link TxNote}
+         *
+         * @param checkDate: check date to fetch from list of {@link TxNote} as {@link String}
+         * @return transaction note as {@link TxNote} custom object
+         **/
+        TxNote fetchTxNote(String checkDate);
+
+        /**
+         * This method is used to fetch a transaction note from list of {@link TxNote}
+         *
+         * @param checkDate: check date to fetch from list of {@link TxNote} as {@link Date}
+         * @return transaction note as {@link TxNote} custom object
+         **/
+        TxNote fetchTxNote(Date checkDate);
+
+        /**
+         * This method is used to fetch a transaction note from list of {@link TxNote}
+         *
+         * @param checkDate: timestamp of the date to fetch from list of {@link TxNote}
+         * @return transaction note as {@link TxNote} custom object
+         **/
+        TxNote fetchTxNoteSold(long checkDate);
+
+        /**
+         * This method is used to fetch a transaction note from list of {@link TxNote}
+         *
+         * @param checkDate: check date to fetch from list of {@link TxNote} as {@link String}
+         * @return transaction note as {@link TxNote} custom object
+         **/
+        TxNote fetchTxNoteSold(String checkDate);
+
+        /**
+         * This method is used to fetch a transaction note from a list of {@link TxNote}
+         *
+         * @param checkDate: check date to fetch from list as {@link Date}
+         * @return transaction note as {@link TxNote} custom object
+         **/
+        TxNote fetchTxNoteSold(Date checkDate);
+
+        /**
+         * This method is used to delete a transaction note from list of {@link TxNote}
+         *
+         * @param removeDate: timestamp of the date to delete from list of {@link TxNote}
+         * @return result of deletion as boolean
+         **/
+        boolean deleteTxNote(long removeDate);
+
+        /**
+         * This method is used to delete a transaction note from list of {@link TxNote}
+         *
+         * @param removeDate: check date to delete from list of {@link TxNote} as {@link String}
+         * @return result of deletion as boolean
+         **/
+        boolean deleteTxNote(String removeDate);
+
+        /**
+         * This method is used to delete a transaction note from list of {@link TxNote}
+         *
+         * @param removeDate: check date to delete from list of {@link TxNote} as {@link Date}
+         * @return result of deletion as boolean
+         **/
+        boolean deleteTxNote(Date removeDate);
+
     }
 
 }

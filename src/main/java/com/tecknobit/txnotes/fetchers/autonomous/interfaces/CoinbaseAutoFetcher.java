@@ -28,8 +28,9 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @implNote these keys will NOT store by library anywhere.
      **/
     public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                               int timeout) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout));
+                               int timeout, boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout), autoLoadWalletList,
+                printRoutineMessages);
     }
 
     /**
@@ -41,8 +42,9 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @param timeout:    custom timeout for request
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, int timeout) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout));
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, int timeout, boolean autoLoadWalletList,
+                               boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout), autoLoadWalletList, printRoutineMessages);
     }
 
     /**
@@ -54,8 +56,10 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @param defaultErrorMessage: custom error to show when is not a request error
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage));
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
+                               boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage), autoLoadWalletList,
+                printRoutineMessages);
     }
 
     /**
@@ -66,8 +70,9 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @param passphrase: your Coinbase's api passphrase
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase));
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, boolean autoLoadWalletList,
+                               boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase), autoLoadWalletList, printRoutineMessages);
     }
 
     /**
@@ -82,9 +87,10 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @implNote these keys will NOT store by library anywhere.
      **/
     public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage, int timeout,
-                               ArrayList<String> quoteCurrencies) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout,
-                quoteCurrencies));
+                               ArrayList<String> quoteCurrencies, boolean autoLoadWalletList,
+                               boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout, quoteCurrencies),
+                autoLoadWalletList, printRoutineMessages);
     }
 
     /**
@@ -97,9 +103,10 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, int timeout,
-                               ArrayList<String> quoteCurrencies) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, quoteCurrencies));
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, int timeout, ArrayList<String> quoteCurrencies,
+                               boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, quoteCurrencies), autoLoadWalletList,
+                printRoutineMessages);
     }
 
     /**
@@ -113,8 +120,10 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @implNote these keys will NOT store by library anywhere.
      **/
     public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                               ArrayList<String> quoteCurrencies) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, quoteCurrencies));
+                               ArrayList<String> quoteCurrencies, boolean autoLoadWalletList,
+                               boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, quoteCurrencies), autoLoadWalletList,
+                printRoutineMessages);
     }
 
     /**
@@ -126,9 +135,9 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase,
-                               ArrayList<String> quoteCurrencies) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, quoteCurrencies));
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, ArrayList<String> quoteCurrencies,
+                               boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, quoteCurrencies), autoLoadWalletList, printRoutineMessages);
     }
 
     /**
@@ -143,9 +152,10 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                               int timeout, int refreshTime) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout, refreshTime));
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage, int timeout,
+                               int refreshTime, boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout, refreshTime), autoLoadWalletList,
+                printRoutineMessages);
     }
 
     /**
@@ -159,8 +169,10 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, int timeout, int refreshTime) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, refreshTime));
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, int timeout, int refreshTime,
+                               boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, refreshTime), autoLoadWalletList,
+                printRoutineMessages);
     }
 
     /**
@@ -175,8 +187,9 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @implNote these keys will NOT store by library anywhere.
      **/
     public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                               short refreshTime) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, refreshTime));
+                               short refreshTime, boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, refreshTime), autoLoadWalletList,
+                printRoutineMessages);
     }
 
     /**
@@ -189,8 +202,9 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, short refreshTime) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, refreshTime));
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, short refreshTime, boolean autoLoadWalletList,
+                               boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, refreshTime), autoLoadWalletList, printRoutineMessages);
     }
 
     /**
@@ -207,9 +221,10 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @implNote these keys will NOT store by library anywhere.
      **/
     public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage, int timeout,
-                               ArrayList<String> quoteCurrencies, int refreshTime) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout,
-                quoteCurrencies, refreshTime));
+                               ArrayList<String> quoteCurrencies, int refreshTime, boolean autoLoadWalletList,
+                               boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout, quoteCurrencies,
+                refreshTime), autoLoadWalletList, printRoutineMessages);
     }
 
     /**
@@ -224,9 +239,10 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, int timeout,
-                               ArrayList<String> quoteCurrencies, int refreshTime) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, quoteCurrencies, refreshTime));
+    public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, int timeout, ArrayList<String> quoteCurrencies,
+                               int refreshTime, boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, quoteCurrencies, refreshTime), autoLoadWalletList,
+                printRoutineMessages);
     }
 
     /**
@@ -242,9 +258,10 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @implNote these keys will NOT store by library anywhere.
      **/
     public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                               ArrayList<String> quoteCurrencies, int refreshTime) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, quoteCurrencies,
-                refreshTime));
+                               ArrayList<String> quoteCurrencies, int refreshTime, boolean autoLoadWalletList,
+                               boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, quoteCurrencies, refreshTime),
+                autoLoadWalletList, printRoutineMessages);
     }
 
     /**
@@ -259,8 +276,9 @@ public class CoinbaseAutoFetcher extends TxNotesAutoFetcher {
      * @implNote these keys will NOT store by library anywhere.
      **/
     public CoinbaseAutoFetcher(String apiKey, String apiSecret, String passphrase, ArrayList<String> quoteCurrencies,
-                               int refreshTime) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, quoteCurrencies, refreshTime));
+                               int refreshTime, boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, quoteCurrencies, refreshTime), autoLoadWalletList,
+                printRoutineMessages);
     }
 
 }

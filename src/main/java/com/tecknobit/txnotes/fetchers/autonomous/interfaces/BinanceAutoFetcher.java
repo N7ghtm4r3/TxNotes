@@ -25,22 +25,22 @@ public class BinanceAutoFetcher extends TxNotesAutoFetcher {
      * @param secretKey: your Binance's secret key
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceAutoFetcher(String apiKey, String secretKey) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey));
+    public BinanceAutoFetcher(String apiKey, String secretKey, boolean autoLoadWalletList,
+                              boolean printRoutineMessages) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey), autoLoadWalletList, printRoutineMessages);
     }
-
-    // TODO: 06/09/2022 CHANGE ENDPOINTS HINT 
 
     /**
      * Constructor to init {@link BinanceFetcher}
      *
      * @param apiKey:       your Binance's api key
      * @param secretKey:    your Binance's secret key
-     * @param baseEndpoint: base endpoint choose from BinanceManager.BASE_ENDPOINTS array
+     * @param baseEndpoint: base endpoint choose from {@link BinanceTraderBot#BINANCE_BASE_ENDPOINTS} array
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceAutoFetcher(String apiKey, String secretKey, String baseEndpoint) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint));
+    public BinanceAutoFetcher(String apiKey, String secretKey, String baseEndpoint, boolean autoLoadWalletList,
+                              boolean printRoutineMessages) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint), autoLoadWalletList, printRoutineMessages);
     }
 
     /**
@@ -52,11 +52,10 @@ public class BinanceAutoFetcher extends TxNotesAutoFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceAutoFetcher(String apiKey, String secretKey, int refreshTime) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, refreshTime));
+    public BinanceAutoFetcher(String apiKey, String secretKey, int refreshTime, boolean autoLoadWalletList,
+                              boolean printRoutineMessages) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, refreshTime), autoLoadWalletList, printRoutineMessages);
     }
-
-    // TODO: 06/09/2022 CHANGE ENDPOINTS HINT 
 
     /**
      * Constructor to init {@link BinanceFetcher}
@@ -64,12 +63,13 @@ public class BinanceAutoFetcher extends TxNotesAutoFetcher {
      * @param apiKey:       your Binance's api key
      * @param secretKey:    your Binance's secret key
      * @param refreshTime:  is time in seconds to set for refresh the latest prices
-     * @param baseEndpoint: base endpoint choose from BinanceManager.BASE_ENDPOINTS array
+     * @param baseEndpoint: base endpoint choose from {@link BinanceTraderBot#BINANCE_BASE_ENDPOINTS} array
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceAutoFetcher(String apiKey, String secretKey, String baseEndpoint, int refreshTime) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, refreshTime));
+    public BinanceAutoFetcher(String apiKey, String secretKey, String baseEndpoint, int refreshTime,
+                              boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, refreshTime), autoLoadWalletList, printRoutineMessages);
     }
 
     /**
@@ -82,12 +82,11 @@ public class BinanceAutoFetcher extends TxNotesAutoFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceAutoFetcher(String apiKey, String secretKey, ArrayList<String> quoteCurrencies,
-                              int refreshTime) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies, refreshTime));
+    public BinanceAutoFetcher(String apiKey, String secretKey, ArrayList<String> quoteCurrencies, int refreshTime,
+                              boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies, refreshTime), autoLoadWalletList,
+                printRoutineMessages);
     }
-
-    // TODO: 06/09/2022 CHANGE ENDPOINTS HINT
 
     /**
      * Constructor to init {@link BinanceFetcher}
@@ -95,14 +94,15 @@ public class BinanceAutoFetcher extends TxNotesAutoFetcher {
      * @param apiKey:          your Binance's api key
      * @param secretKey:       your Binance's secret key
      * @param refreshTime:     is time in seconds to set to refresh data
-     * @param baseEndpoint:    base endpoint choose from BinanceManager.BASE_ENDPOINTS array
+     * @param baseEndpoint:    base endpoint choose from {@link BinanceTraderBot#BINANCE_BASE_ENDPOINTS} array
      * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
     public BinanceAutoFetcher(String apiKey, String secretKey, String baseEndpoint, ArrayList<String> quoteCurrencies,
-                              int refreshTime) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, quoteCurrencies, refreshTime));
+                              int refreshTime, boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, quoteCurrencies, refreshTime), autoLoadWalletList,
+                printRoutineMessages);
     }
 
     /**
@@ -113,24 +113,24 @@ public class BinanceAutoFetcher extends TxNotesAutoFetcher {
      * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceAutoFetcher(String apiKey, String secretKey, ArrayList<String> quoteCurrencies) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies));
+    public BinanceAutoFetcher(String apiKey, String secretKey, ArrayList<String> quoteCurrencies,
+                              boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies), autoLoadWalletList, printRoutineMessages);
     }
-
-    // TODO: 06/09/2022 CHANGE ENDPOINTS HINT
 
     /**
      * Constructor to init {@link BinanceFetcher}
      *
      * @param apiKey:          your Binance's api key
      * @param secretKey:       your Binance's secret key
-     * @param baseEndpoint:    base endpoint choose from BinanceManager.BASE_ENDPOINTS array
+     * @param baseEndpoint:    base endpoint choose from {@link BinanceTraderBot#BINANCE_BASE_ENDPOINTS} array
      * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceAutoFetcher(String apiKey, String secretKey, String baseEndpoint,
-                              ArrayList<String> quoteCurrencies) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, quoteCurrencies));
+    public BinanceAutoFetcher(String apiKey, String secretKey, String baseEndpoint, ArrayList<String> quoteCurrencies,
+                              boolean autoLoadWalletList, boolean printRoutineMessages) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, quoteCurrencies), autoLoadWalletList,
+                printRoutineMessages);
     }
 
 }

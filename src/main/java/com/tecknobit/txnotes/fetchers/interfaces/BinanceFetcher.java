@@ -20,6 +20,11 @@ import java.util.Collection;
 public class BinanceFetcher extends TxNotesFetcher {
 
     /**
+     * {@code BINANCE_BASE_ENDPOINTS} is a list constant that contains list of Binance's main endpoints
+     **/
+    public static final String[] BINANCE_BASE_ENDPOINTS = BinanceTraderBot.BINANCE_BASE_ENDPOINTS;
+
+    /**
      * Constructor to init {@link BinanceFetcher}
      *
      * @param apiKey:    your Binance's api key
@@ -30,14 +35,12 @@ public class BinanceFetcher extends TxNotesFetcher {
         super(new BinanceTraderBot(apiKey, secretKey));
     }
 
-    // TODO: 06/09/2022 CHANGE ENDPOINTS HINT 
-
     /**
      * Constructor to init {@link BinanceFetcher}
      *
      * @param apiKey:       your Binance's api key
      * @param secretKey:    your Binance's secret key
-     * @param baseEndpoint: base endpoint choose from BinanceManager.BASE_ENDPOINTS array
+     * @param baseEndpoint: base endpoint choose from {@link #BINANCE_BASE_ENDPOINTS} array
      * @implNote these keys will NOT store by library anywhere.
      **/
     public BinanceFetcher(String apiKey, String secretKey, String baseEndpoint) throws Exception {
@@ -57,15 +60,13 @@ public class BinanceFetcher extends TxNotesFetcher {
         super(new BinanceTraderBot(apiKey, secretKey, refreshTime));
     }
 
-    // TODO: 06/09/2022 CHANGE ENDPOINTS HINT 
-
     /**
      * Constructor to init {@link BinanceFetcher}
      *
      * @param apiKey:       your Binance's api key
      * @param secretKey:    your Binance's secret key
      * @param refreshTime:  is time in seconds to set for refresh the latest prices
-     * @param baseEndpoint: base endpoint choose from BinanceManager.BASE_ENDPOINTS array
+     * @param baseEndpoint: base endpoint choose from {@link #BINANCE_BASE_ENDPOINTS} array
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
@@ -88,15 +89,13 @@ public class BinanceFetcher extends TxNotesFetcher {
         super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies, refreshTime));
     }
 
-    // TODO: 06/09/2022 CHANGE ENDPOINTS HINT
-
     /**
      * Constructor to init {@link BinanceFetcher}
      *
      * @param apiKey:          your Binance's api key
      * @param secretKey:       your Binance's secret key
      * @param refreshTime:     is time in seconds to set to refresh data
-     * @param baseEndpoint:    base endpoint choose from BinanceManager.BASE_ENDPOINTS array
+     * @param baseEndpoint:    base endpoint choose from {@link #BINANCE_BASE_ENDPOINTS} array
      * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
@@ -118,14 +117,12 @@ public class BinanceFetcher extends TxNotesFetcher {
         super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies));
     }
 
-    // TODO: 06/09/2022 CHANGE ENDPOINTS HINT
-
     /**
      * Constructor to init {@link BinanceFetcher}
      *
      * @param apiKey:          your Binance's api key
      * @param secretKey:       your Binance's secret key
-     * @param baseEndpoint:    base endpoint choose from BinanceManager.BASE_ENDPOINTS array
+     * @param baseEndpoint:    base endpoint choose from {@link #BINANCE_BASE_ENDPOINTS} array
      * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
      * @implNote these keys will NOT store by library anywhere.
      **/
@@ -133,6 +130,7 @@ public class BinanceFetcher extends TxNotesFetcher {
                           ArrayList<String> quoteCurrencies) throws Exception {
         super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, quoteCurrencies));
     }
+
 
     /**
      * This method is used to assemble a {@link TxNote}'s list fetched from your Binance's account<br>
@@ -143,26 +141,6 @@ public class BinanceFetcher extends TxNotesFetcher {
      **/
     @Override
     public Collection<TxNote> fetchTxNotesList() throws Exception {
-        /*long time = 1662455785000L;
-        long[] times = new long[]{time, time + 1000, time + 2000, time + 3000, time + 4000};
-        if (!txNotesDeleted.contains(time)) {
-            txNotes.put(times[0], new TxNote("BTCBUSD",
-                    "BUY",
-                    times[0],
-                    10,
-                    10,
-                    10
-            ));
-            txNotes.put(times[1], new TxNote("BTCBUSD",
-                    "SELL",
-                    times[1],
-                    10,
-                    2,
-                    11,
-                    22,
-                    times[1]
-            ));
-        }*/
         return super.fetchTxNotesList();
     }
 

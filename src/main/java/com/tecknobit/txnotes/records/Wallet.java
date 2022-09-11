@@ -1,12 +1,17 @@
 package com.tecknobit.txnotes.records;
 
-import com.tecknobit.apimanager.Tools.Trading.CryptocurrencyTool;
+import com.tecknobit.traderbot.Routines.Interfaces.RecordDetails;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
+import static com.tecknobit.apimanager.Tools.Trading.CryptocurrencyTool.getCryptocurrencyName;
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.roundValue;
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.textualizeAssetPercent;
+import static com.tecknobit.traderbot.Records.Portfolio.Transaction.getDateTimestamp;
+import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.BUY;
+import static com.tecknobit.txnotes.records.TxNote.getDetailsColoured;
+import static java.lang.System.out;
 
 /**
  * The {@code Wallet} class defines characteristics of a crypto wallet.<br>
@@ -16,9 +21,7 @@ import static com.tecknobit.apimanager.Tools.Trading.TradingTools.textualizeAsse
  * @apiNote origin library at: <a href="https://github.com/N7ghtm4r3/TraderBot">https://github.com/N7ghtm4r3/TraderBot</a>
  **/
 
-public class Wallet {
-
-    // TODO: 06/09/2022 IMPLEMENT CORRECTLY CRYPTOCURRENCYTOOL
+public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
 
     /**
      * {@code index} is instance that memorizes index value
@@ -26,9 +29,9 @@ public class Wallet {
     private final String index;
 
     /**
-     * {@code assetName} is instance that memorizes asset name
+     * {@code name} is instance that memorizes name of the asset of this wallet es. Bitcoin
      **/
-    private final String assetName;
+    private final String name;
 
     /**
      * {@code lastPrice} is instance that memorizes last price value
@@ -49,14 +52,14 @@ public class Wallet {
      * Constructor to init {@link Wallet}
      *
      * @param index:     index value es. BTC
-     * @param assetName: asset name
+     * @param name:      name of the asset of this wallet es. Bitcoin
      * @param lastPrice: last price value
      * @param trend:     trend value
-     * @param txNotes:   list of {@link TxNote}
+     * @param txNotes:   {@link #txNotes}
      **/
-    public Wallet(String index, String assetName, double lastPrice, double trend, ArrayList<TxNote> txNotes) {
+    public Wallet(String index, String name, double lastPrice, double trend, ArrayList<TxNote> txNotes) {
         this.index = index;
-        this.assetName = assetName;
+        this.name = name;
         this.lastPrice = lastPrice;
         this.trend = trend;
         this.txNotes = txNotes;
@@ -66,13 +69,13 @@ public class Wallet {
      * Constructor to init {@link Wallet}
      *
      * @param index:     index value es. BTC
-     * @param assetName: asset name
+     * @param name:      name of the asset of this wallet es. Bitcoin
      * @param lastPrice: last price value
      * @param trend:     trend value
      **/
-    public Wallet(String index, String assetName, double lastPrice, double trend) {
+    public Wallet(String index, String name, double lastPrice, double trend) {
         this.index = index;
-        this.assetName = assetName;
+        this.name = name;
         this.lastPrice = lastPrice;
         this.trend = trend;
         txNotes = new ArrayList<>();
@@ -84,18 +87,14 @@ public class Wallet {
      * @param index:     index value es. BTC
      * @param lastPrice: last price value
      * @param trend:     trend value
-     * @param txNotes:   list of {@link TxNote}
-     * @implSpec this constructor inserts automatically the asset name
+     * @param txNotes:   {@link #txNotes}
+     * @implSpec this constructor inserts automatically the name of the asset of this wallet es. Bitcoin
      **/
     public Wallet(String index, double lastPrice, double trend, ArrayList<TxNote> txNotes) {
         String assetName;
         this.index = index;
-        try {
-            assetName = new CryptocurrencyTool().getCryptocurrencyName(index);
-        } catch (IOException e) {
-            assetName = null;
-        }
-        this.assetName = assetName;
+        assetName = getCryptocurrencyName(index);
+        this.name = assetName;
         this.lastPrice = lastPrice;
         this.trend = trend;
         this.txNotes = txNotes;
@@ -107,17 +106,13 @@ public class Wallet {
      * @param index:     index value es. BTC
      * @param lastPrice: last price value
      * @param trend:     trend value
-     * @implSpec this constructor inserts automatically the asset name
+     * @implSpec this constructor inserts automatically the name of the asset of this wallet es. Bitcoin
      **/
     public Wallet(String index, double lastPrice, double trend) {
         String assetName;
         this.index = index;
-        try {
-            assetName = new CryptocurrencyTool().getCryptocurrencyName(index);
-        } catch (IOException e) {
-            assetName = null;
-        }
-        this.assetName = assetName;
+        assetName = getCryptocurrencyName(index);
+        this.name = assetName;
         this.lastPrice = lastPrice;
         this.trend = trend;
         txNotes = new ArrayList<>();
@@ -127,8 +122,8 @@ public class Wallet {
         return index;
     }
 
-    public String getAssetName() {
-        return assetName;
+    public String getName() {
+        return name;
     }
 
     public double getLastPrice() {
@@ -190,24 +185,6 @@ public class Wallet {
         return textualizeAssetPercent(trend, decimals);
     }
 
-    public ArrayList<TxNote> getTxNotes() {
-        return txNotes;
-    }
-
-    public void setTxNotes(ArrayList<TxNote> txNotes) {
-        this.txNotes = txNotes;
-    }
-
-    /**
-     * This method is used get number of transactions notes in this wallet <br>
-     * Any params required
-     *
-     * @return number of transactions notes as int
-     **/
-    public int txNotesNumber() {
-        return txNotes.size();
-    }
-
     /**
      * This method is used get balance of the wallet <br>
      * Any params required
@@ -218,7 +195,7 @@ public class Wallet {
     public double getBalance() {
         double balance = 0;
         for (TxNote txNote : txNotes)
-            if (txNote.getStatus().equals("BUY"))
+            if (txNote.getStatus().equals(BUY))
                 balance += txNote.getValue();
         return balance;
     }
@@ -245,7 +222,7 @@ public class Wallet {
     public double getInitialBalance() {
         double initialBalance = 0;
         for (TxNote txNote : txNotes)
-            if (txNote.getStatus().equals("BUY"))
+            if (txNote.getStatus().equals(BUY))
                 initialBalance += txNote.getInitialBalance();
         return initialBalance;
     }
@@ -272,7 +249,7 @@ public class Wallet {
     public double getTotalQuantity() {
         double totalQuantity = 0;
         for (TxNote txNote : txNotes)
-            if (txNote.getStatus().equals("BUY"))
+            if (txNote.getStatus().equals(BUY))
                 totalQuantity += txNote.getQuantity();
         return totalQuantity;
     }
@@ -337,11 +314,168 @@ public class Wallet {
         return textualizeAssetPercent(getTotalIncomePercent(), decimals);
     }
 
+    public ArrayList<TxNote> getTxNotes() {
+        return txNotes;
+    }
+
+    public void setTxNotes(ArrayList<TxNote> txNotes) {
+        this.txNotes = txNotes;
+    }
+
+    public void addTxNote(TxNote txNote) {
+        txNotes.add(txNote);
+    }
+
+    /**
+     * This method is used get number of transactions notes in this wallet <br>
+     * Any params required
+     *
+     * @return number of transactions notes as int
+     **/
+    public int txNotesNumber() {
+        return txNotes.size();
+    }
+
+    /**
+     * This method is used to fetch a transaction note from {@link #txNotes}
+     *
+     * @param checkDate: timestamp of the date to fetch from {@link #txNotes}
+     * @return transaction note as {@link TxNote} custom object
+     * @implNote this method search for both status of a transactions, so BUY and SELL
+     **/
+    @Override
+    public TxNote fetchTxNote(long checkDate) {
+        for (TxNote txNote : txNotes)
+            if (txNote.getBuyDateTimestamp() == checkDate)
+                return txNote;
+        return null;
+    }
+
+    /**
+     * This method is used to fetch a transaction note from {@link #txNotes}
+     *
+     * @param checkDate: check date to fetch from {@link #txNotes} as {@link String}
+     * @return transaction note as {@link TxNote} custom object
+     * @implNote this method search for both status of a transactions, so BUY and SELL
+     **/
+    @Override
+    public TxNote fetchTxNote(String checkDate) {
+        return fetchTxNote(getDateTimestamp(checkDate));
+    }
+
+    /**
+     * This method is used to fetch a transaction note from {@link #txNotes}
+     *
+     * @param checkDate: check date to fetch from {@link #txNotes} as {@link Date}
+     * @return transaction note as {@link TxNote} custom object
+     * @implNote this method search for both status of a transactions, so BUY and SELL
+     **/
+    @Override
+    public TxNote fetchTxNote(Date checkDate) {
+        return fetchTxNote(checkDate.getTime());
+    }
+
+    /**
+     * This method is used to fetch a transaction note from {@link #txNotes}
+     *
+     * @param checkDate: timestamp of the date to fetch from {@link #txNotes}
+     * @return transaction note as {@link TxNote} custom object
+     * @implNote this method search only for SELL status of a transactions
+     **/
+    @Override
+    public TxNote fetchTxNoteSold(long checkDate) {
+        for (TxNote txNote : txNotes)
+            if (txNote.getSellDateTimestamp() == checkDate)
+                return txNote;
+        return null;
+    }
+
+    /**
+     * This method is used to fetch a transaction note from {@link #txNotes}
+     *
+     * @param checkDate: check date to fetch from {@link #txNotes} as {@link String}
+     * @return transaction note as {@link TxNote} custom object
+     * @implNote this method search only for SELL status of a transactions
+     **/
+    @Override
+    public TxNote fetchTxNoteSold(String checkDate) {
+        return fetchTxNoteSold(getDateTimestamp(checkDate));
+    }
+
+    /**
+     * This method is used to fetch a transaction note from a {@link #txNotes}
+     *
+     * @param checkDate: check date to fetch from list as {@link Date}
+     * @return transaction note as {@link TxNote} custom object
+     * @implNote this method search only for SELL status of a transactions
+     **/
+    @Override
+    public TxNote fetchTxNoteSold(Date checkDate) {
+        return fetchTxNoteSold(checkDate.getTime());
+    }
+
+    /**
+     * This method is used to delete a transaction note from {@link #txNotes}
+     *
+     * @param removeDate: timestamp of the date to delete from {@link #txNotes}
+     * @return result of deletion as boolean
+     * @apiNote this method search only for the buy date of a transaction
+     **/
+    @Override
+    public boolean deleteTxNote(long removeDate) {
+        for (TxNote txNote : txNotes)
+            if (txNote.getBuyDateTimestamp() == removeDate)
+                return true;
+        return false;
+    }
+
+    /**
+     * This method is used to delete a transaction note from {@link #txNotes}
+     *
+     * @param removeDate: check date to delete from {@link #txNotes} as {@link String}
+     * @return result of deletion as boolean
+     * @apiNote this method search only for the buy date of a transaction
+     **/
+    @Override
+    public boolean deleteTxNote(String removeDate) {
+        return deleteTxNote(getDateTimestamp(removeDate));
+    }
+
+    /**
+     * This method is used to delete a transaction note from {@link #txNotes}
+     *
+     * @param removeDate: check date to delete from {@link #txNotes} as {@link Date}
+     * @return result of deletion as boolean
+     * @apiNote this method search only for the buy date of a transaction
+     **/
+    @Override
+    public boolean deleteTxNote(Date removeDate) {
+        return deleteTxNote(removeDate.getTime());
+    }
+
+    /**
+     * This method is used to print details of {@link TxNote} object <br>
+     * Any params required
+     **/
+    @Override
+    public void printDetails() {
+        out.println("## [" + index + "]\n" +
+                "## Name: " + name + "\n" +
+                "## Last price: " + lastPrice + "\n" +
+                getDetailsColoured("Trend", getTrendText()) +
+                "## Balance: " + getBalance() + "\n" +
+                "## Total quantity: " + getTotalQuantity() + "\n" +
+                getDetailsColoured("Total income", getTotalIncomePercentText()) +
+                "## Transaction notes size: " + txNotes.size() + "\n" +
+                "######################"
+        );
+    }
+
     @Override
     public String toString() {
         return "Wallet{" +
                 "index='" + index + '\'' +
-                ", assetName='" + assetName + '\'' +
+                ", name='" + name + '\'' +
                 ", lastPrice=" + lastPrice +
                 ", trend=" + trend +
                 ", txNotes=" + txNotes +
