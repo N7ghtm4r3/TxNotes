@@ -14,11 +14,12 @@ import static com.tecknobit.traderbot.Records.Account.BotDetails.TRADER_TYPE_MAN
 import static java.lang.System.currentTimeMillis;
 
 /**
- * The {@code AndroidBinanceFetcher} class is useful to fetch all transactions from your Binance's account. <br>
+ * The {@code AndroidBinanceFetcher} class is useful to fetch all transactions from your Binance's account autonomously <br>
  * Extends its methods from {@link TxNotesAndroidFetcher} <br>
  * This class give basic methods for an android fetcher's workflow <br>
  *
  * @author Tecknobit N7ghtm4r3
+ * @apiNote this fetcher type will perform autonomously all the routines
  * @implNote This is an Android's interface you can <br>
  * find the apk source at <a href="https://play.google.com/store/apps/details?id=com.tecknobit.txnotes">TxNotes</a>
  * @implSpec this class work with {@link BinanceTraderBot}

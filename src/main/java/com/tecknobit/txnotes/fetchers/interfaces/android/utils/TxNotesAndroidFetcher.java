@@ -17,10 +17,11 @@ import static com.tecknobit.traderbot.Records.Account.BotDetails.STOPPED_TRADER_
 import static com.tecknobit.traderbot.Routines.Android.AndroidWorkflow.Credentials;
 
 /**
- * The {@code TxNotesAndroidFetcher} class is useful to fetch all transactions from exchange's account <br>
+ * The {@code TxNotesAndroidFetcher} class is useful to fetch all transactions from exchange's account autonomously <br>
  * This class give basic methods for an android fetcher's workflow
  *
  * @author Tecknobit N7ghtm4r3
+ * @apiNote this fetcher type will perform autonomously all the routines
  * @implNote This is an Android's interface you can
  * find the apk source at <a href="https://play.google.com/store/apps/details?id=com.tecknobit.txnotes">TxNotes</a>
  * @see AndroidBinanceFetcher

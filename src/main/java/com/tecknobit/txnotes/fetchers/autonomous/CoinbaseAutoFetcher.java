@@ -1,7 +1,6 @@
-package com.tecknobit.txnotes.fetchers.autonomous.interfaces;
+package com.tecknobit.txnotes.fetchers.autonomous;
 
 import com.tecknobit.traderbot.Traders.Interfaces.Native.CoinbaseTraderBot;
-import com.tecknobit.txnotes.fetchers.autonomous.TxNotesAutoFetcher;
 
 import java.util.ArrayList;
 

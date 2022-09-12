@@ -1,7 +1,6 @@
-package com.tecknobit.txnotes.fetchers.autonomous.interfaces;
+package com.tecknobit.txnotes.fetchers.autonomous;
 
 import com.tecknobit.traderbot.Traders.Interfaces.Native.BinanceTraderBot;
-import com.tecknobit.txnotes.fetchers.autonomous.TxNotesAutoFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.BinanceFetcher;
 
 import java.util.ArrayList;
