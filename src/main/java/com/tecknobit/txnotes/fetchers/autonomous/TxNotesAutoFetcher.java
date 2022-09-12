@@ -114,16 +114,6 @@ public abstract class TxNotesAutoFetcher extends TxNotesFetcher implements Routi
     }
 
     /**
-     * This method is used to set time to refresh data
-     *
-     * @param refreshTime: is time in seconds to set to refresh data
-     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
-     **/
-    public void setRefreshTime(int refreshTime) {
-        fetcherPlatform.setRefreshTime(refreshTime);
-    }
-
-    /**
      * This method is used to get if fetcher is in running mode
      *
      * @return flag that indicates if the fetcher is running

@@ -5,9 +5,13 @@ import com.tecknobit.traderbot.Routines.Interfaces.RecordDetails;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.*;
+import static com.tecknobit.traderbot.Records.Portfolio.Cryptocurrency.*;
+import static com.tecknobit.traderbot.Records.Portfolio.Token.QUANTITY_KEY;
+import static com.tecknobit.traderbot.Routines.Android.ServerRequest.BALANCE_KEY;
 import static com.tecknobit.traderbot.Routines.Interfaces.RoutineMessages.*;
 import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.BUY;
 import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.SELL;
@@ -26,6 +30,21 @@ import static java.util.concurrent.TimeUnit.DAYS;
  **/
 
 public class TxNote extends Transaction implements RecordDetails {
+
+    /**
+     * {@code SELL_DATE_KEY} key
+     **/
+    public static final String SELL_DATE_KEY = "sell_date";
+
+    /**
+     * {@code SELL_PRICE_KEY} key
+     **/
+    public static final String SELL_PRICE_KEY = "sell_price";
+
+    /**
+     * {@code TRADE_DAYS_KEY} key
+     **/
+    public static final String TRADE_DAYS_KEY = "trade_days";
 
     /**
      * {@code startPrice} is instance that memorizes start price value
@@ -464,6 +483,36 @@ public class TxNote extends Transaction implements RecordDetails {
      **/
     @Override
     public void printDetails() {
+        out.println(this);
+    }
+
+    /**
+     * This method is used to get {@link TxNote} details <br>
+     * Any params required
+     *
+     * @return {@link TxNote} details as {@link HashMap} of {@link Object}
+     **/
+    public HashMap<String, Object> getTxNote() {
+        HashMap<String, Object> txNote = new HashMap<>();
+        txNote.put(SYMBOL_KEY, symbol);
+        txNote.put(SIDE_KEY, status);
+        txNote.put(BALANCE_KEY, value);
+        txNote.put(TRANSACTION_DATE_KEY, getBuyDateTimestamp());
+        txNote.put(FIRST_PRICE_KEY, startPrice);
+        txNote.put(VALUE_KEY, getValue(2));
+        txNote.put(QUANTITY_KEY, getQuantity());
+        txNote.put(INCOME_PERCENT_KEY, getIncomePercentText(2));
+        txNote.put(BASE_ASSET_KEY, baseAsset);
+        txNote.put(QUOTE_ASSET_KEY, quoteAsset);
+        if (sellPrice != 0) {
+            txNote.put(SELL_DATE_KEY, sellDateTimestamp);
+            txNote.put(SELL_PRICE_KEY, sellPrice);
+        }
+        return txNote;
+    }
+
+    @Override
+    public String toString() {
         String txNote = "## [" + symbol + "]\n" +
                 getDetailsColoured("Status", status) +
                 "## Initial balance: " + value + "\n" +
@@ -479,28 +528,7 @@ public class TxNote extends Transaction implements RecordDetails {
                     "## Sell price: " + sellPrice + "\n" +
                     "## Days traded: " + getTradeDays() + "\n";
         }
-        out.println(txNote + "######################");
-    }
-
-    @Override
-    public String toString() {
-        String txNote = "initialBalance=" + value +
-                ", symbol='" + symbol + '\'' +
-                ", status='" + status + '\'' +
-                ", buyDate='" + transactionDate + '\'' +
-                ", startPrice=" + startPrice +
-                ", quantity=" + quantity +
-                ", incomePercent=" + getIncomePercent() +
-                ", value=" + getValue() +
-                ", baseAsset=" + baseAsset +
-                ", quoteAsset=" + quoteAsset +
-                '}';
-        if (sellPrice != 0) {
-            return "TxNote{sellPrice=" + sellPrice +
-                    ", sellDate=" + sellDate +
-                    ", tradeDays=" + getTradeDays() + ", " + txNote;
-        } else
-            return "TxNote{" + txNote;
+        return txNote + "######################";
     }
 
     /**

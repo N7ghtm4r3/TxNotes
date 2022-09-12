@@ -1,14 +1,20 @@
 package com.tecknobit.txnotes.records;
 
 import com.tecknobit.traderbot.Routines.Interfaces.RecordDetails;
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import static com.tecknobit.apimanager.Tools.Trading.CryptocurrencyTool.getCryptocurrencyName;
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.roundValue;
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.textualizeAssetPercent;
+import static com.tecknobit.traderbot.Records.Portfolio.Cryptocurrency.*;
+import static com.tecknobit.traderbot.Records.Portfolio.Token.QUANTITY_KEY;
+import static com.tecknobit.traderbot.Records.Portfolio.Transaction.TRANSACTION_KEY;
 import static com.tecknobit.traderbot.Records.Portfolio.Transaction.getDateTimestamp;
+import static com.tecknobit.traderbot.Routines.Android.ServerRequest.BALANCE_KEY;
 import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.BUY;
 import static com.tecknobit.txnotes.records.TxNote.getDetailsColoured;
 import static java.lang.System.out;
@@ -251,7 +257,7 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
         for (TxNote txNote : txNotes)
             if (txNote.getStatus().equals(BUY))
                 totalQuantity += txNote.getQuantity();
-        return totalQuantity;
+        return roundValue(totalQuantity, 8);
     }
 
     /**
@@ -459,7 +465,34 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
      **/
     @Override
     public void printDetails() {
-        out.println("## [" + index + "]\n" +
+        out.println(this);
+    }
+
+    /**
+     * This method is used to get {@link Wallet} details <br>
+     * Any params required
+     *
+     * @return {@link Wallet} details as {@link HashMap} of {@link Object}
+     **/
+    // TODO: 12/09/2022 CHECK WAY TO NON PASS TREND AND LAST PRICE VALUE
+    public HashMap<String, Object> getWallet() {
+        HashMap<String, Object> wallet = new HashMap<>();
+        wallet.put(SYMBOL_KEY, index);
+        wallet.put(ASSET_NAME_KEY, name);
+        wallet.put(LAST_PRICE_KEY, lastPrice);
+        wallet.put(BALANCE_KEY, getBalance(2));
+        wallet.put(INCOME_PERCENT_KEY, getTotalIncomePercentText(2));
+        wallet.put(QUANTITY_KEY, getTotalQuantity());
+        JSONArray notes = new JSONArray();
+        for (TxNote txNote : txNotes)
+            notes.put(txNote.getTxNote());
+        wallet.put(TRANSACTION_KEY, notes);
+        return wallet;
+    }
+
+    @Override
+    public String toString() {
+        return "## [" + index + "]\n" +
                 "## Name: " + name + "\n" +
                 "## Last price: " + lastPrice + "\n" +
                 getDetailsColoured("Trend", getTrendText()) +
@@ -467,19 +500,7 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
                 "## Total quantity: " + getTotalQuantity() + "\n" +
                 getDetailsColoured("Total income", getTotalIncomePercentText()) +
                 "## Transaction notes size: " + txNotes.size() + "\n" +
-                "######################"
-        );
-    }
-
-    @Override
-    public String toString() {
-        return "Wallet{" +
-                "index='" + index + '\'' +
-                ", name='" + name + '\'' +
-                ", lastPrice=" + lastPrice +
-                ", trend=" + trend +
-                ", txNotes=" + txNotes +
-                '}';
+                "######################";
     }
 
 }
