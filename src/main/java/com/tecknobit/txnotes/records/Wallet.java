@@ -30,6 +30,11 @@ import static java.lang.System.out;
 public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
 
     /**
+     * {@code WALLET_KEY} is instance that memorizes activation wallet key
+     **/
+    public static final String WALLET_KEY = "wallet";
+
+    /**
      * {@code index} is instance that memorizes index value
      **/
     private final String index;
@@ -474,14 +479,14 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
      *
      * @return {@link Wallet} details as {@link HashMap} of {@link Object}
      **/
-    // TODO: 12/09/2022 CHECK WAY TO NON PASS TREND AND LAST PRICE VALUE
     public HashMap<String, Object> getWallet() {
         HashMap<String, Object> wallet = new HashMap<>();
         wallet.put(SYMBOL_KEY, index);
         wallet.put(ASSET_NAME_KEY, name);
         wallet.put(LAST_PRICE_KEY, lastPrice);
-        wallet.put(BALANCE_KEY, getBalance(2));
-        wallet.put(INCOME_PERCENT_KEY, getTotalIncomePercentText(2));
+        wallet.put(BALANCE_KEY, getBalance());
+        wallet.put(PRICE_CHANGE_PERCENT_KEY, trend);
+        wallet.put(INCOME_PERCENT_KEY, getTotalIncomePercentText());
         wallet.put(QUANTITY_KEY, getTotalQuantity());
         JSONArray notes = new JSONArray();
         for (TxNote txNote : txNotes)

@@ -37,7 +37,7 @@ public class TxNotesWorkflow extends AndroidWorkflow {
      * @param wallet: value of wallet to insert
      **/
     public void insertWallet(JSONObject wallet) {
-        // TODO: 12/09/2022 TO WORK ON 
+        // TODO: 12/09/2022 TO WORK ON AND SET WALLET KEY FOR PAYLOAD
         /*try {
             serverRequest.sendTokenRequest(wallet, INSERT_WALLET_LIST_OPE);
             response = serverRequest.readResponse();

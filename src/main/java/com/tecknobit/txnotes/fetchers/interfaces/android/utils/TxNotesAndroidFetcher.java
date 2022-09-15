@@ -27,7 +27,7 @@ import static com.tecknobit.traderbot.Routines.Android.AndroidWorkflow.Credentia
  * @see AndroidBinanceFetcher
  * @see AndroidCoinbaseFetcher
  **/
-
+// TODO: 13/09/2022 AUTORELOADING TRANSACTIONS LIST IN LOGIN OPE
 public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCoreRoutines {
 
     /**
@@ -77,7 +77,6 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
                 printRoutineMessages);
         runningFetcher = false;
         fetcherPlatform.setRefreshTime(refreshTime);
-        workflowHandler();
     }
 
     /**
@@ -93,6 +92,14 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
             credentials.sendRegistrationRequest();
         else
             credentials.sendLoginRequest(baseCurrency, fetcherPlatform.getQuoteCurrencies());
+    }
+
+    /**
+     * This method is used to start {@link TxNotesWorkflow} <br>
+     * Any params required
+     **/
+    public void startWorkflow() {
+        workflowHandler();
     }
 
     /**
@@ -121,6 +128,7 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
                     while (true) {
                         while (runningFetcher) {
                             loadAllData();
+                            currentWallet.clear();
                             for (Wallet wallet : wallets.values())
                                 currentWallet.put(wallet.getIndex(), wallet.getWallet());
                             if (pastWallet == null || !pastWallet.equals(currentWallet)) {
