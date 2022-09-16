@@ -476,22 +476,32 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
     /**
      * This method is used to get {@link Wallet} details <br>
      * Any params required
-     *
-     * @return {@link Wallet} details as {@link HashMap} of {@link Object}
      **/
     public HashMap<String, Object> getWallet() {
         HashMap<String, Object> wallet = new HashMap<>();
         wallet.put(SYMBOL_KEY, index);
         wallet.put(ASSET_NAME_KEY, name);
         wallet.put(LAST_PRICE_KEY, lastPrice);
-        wallet.put(BALANCE_KEY, getBalance());
         wallet.put(PRICE_CHANGE_PERCENT_KEY, trend);
-        wallet.put(INCOME_PERCENT_KEY, getTotalIncomePercentText());
-        wallet.put(QUANTITY_KEY, getTotalQuantity());
         JSONArray notes = new JSONArray();
         for (TxNote txNote : txNotes)
             notes.put(txNote.getTxNote());
-        wallet.put(TRANSACTION_KEY, notes);
+        wallet.put(TRANSACTION_KEY, notes); // TODO: 16/09/2022 USE RIGHT CONSTANT 
+        return wallet;
+    }
+
+    /**
+     * This method is used to get all {@link Wallet} details
+     *
+     * @param decimals: number of decimal digits es. 2
+     * @return {@link Wallet} details as {@link HashMap} of {@link Object}
+     * @throws IllegalArgumentException if decimalDigits is negative
+     **/
+    public HashMap<String, Object> getWallet(int decimals) {
+        HashMap<String, Object> wallet = new HashMap<>(getWallet());
+        wallet.put(BALANCE_KEY, getBalance(decimals));
+        wallet.put(INCOME_PERCENT_KEY, getTotalIncomePercentText(decimals));
+        wallet.put(QUANTITY_KEY, getTotalQuantity(decimals));
         return wallet;
     }
 

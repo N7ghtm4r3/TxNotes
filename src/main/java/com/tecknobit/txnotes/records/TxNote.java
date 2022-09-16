@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.*;
 import static com.tecknobit.traderbot.Records.Portfolio.Cryptocurrency.*;
 import static com.tecknobit.traderbot.Records.Portfolio.Token.QUANTITY_KEY;
-import static com.tecknobit.traderbot.Routines.Android.ServerRequest.BALANCE_KEY;
 import static com.tecknobit.traderbot.Routines.Interfaces.RoutineMessages.*;
 import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.BUY;
 import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.SELL;
@@ -30,6 +29,21 @@ import static java.util.concurrent.TimeUnit.DAYS;
  **/
 
 public class TxNote extends Transaction implements RecordDetails {
+
+    /**
+     * {@code STATUS_KEY} key
+     **/
+    public static final String STATUS_KEY = "status";
+
+    /**
+     * {@code BUY_DATE_KEY} key
+     **/
+    public static final String BUY_DATE_KEY = "buy_date";
+
+    /**
+     * {@code INITIAL_BALANCE_KEY} key
+     **/
+    public static final String INITIAL_BALANCE_KEY = "initial_balance";
 
     /**
      * {@code SELL_DATE_KEY} key
@@ -489,25 +503,41 @@ public class TxNote extends Transaction implements RecordDetails {
     /**
      * This method is used to get {@link TxNote} details <br>
      * Any params required
-     *
      * @return {@link TxNote} details as {@link HashMap} of {@link Object}
      **/
     public HashMap<String, Object> getTxNote() {
         HashMap<String, Object> txNote = new HashMap<>();
         txNote.put(SYMBOL_KEY, symbol);
-        txNote.put(SIDE_KEY, status);
-        txNote.put(BALANCE_KEY, value);
-        txNote.put(TRANSACTION_DATE_KEY, getBuyDateTimestamp());
+        txNote.put(STATUS_KEY, status);
+        txNote.put(INITIAL_BALANCE_KEY, value);
+        txNote.put(BUY_DATE_KEY, getBuyDateTimestamp());
         txNote.put(FIRST_PRICE_KEY, startPrice);
-        txNote.put(VALUE_KEY, getValue(2));
-        txNote.put(QUANTITY_KEY, getQuantity());
-        txNote.put(INCOME_PERCENT_KEY, getIncomePercentText(2));
         txNote.put(BASE_ASSET_KEY, baseAsset);
         txNote.put(QUOTE_ASSET_KEY, quoteAsset);
+        txNote.put(QUANTITY_KEY, quantity);
+        txNote.put(LAST_PRICE_KEY, lastPrice);
         if (sellPrice != 0) {
             txNote.put(SELL_DATE_KEY, sellDateTimestamp);
             txNote.put(SELL_PRICE_KEY, sellPrice);
         }
+        return txNote;
+    }
+
+    /**
+     * This method is used to get all {@link TxNote} details
+     *
+     * @param decimals: number of decimal digits es. 2
+     * @return {@link TxNote} details as {@link HashMap} of {@link Object}
+     * @throws IllegalArgumentException if decimalDigits is negative
+     **/
+    public HashMap<String, Object> getTxNote(int decimals) {
+        HashMap<String, Object> txNote = new HashMap<>(getTxNote());
+        txNote.put(VALUE_KEY, getValue(decimals));
+        txNote.put(QUANTITY_KEY, getQuantity(decimals));
+        txNote.put(INCOME_PERCENT_KEY, getIncomePercentText(decimals));
+        txNote.put(FIRST_PRICE_KEY, getStartPrice(decimals));
+        txNote.put(LAST_PRICE_KEY, getLastPrice(decimals));
+        txNote.put(INITIAL_BALANCE_KEY, getInitialBalance(decimals));
         return txNote;
     }
 

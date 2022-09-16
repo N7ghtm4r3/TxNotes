@@ -107,6 +107,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                     txNote.setSellDate(timestamp);
                     txNote.setSellPrice(value / quantity);
                 }
+                // TODO: 16/09/2022 CHECK KEY TO INSERT TIMESTAMP OR TIMESTAMP + INDEX
                 txNotes.put(timestamp, txNote);
             }
         }
@@ -124,33 +125,11 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                     "BUSD"
             ));
             txNotes.put(times[1], new TxNote("BTCBUSD",
-                    SELL,
-                    times[1],
-                    23,
-                    100,
-                    11,
-                    22,
-                    times[1],
-                    "BTC",
-                    "BUSD"
-            ));
-            txNotes.put(times[2], new TxNote("BTCBUSD",
                     BUY,
-                    times[2],
-                    23,
-                    100,
-                    0.23,
-                    "BTC",
-                    "BUSD"
-            ));
-            txNotes.put(times[3], new TxNote("BTCBUSD",
-                    SELL,
-                    times[3],
+                    times[1],
                     23,
                     100,
                     11,
-                    22,
-                    times[3],
                     "BTC",
                     "BUSD"
             ));
