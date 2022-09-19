@@ -8,10 +8,8 @@ import com.tecknobit.txnotes.records.TxNote;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static com.tecknobit.traderbot.Records.Account.BotDetails.COINBASE_TRADER_PLATFORM;
-import static com.tecknobit.traderbot.Records.Account.BotDetails.TRADER_TYPE_MANUAL;
+import static com.tecknobit.traderbot.Records.Account.BotDetails.*;
 import static com.tecknobit.traderbot.Routines.Android.AndroidWorkflow.Credentials;
-import static java.lang.System.currentTimeMillis;
 
 /**
  * The {@code AndroidCoinbaseFetcher} class is useful to fetch all transactions from your Coinbase's account autonomously<br>
@@ -32,7 +30,13 @@ public class AndroidCoinbaseFetcher extends TxNotesAndroidFetcher {
     /**
      * {@code featherDetails} is instance that memorize fetcher details as {@link BotDetails} object
      **/
-    private static final BotDetails featherDetails = new BotDetails(TRADER_TYPE_MANUAL, COINBASE_TRADER_PLATFORM, currentTimeMillis());
+    private static final BotDetails featherDetails;
+
+    static {
+        long timestamp = System.currentTimeMillis();
+        featherDetails = new BotDetails(timestamp, BOT_TYPE_MANUAL, RUNNING_BOT_STATUS, COINBASE_PLATFORM,
+                10000, timestamp);
+    }
 
     /**
      * Constructor to init {@link AndroidCoinbaseFetcher}

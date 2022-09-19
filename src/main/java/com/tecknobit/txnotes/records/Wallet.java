@@ -12,7 +12,7 @@ import static com.tecknobit.apimanager.Tools.Trading.TradingTools.roundValue;
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.textualizeAssetPercent;
 import static com.tecknobit.traderbot.Records.Portfolio.Cryptocurrency.*;
 import static com.tecknobit.traderbot.Records.Portfolio.Token.QUANTITY_KEY;
-import static com.tecknobit.traderbot.Records.Portfolio.Transaction.TRANSACTION_KEY;
+import static com.tecknobit.traderbot.Records.Portfolio.Transaction.TRANSACTIONS_KEY;
 import static com.tecknobit.traderbot.Records.Portfolio.Transaction.getDateTimestamp;
 import static com.tecknobit.traderbot.Routines.Android.ServerRequest.BALANCE_KEY;
 import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.BUY;
@@ -30,9 +30,14 @@ import static java.lang.System.out;
 public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
 
     /**
-     * {@code WALLET_KEY} is instance that memorizes activation wallet key
+     * {@code WALLET_KEY} is instance that memorizes wallet key
      **/
     public static final String WALLET_KEY = "wallet";
+
+    /**
+     * {@code DELETED_TX_NOTES_KEY} is instance that memorizes deleted tx notes key
+     **/
+    public static final String DELETED_TX_NOTES_KEY = "deleted_tx_notes";
 
     /**
      * {@code index} is instance that memorizes index value
@@ -486,7 +491,7 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
         JSONArray notes = new JSONArray();
         for (TxNote txNote : txNotes)
             notes.put(txNote.getTxNote());
-        wallet.put(TRANSACTION_KEY, notes); // TODO: 16/09/2022 USE RIGHT CONSTANT 
+        wallet.put(TRANSACTIONS_KEY, notes);
         return wallet;
     }
 

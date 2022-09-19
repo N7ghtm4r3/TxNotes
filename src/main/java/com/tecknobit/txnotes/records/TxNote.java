@@ -461,8 +461,7 @@ public class TxNote extends Transaction implements RecordDetails {
         double lastValue = lastPrice;
         if (sellPrice != 0)
             lastValue = sellPrice;
-        // TODO: 11/09/2022 TO REMOVE +100 USING ANOTHER METHOD BY LIBRARY
-        return computeAssetPercent(startPrice, lastValue, 8) + 100;
+        return computeProportion(startPrice, lastValue, 8);
     }
 
     /**

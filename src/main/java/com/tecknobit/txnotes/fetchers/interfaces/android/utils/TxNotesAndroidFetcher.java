@@ -12,9 +12,11 @@ import com.tecknobit.txnotes.records.TxNote;
 import com.tecknobit.txnotes.records.Wallet;
 import org.json.JSONObject;
 
-import static com.tecknobit.traderbot.Records.Account.BotDetails.RUNNING_TRADER_STATUS;
-import static com.tecknobit.traderbot.Records.Account.BotDetails.STOPPED_TRADER_STATUS;
+import static com.tecknobit.traderbot.Records.Account.BotDetails.RUNNING_BOT_STATUS;
+import static com.tecknobit.traderbot.Records.Account.BotDetails.STOPPED_BOT_STATUS;
 import static com.tecknobit.traderbot.Routines.Android.AndroidWorkflow.Credentials;
+import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow.TX_HOST;
+import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow.TX_PORT;
 
 /**
  * The {@code TxNotesAndroidFetcher} class is useful to fetch all transactions from exchange's account autonomously <br>
@@ -70,10 +72,9 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
         super(fetcherPlatform);
         this.baseCurrency = baseCurrency;
         this.botDetails = botDetails;
-        // TODO: 12/09/2022 INSERT HOST AND PORT AND INIT CREDENTIALS
-        //initCredentials(credentials);
+        initCredentials(credentials);
         txNotesWorkflow = new TxNotesWorkflow(new ServerRequest(credentials.getIvSpec(), credentials.getSecretKey(),
-                credentials.getAuthToken(), credentials.getToken(), "194.50.168.19", 7898), fetcherPlatform, credentials,
+                credentials.getAuthToken(), credentials.getToken(), TX_HOST, TX_PORT), fetcherPlatform, credentials,
                 printRoutineMessages);
         runningFetcher = false;
         fetcherPlatform.setRefreshTime(refreshTime);
@@ -87,11 +88,12 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
     @Override
     public void initCredentials(Credentials credentials) throws Exception {
         checkCredentialsValidity(credentials);
-        credentials.setTraderDetails(botDetails);
+        credentials.setBotDetails(botDetails);
         if (credentials.getToken() == null)
-            credentials.sendRegistrationRequest();
-        else
-            credentials.sendLoginRequest(baseCurrency, fetcherPlatform.getQuoteCurrencies());
+            credentials.sendRegistrationRequest(TX_HOST, TX_PORT);
+        else {
+            credentials.sendLoginRequest(baseCurrency, TX_HOST, TX_PORT, fetcherPlatform.getQuoteCurrencies());
+        }
     }
 
     /**
@@ -108,7 +110,7 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
      **/
     @Override
     public void workflowHandler() {
-        enableTrader();
+        enableBot();
         refreshWalletList();
         txNotesWorkflow.startWorkflow();
     }
@@ -164,7 +166,7 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
      * @return flag that indicates if the bot is running
      **/
     @Override
-    public boolean isTraderRunning() {
+    public boolean isBotRunning() {
         return runningFetcher;
     }
 
@@ -175,9 +177,9 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
      * {@link #botDetails} status instance to STOPPED_TRADER_STATUS
      **/
     @Override
-    public void disableTrader() {
+    public void disableBot() {
         runningFetcher = false;
-        botDetails.setTraderStatus(STOPPED_TRADER_STATUS);
+        botDetails.setBotStatus(STOPPED_BOT_STATUS);
     }
 
     /**
@@ -187,9 +189,9 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
      * {@link #botDetails} status instance to STOPPED_TRADER_STATUS
      **/
     @Override
-    public void enableTrader() {
+    public void enableBot() {
         runningFetcher = true;
-        botDetails.setTraderStatus(RUNNING_TRADER_STATUS);
+        botDetails.setBotStatus(RUNNING_BOT_STATUS);
     }
 
     /**

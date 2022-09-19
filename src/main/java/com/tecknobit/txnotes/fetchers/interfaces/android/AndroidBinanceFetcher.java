@@ -9,9 +9,7 @@ import com.tecknobit.txnotes.records.TxNote;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static com.tecknobit.traderbot.Records.Account.BotDetails.BINANCE_TRADER_PLATFORM;
-import static com.tecknobit.traderbot.Records.Account.BotDetails.TRADER_TYPE_MANUAL;
-import static java.lang.System.currentTimeMillis;
+import static com.tecknobit.traderbot.Records.Account.BotDetails.*;
 
 /**
  * The {@code AndroidBinanceFetcher} class is useful to fetch all transactions from your Binance's account autonomously <br>
@@ -37,7 +35,13 @@ public class AndroidBinanceFetcher extends TxNotesAndroidFetcher {
     /**
      * {@code featherDetails} is instance that memorize fetcher details as {@link BotDetails} object
      **/
-    private static final BotDetails featherDetails = new BotDetails(TRADER_TYPE_MANUAL, BINANCE_TRADER_PLATFORM, currentTimeMillis());
+    private static final BotDetails featherDetails;
+
+    static {
+        long timestamp = System.currentTimeMillis();
+        featherDetails = new BotDetails(timestamp, BOT_TYPE_MANUAL, RUNNING_BOT_STATUS, BINANCE_PLATFORM,
+                10000, timestamp);
+    }
 
     /**
      * Constructor to init {@link AndroidBinanceFetcher}

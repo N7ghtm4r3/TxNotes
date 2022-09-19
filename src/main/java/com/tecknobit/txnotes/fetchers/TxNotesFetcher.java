@@ -2,6 +2,7 @@ package com.tecknobit.txnotes.fetchers;
 
 import com.tecknobit.traderbot.Records.Portfolio.Transaction;
 import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
+import com.tecknobit.traderbot.Traders.Interfaces.Native.CoinbaseTraderBot;
 import com.tecknobit.txnotes.fetchers.autonomous.TxNotesAutoFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.BinanceFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.CoinbaseFetcher;
@@ -13,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tecknobit.apimanager.Tools.Trading.CryptocurrencyTool.getCryptocurrencySymbol;
 import static com.tecknobit.traderbot.Records.Portfolio.Transaction.getDateTimestamp;
+import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.USDT_CURRENCY;
+import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.USD_CURRENCY;
 
 /**
  * The {@code TxNotesFetcher} class is useful to fetch all transactions from exchange's account <br>
@@ -82,6 +85,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      * Any params required
      **/
     public void loadAllData() throws Exception {
+        fetcherPlatform.refreshLatestPrice();
         fetchTxNotesList();
         loadWalletList();
     }
@@ -95,13 +99,16 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      **/
     public Collection<TxNote> fetchTxNotesList() throws Exception {
         for (Transaction transaction : fetcherPlatform.getAllTransactions(false)) {
+            String symbol = transaction.getSymbol();
             String status = transaction.getSide();
             long timestamp = transaction.getTransactionTimestamp();
-            double lastPrice = 2; // TODO: 06/09/2022 FETCH FROM LIBRARY METHOD
+            // TODO: 19/09/2022 CHECK 
+            System.out.println(symbol);
+            double lastPrice = 1;//fetcherPlatform.getLastPrice(symbol);
             if (!txNotesDeleted.contains(timestamp) && txNotes.get(timestamp) == null) {
                 double value = transaction.getValue();
                 double quantity = transaction.getQuantity();
-                TxNote txNote = new TxNote(transaction.getSymbol(), status, timestamp, value, quantity, lastPrice,
+                TxNote txNote = new TxNote(symbol, status, timestamp, value, quantity, lastPrice,
                         transaction.getBaseAsset(), transaction.getQuoteAsset());
                 if (status.equals(SELL)) {
                     txNote.setSellDate(timestamp);
@@ -115,25 +122,25 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
         long time = 1662455785000L;
         long[] times = new long[]{time, time + 1000, time + 2000, time + 3000, time + 4000};
         if (!txNotesDeleted.contains(time)) {
-            txNotes.put(times[0], new TxNote("BTCBUSD",
+            txNotes.put(times[0], new TxNote("BTCUSDT",
                     BUY,
                     times[0],
                     23,
                     100,
                     0.23,
                     "BTC",
-                    "BUSD"
+                    "USDT"
             ));
-            txNotes.put(times[1], new TxNote("BTCBUSD",
+            txNotes.put(times[1], new TxNote("BTCUSDT",
                     BUY,
                     times[1],
                     23,
                     100,
                     11,
                     "BTC",
-                    "BUSD"
+                    "USDT"
             ));
-            txNotes.put(times[4], new TxNote("ETHBUSD",
+            txNotes.put(times[4], new TxNote("ETHUSDT",
                     SELL,
                     times[4],
                     23,
@@ -142,7 +149,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                     22,
                     times[4],
                     "ETH",
-                    "BUSD"
+                    "USDT"
             ));
         }
         mergeTxNotesList();
@@ -173,13 +180,21 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                         double soldInitialBalance = soldTx.getInitialBalance();
                         double soldQuantity = soldTx.getQuantity();
                         double boughtQuantity = boughtTx.getQuantity();
+                        // TODO: 19/09/2022 TO CHECK
+                        double lastPrice;
+                        try {
+                            lastPrice = fetcherPlatform.getLastPrice(boughtSymbol);
+                            System.out.println(lastPrice);
+                        } catch (Exception e) {
+                            lastPrice = 1;
+                        }
                         if (soldQuantity < boughtQuantity) {
                             txNotes.replace(boughtTimestamp, new TxNote(boughtSymbol,
                                     BUY,
                                     boughtTimestamp,
                                     boughtTx.getInitialBalance() - soldInitialBalance,
                                     boughtQuantity - soldQuantity,
-                                    2, // TODO: 06/09/2022 FETCH FROM LIBRARY METHOD,
+                                    lastPrice,
                                     baseAsset,
                                     quoteAsset
                             ));
@@ -193,7 +208,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                                     boughtTimestamp,
                                     soldInitialBalance,
                                     soldQuantity,
-                                    2, // TODO: 06/09/2022 FETCH FROM LIBRARY METHOD
+                                    lastPrice,
                                     soldTx.getSellPrice(),
                                     sellDateTimestamp,
                                     baseAsset,
@@ -354,6 +369,10 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      * Any params required
      **/
     public void loadWalletList() {
+        // TODO: 19/09/2022 TO CHECK
+        String baseCurrency = USDT_CURRENCY;
+        if (fetcherPlatform instanceof CoinbaseTraderBot)
+            baseCurrency = USD_CURRENCY;
         HashMap<String, ArrayList<TxNote>> notes = new HashMap<>();
         for (TxNote txNote : txNotes.values()) {
             String index = txNote.getBaseAsset();
@@ -367,7 +386,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
         }
         for (String index : notes.keySet()) {
             wallets.put(index, new Wallet(index,
-                    1, // TODO: 11/09/2022 FETCH VALUE
+                    fetcherPlatform.getLastPrice(index + baseCurrency),
                     1, // TODO: 11/09/2022 FETCH VALUE
                     notes.get(index)
             ));
