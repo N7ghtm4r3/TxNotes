@@ -51,7 +51,6 @@ public class TxNotesWorkflow extends AndroidWorkflow {
      * @param wallet: value of wallet to insert
      **/
     public void insertWallet(JSONObject wallet) {
-        // TODO: 12/09/2022 TO WORK ON AND SET WALLET KEY FOR PAYLOAD
         try {
             serverRequest.sendTokenRequest(new JSONObject().put(TRANSACTIONS_KEY, wallet), INSERT_WALLET_LIST_OPE);
             response = serverRequest.readResponse();
@@ -67,11 +66,14 @@ public class TxNotesWorkflow extends AndroidWorkflow {
                     default:
                         printOperationFailed(INSERT_WALLET_LIST_OPE);
                 }
-            }else
+            } else
                 printOperationFailed(INSERT_WALLET_LIST_OPE);
         } catch (Exception e) {
             printOperationFailed(INSERT_WALLET_LIST_OPE);
         }
     }
+
+    // TODO: 20/09/2022 DELETE TX NOTE REQUEST
+    // TODO: 20/09/2022  RE ALLOW ALL TXNOTES
 
 }

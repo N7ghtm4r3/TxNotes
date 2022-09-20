@@ -41,12 +41,14 @@ public abstract class TxNotesAutoFetcher extends TxNotesFetcher implements Routi
      * Constructor to init {@link TxNotesAutoFetcher}
      *
      * @param autoFetcherPlatform:  fetcher platform to fetch transactions
+     * @param baseCurrency          : base currency to get all amount value of traders routine es. EUR
      * @param autoLoadWalletList:   flag that allows the library to autoload {@link #wallets} list
      * @param printRoutineMessages: flag to insert to print or not routine messages
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public TxNotesAutoFetcher(TraderCoreRoutines autoFetcherPlatform, boolean autoLoadWalletList, boolean printRoutineMessages) {
-        super(autoFetcherPlatform);
+    public TxNotesAutoFetcher(TraderCoreRoutines autoFetcherPlatform, String baseCurrency, boolean autoLoadWalletList,
+                              boolean printRoutineMessages) {
+        super(autoFetcherPlatform, baseCurrency);
         this.printRoutineMessages = printRoutineMessages;
         this.autoLoadWalletList = autoLoadWalletList;
         runningFetcher = false;
@@ -174,6 +176,19 @@ public abstract class TxNotesAutoFetcher extends TxNotesFetcher implements Routi
      **/
     public void disableAutoLoadWalletList() {
         autoLoadWalletList = false;
+    }
+
+    /**
+     * This method is used to get base currency for change amount value <br>
+     * Any params required
+     *
+     * @implNote if {@link #runningFetcher} is false will return null
+     **/
+    @Override
+    public String getBaseCurrency() {
+        if (runningFetcher)
+            return baseCurrency;
+        return null;
     }
 
 }

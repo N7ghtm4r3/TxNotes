@@ -569,74 +569,83 @@ public class TxNote extends Transaction implements RecordDetails {
         /**
          * This method is used to fetch a transaction note from list of {@link TxNote}
          *
+         * @param asset:     identifier of the asset with transaction has been made
          * @param checkDate: timestamp of the date to fetch from list of {@link TxNote}
          * @return transaction note as {@link TxNote} custom object
          **/
-        TxNote fetchTxNote(long checkDate);
+        TxNote fetchTxNote(String asset, long checkDate);
 
         /**
          * This method is used to fetch a transaction note from list of {@link TxNote}
          *
+         * @param asset:     identifier of the asset with transaction has been made
          * @param checkDate: check date to fetch from list of {@link TxNote} as {@link String}
          * @return transaction note as {@link TxNote} custom object
          **/
-        TxNote fetchTxNote(String checkDate);
+        TxNote fetchTxNote(String asset, String checkDate);
 
         /**
          * This method is used to fetch a transaction note from list of {@link TxNote}
          *
+         * @param asset:     identifier of the asset with transaction has been made
          * @param checkDate: check date to fetch from list of {@link TxNote} as {@link Date}
          * @return transaction note as {@link TxNote} custom object
          **/
-        TxNote fetchTxNote(Date checkDate);
+        TxNote fetchTxNote(String asset, Date checkDate);
 
         /**
          * This method is used to fetch a transaction note from list of {@link TxNote}
          *
+         * @param asset:     identifier of the asset with transaction has been made
          * @param checkDate: timestamp of the date to fetch from list of {@link TxNote}
          * @return transaction note as {@link TxNote} custom object
          **/
-        TxNote fetchTxNoteSold(long checkDate);
+        TxNote fetchTxNoteSold(String asset, long checkDate);
 
         /**
          * This method is used to fetch a transaction note from list of {@link TxNote}
          *
+         * @param asset:     identifier of the asset with transaction has been made
          * @param checkDate: check date to fetch from list of {@link TxNote} as {@link String}
          * @return transaction note as {@link TxNote} custom object
          **/
-        TxNote fetchTxNoteSold(String checkDate);
+        TxNote fetchTxNoteSold(String asset, String checkDate);
 
         /**
          * This method is used to fetch a transaction note from a list of {@link TxNote}
          *
+         * @param asset:     identifier of the asset with transaction has been made
          * @param checkDate: check date to fetch from list as {@link Date}
          * @return transaction note as {@link TxNote} custom object
          **/
-        TxNote fetchTxNoteSold(Date checkDate);
+        TxNote fetchTxNoteSold(String asset, Date checkDate);
 
         /**
          * This method is used to delete a transaction note from list of {@link TxNote}
          *
+         * @param asset:      identifier of the asset with transaction has been made
          * @param removeDate: timestamp of the date to delete from list of {@link TxNote}
          * @return result of deletion as boolean
          **/
-        boolean deleteTxNote(long removeDate);
+        boolean deleteTxNote(String asset, long removeDate);
 
         /**
          * This method is used to delete a transaction note from list of {@link TxNote}
          *
+         * @param asset:      identifier of the asset with transaction has been made
          * @param removeDate: check date to delete from list of {@link TxNote} as {@link String}
          * @return result of deletion as boolean
          **/
-        boolean deleteTxNote(String removeDate);
+        boolean deleteTxNote(String asset, String removeDate);
 
         /**
          * This method is used to delete a transaction note from list of {@link TxNote}
          *
+         * @param asset:      identifier of the asset with transaction has been made
          * @param removeDate: check date to delete from list of {@link TxNote} as {@link Date}
          * @return result of deletion as boolean
          **/
-        boolean deleteTxNote(Date removeDate);
+        boolean deleteTxNote(String asset, Date removeDate);
 
     }
 

@@ -2,7 +2,6 @@ package com.tecknobit.txnotes.fetchers;
 
 import com.tecknobit.traderbot.Records.Portfolio.Transaction;
 import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
-import com.tecknobit.traderbot.Traders.Interfaces.Native.CoinbaseTraderBot;
 import com.tecknobit.txnotes.fetchers.autonomous.TxNotesAutoFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.BinanceFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.CoinbaseFetcher;
@@ -14,8 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tecknobit.apimanager.Tools.Trading.CryptocurrencyTool.getCryptocurrencySymbol;
 import static com.tecknobit.traderbot.Records.Portfolio.Transaction.getDateTimestamp;
-import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.USDT_CURRENCY;
-import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.USD_CURRENCY;
 
 /**
  * The {@code TxNotesFetcher} class is useful to fetch all transactions from exchange's account <br>
@@ -46,7 +43,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
     /**
      * {@code txNotes} is instance of list with {@link TxNote} as value and {@link Long} representing the buy date as key
      **/
-    protected final ConcurrentHashMap<Long, TxNote> txNotes = new ConcurrentHashMap<>();
+    protected final ConcurrentHashMap<String, TxNote> txNotes = new ConcurrentHashMap<>();
 
     /**
      * {@code txNotesDeleted} is instance of {@link Long} helpful to indicate which {@link TxNote} must not available to be reinserted
@@ -54,7 +51,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      * @implNote when you delete a {@link TxNote} that will be deleted only in {@code TxNotes} infrastructure not on
      * exchange's account
      **/
-    protected final ArrayList<Long> txNotesDeleted = new ArrayList<>();
+    protected final ArrayList<String> txNotesDeleted = new ArrayList<>();
 
     /**
      * {@code txNotes} is instance of list with {@link Wallet} as value and {@link String} representing index of wallet
@@ -70,13 +67,19 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
     protected final ArrayList<String> walletsDeleted = new ArrayList<>();
 
     /**
+     * {@code baseCurrency} is instance that memorizes base currency to get all amount value of traders routine es. EUR
+     **/
+    protected String baseCurrency;
+
+    /**
      * Constructor to init {@link TxNotesAutoFetcher}
      *
      * @param fetcherPlatform: fetcher platform to fetch transactions
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public TxNotesFetcher(TraderCoreRoutines fetcherPlatform) {
+    public TxNotesFetcher(TraderCoreRoutines fetcherPlatform, String baseCurrency) {
         this.fetcherPlatform = fetcherPlatform;
+        this.baseCurrency = baseCurrency;
     }
 
     /**
@@ -102,10 +105,9 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
             String symbol = transaction.getSymbol();
             String status = transaction.getSide();
             long timestamp = transaction.getTransactionTimestamp();
-            // TODO: 19/09/2022 CHECK 
-            System.out.println(symbol);
-            double lastPrice = 1;//fetcherPlatform.getLastPrice(symbol);
-            if (!txNotesDeleted.contains(timestamp) && txNotes.get(timestamp) == null) {
+            String txKey = transaction.getBaseAsset() + timestamp;
+            double lastPrice = fetcherPlatform.getLastPrice(symbol);
+            if (!txNotesDeleted.contains(txKey) && txNotes.get(txKey) == null) {
                 double value = transaction.getValue();
                 double quantity = transaction.getQuantity();
                 TxNote txNote = new TxNote(symbol, status, timestamp, value, quantity, lastPrice,
@@ -114,15 +116,14 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                     txNote.setSellDate(timestamp);
                     txNote.setSellPrice(value / quantity);
                 }
-                // TODO: 16/09/2022 CHECK KEY TO INSERT TIMESTAMP OR TIMESTAMP + INDEX
-                txNotes.put(timestamp, txNote);
+                txNotes.put(txKey, txNote);
             }
         }
         // TODO: 11/09/2022 REMOVE
         long time = 1662455785000L;
         long[] times = new long[]{time, time + 1000, time + 2000, time + 3000, time + 4000};
-        if (!txNotesDeleted.contains(time)) {
-            txNotes.put(times[0], new TxNote("BTCUSDT",
+        if (!txNotesDeleted.contains("BTC" + time)) {
+            txNotes.put("BTC" + times[0], new TxNote("BTCUSDT",
                     BUY,
                     times[0],
                     23,
@@ -131,7 +132,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                     "BTC",
                     "USDT"
             ));
-            txNotes.put(times[1], new TxNote("BTCUSDT",
+            txNotes.put("BTC" + times[1], new TxNote("BTCUSDT",
                     BUY,
                     times[1],
                     23,
@@ -140,7 +141,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                     "BTC",
                     "USDT"
             ));
-            txNotes.put(times[4], new TxNote("ETHUSDT",
+            txNotes.put("ETH" + times[4], new TxNote("ETHUSDT",
                     SELL,
                     times[4],
                     23,
@@ -177,19 +178,13 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                         String quoteAsset = boughtTx.getQuoteAsset();
                         boolean replaceSoldTx = true;
                         long boughtTimestamp = boughtTx.getBuyDateTimestamp();
+                        String txNoteKey = baseAsset + boughtTimestamp;
                         double soldInitialBalance = soldTx.getInitialBalance();
                         double soldQuantity = soldTx.getQuantity();
                         double boughtQuantity = boughtTx.getQuantity();
-                        // TODO: 19/09/2022 TO CHECK
-                        double lastPrice;
-                        try {
-                            lastPrice = fetcherPlatform.getLastPrice(boughtSymbol);
-                            System.out.println(lastPrice);
-                        } catch (Exception e) {
-                            lastPrice = 1;
-                        }
+                        double lastPrice = fetcherPlatform.getLastPrice(boughtSymbol);
                         if (soldQuantity < boughtQuantity) {
-                            txNotes.replace(boughtTimestamp, new TxNote(boughtSymbol,
+                            txNotes.replace(txNoteKey, new TxNote(boughtSymbol,
                                     BUY,
                                     boughtTimestamp,
                                     boughtTx.getInitialBalance() - soldInitialBalance,
@@ -199,11 +194,11 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                                     quoteAsset
                             ));
                         } else if (soldQuantity == boughtQuantity)
-                            txNotes.remove(boughtTimestamp);
+                            txNotes.remove(txNoteKey);
                         else
                             replaceSoldTx = false;
                         if (replaceSoldTx) {
-                            txNotes.replace(sellDateTimestamp, new TxNote(boughtSymbol,
+                            txNotes.replace(txNoteKey, new TxNote(boughtSymbol,
                                     SELL,
                                     boughtTimestamp,
                                     soldInitialBalance,
@@ -236,50 +231,55 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
     /**
      * This method is used to fetch a transaction note from {@link #txNotes}
      *
+     * @param asset:     identifier of the asset with transaction has been made
      * @param checkDate: timestamp of the date to fetch from {@link #txNotes} list
      * @return transaction note as {@link TxNote} custom object
      * @implNote this method search for both status of a transactions, so BUY and SELL
      **/
     @Override
-    public TxNote fetchTxNote(long checkDate) {
-        return txNotes.get(checkDate);
+    public TxNote fetchTxNote(String asset, long checkDate) {
+        return txNotes.get(asset + checkDate);
     }
 
     /**
      * This method is used to fetch a transaction note from {@link #txNotes}
      *
+     * @param asset:     identifier of the asset with transaction has been made
      * @param checkDate: check date to fetch from {@link #txNotes} list as {@link String}
      * @return transaction note as {@link TxNote} custom object
      * @implNote this method search for both status of a transactions, so BUY and SELL
      **/
     @Override
-    public TxNote fetchTxNote(String checkDate) {
-        return txNotes.get(getDateTimestamp(checkDate));
+    public TxNote fetchTxNote(String asset, String checkDate) {
+        return txNotes.get(asset + getDateTimestamp(checkDate));
     }
 
     /**
      * This method is used to fetch a transaction note from {@link #txNotes}
      *
+     * @param asset:     identifier of the asset with transaction has been made
      * @param checkDate: check date to fetch from {@link #txNotes} list as {@link Date}
      * @return transaction note as {@link TxNote} custom object
      * @implNote this method search for both status of a transactions, so BUY and SELL
      **/
     @Override
-    public TxNote fetchTxNote(Date checkDate) {
-        return fetchTxNote(checkDate.getTime());
+    public TxNote fetchTxNote(String asset, Date checkDate) {
+        return fetchTxNote(asset, checkDate.getTime());
     }
 
     /**
      * This method is used to fetch a transaction note from {@link #txNotes}
      *
+     * @param asset:     identifier of the asset with transaction has been made
      * @param checkDate: timestamp of the date to fetch from {@link #txNotes} list
      * @return transaction note as {@link TxNote} custom object
      * @implNote this method search only for SELL status of a transactions
      **/
     @Override
-    public TxNote fetchTxNoteSold(long checkDate) {
+    public TxNote fetchTxNoteSold(String asset, long checkDate) {
         for (TxNote txNote : txNotes.values())
-            if (txNote.getStatus().equals(SELL) && txNote.getSellDateTimestamp() == checkDate)
+            if (txNote.getStatus().equals(SELL) && txNote.getBaseAsset().equals(asset)
+                    && txNote.getSellDateTimestamp() == checkDate)
                 return txNote;
         return null;
     }
@@ -287,14 +287,16 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
     /**
      * This method is used to fetch a transaction note from {@link #txNotes}
      *
+     * @param asset:     identifier of the asset with transaction has been made
      * @param checkDate: check date to fetch from {@link #txNotes} list as {@link String}
      * @return transaction note as {@link TxNote} custom object
      * @implNote this method search only for SELL status of a transactions
      **/
     @Override
-    public TxNote fetchTxNoteSold(String checkDate) {
+    public TxNote fetchTxNoteSold(String asset, String checkDate) {
         for (TxNote txNote : txNotes.values())
-            if (txNote.getStatus().equals(SELL) && txNote.getSellDate().equals(checkDate))
+            if (txNote.getStatus().equals(SELL) && txNote.getBaseAsset().equals(asset)
+                    && txNote.getSellDate().equals(checkDate))
                 return txNote;
         return null;
     }
@@ -302,18 +304,20 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
     /**
      * This method is used to fetch a transaction note from {@link #txNotes}
      *
+     * @param asset:     identifier of the asset with transaction has been made
      * @param checkDate: check date to fetch from {@link #txNotes} list as {@link Date}
      * @return transaction note as {@link TxNote} custom object
      * @implNote this method search only for SELL status of a transactions
      **/
     @Override
-    public TxNote fetchTxNoteSold(Date checkDate) {
-        return fetchTxNoteSold(checkDate.getTime());
+    public TxNote fetchTxNoteSold(String asset, Date checkDate) {
+        return fetchTxNoteSold(asset, checkDate.getTime());
     }
 
     /**
      * This method is used to delete a transaction note from {@link #txNotes}
      *
+     * @param asset:      identifier of the asset with transaction has been made
      * @param removeDate: timestamp of the date to delete from {@link #txNotes} list
      * @return result of deletion as boolean
      * @implNote if a {@link TxNote} corresponds with removeDate param its timestamp will be inserted
@@ -321,16 +325,17 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      * @apiNote this method search only for the buy date of a transaction
      **/
     @Override
-    public boolean deleteTxNote(long removeDate) {
-        boolean delete = txNotes.remove(removeDate) != null;
+    public boolean deleteTxNote(String asset, long removeDate) {
+        boolean delete = txNotes.remove(asset + removeDate) != null;
         if (delete)
-            txNotesDeleted.add(removeDate);
+            txNotesDeleted.add(asset + removeDate);
         return delete;
     }
 
     /**
      * This method is used to delete a transaction note from {@link #txNotes}
      *
+     * @param asset:      identifier of the asset with transaction has been made
      * @param removeDate: check date to delete from {@link #txNotes} list as {@link String}
      * @return result of deletion as boolean
      * @implNote if a {@link TxNote} corresponds with removeDate param its timestamp will be inserted
@@ -338,13 +343,14 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      * @apiNote this method search only for the buy date of a transaction
      **/
     @Override
-    public boolean deleteTxNote(String removeDate) {
-        return deleteTxNote(getDateTimestamp(removeDate));
+    public boolean deleteTxNote(String asset, String removeDate) {
+        return deleteTxNote(asset, getDateTimestamp(removeDate));
     }
 
     /**
      * This method is used to delete a transaction note from {@link #txNotes}
      *
+     * @param asset:      identifier of the asset with transaction has been made
      * @param removeDate: check date to delete from {@link #txNotes} list as {@link Date}
      * @return result of deletion as boolean
      * @implNote if a {@link TxNote} corresponds with removeDate param its timestamp will be inserted
@@ -352,8 +358,8 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      * @apiNote this method search only for the buy date of a transaction
      **/
     @Override
-    public boolean deleteTxNote(Date removeDate) {
-        return deleteTxNote(removeDate.getTime());
+    public boolean deleteTxNote(String asset, Date removeDate) {
+        return deleteTxNote(asset, removeDate.getTime());
     }
 
     /**
@@ -369,10 +375,6 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      * Any params required
      **/
     public void loadWalletList() {
-        // TODO: 19/09/2022 TO CHECK
-        String baseCurrency = USDT_CURRENCY;
-        if (fetcherPlatform instanceof CoinbaseTraderBot)
-            baseCurrency = USD_CURRENCY;
         HashMap<String, ArrayList<TxNote>> notes = new HashMap<>();
         for (TxNote txNote : txNotes.values()) {
             String index = txNote.getBaseAsset();
@@ -387,7 +389,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
         for (String index : notes.keySet()) {
             wallets.put(index, new Wallet(index,
                     fetcherPlatform.getLastPrice(index + baseCurrency),
-                    1, // TODO: 11/09/2022 FETCH VALUE
+                    1, // TODO: 11/09/2022 FETCH FROM METHOD
                     notes.get(index)
             ));
         }
@@ -485,6 +487,25 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      **/
     public void printErrorMessage() {
         fetcherPlatform.printErrorMessage();
+    }
+
+    /**
+     * This method is used to get base currency for change amount value <br>
+     * Any params required
+     **/
+    public String getBaseCurrency() {
+        return baseCurrency;
+    }
+
+    /**
+     * This method is used to set base currency for change amount value
+     *
+     * @param baseCurrency: base currency to get all amount value of traders routine es. EUR
+     **/
+    public void setBaseCurrency(String baseCurrency) {
+        if (baseCurrency == null || baseCurrency.isEmpty())
+            throw new IllegalArgumentException("Currency cannot be null or empty, but for example EUR or USDT");
+        this.baseCurrency = baseCurrency;
     }
 
 }

@@ -27,7 +27,7 @@ import static java.lang.System.out;
  * @apiNote origin library at: <a href="https://github.com/N7ghtm4r3/TraderBot">https://github.com/N7ghtm4r3/TraderBot</a>
  **/
 
-public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
+public class Wallet implements RecordDetails {
 
     /**
      * {@code WALLET_KEY} is instance that memorizes wallet key
@@ -359,7 +359,6 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
      * @return transaction note as {@link TxNote} custom object
      * @implNote this method search for both status of a transactions, so BUY and SELL
      **/
-    @Override
     public TxNote fetchTxNote(long checkDate) {
         for (TxNote txNote : txNotes)
             if (txNote.getBuyDateTimestamp() == checkDate)
@@ -374,7 +373,6 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
      * @return transaction note as {@link TxNote} custom object
      * @implNote this method search for both status of a transactions, so BUY and SELL
      **/
-    @Override
     public TxNote fetchTxNote(String checkDate) {
         return fetchTxNote(getDateTimestamp(checkDate));
     }
@@ -386,7 +384,6 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
      * @return transaction note as {@link TxNote} custom object
      * @implNote this method search for both status of a transactions, so BUY and SELL
      **/
-    @Override
     public TxNote fetchTxNote(Date checkDate) {
         return fetchTxNote(checkDate.getTime());
     }
@@ -398,7 +395,6 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
      * @return transaction note as {@link TxNote} custom object
      * @implNote this method search only for SELL status of a transactions
      **/
-    @Override
     public TxNote fetchTxNoteSold(long checkDate) {
         for (TxNote txNote : txNotes)
             if (txNote.getSellDateTimestamp() == checkDate)
@@ -413,7 +409,6 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
      * @return transaction note as {@link TxNote} custom object
      * @implNote this method search only for SELL status of a transactions
      **/
-    @Override
     public TxNote fetchTxNoteSold(String checkDate) {
         return fetchTxNoteSold(getDateTimestamp(checkDate));
     }
@@ -425,7 +420,6 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
      * @return transaction note as {@link TxNote} custom object
      * @implNote this method search only for SELL status of a transactions
      **/
-    @Override
     public TxNote fetchTxNoteSold(Date checkDate) {
         return fetchTxNoteSold(checkDate.getTime());
     }
@@ -437,7 +431,6 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
      * @return result of deletion as boolean
      * @apiNote this method search only for the buy date of a transaction
      **/
-    @Override
     public boolean deleteTxNote(long removeDate) {
         for (TxNote txNote : txNotes)
             if (txNote.getBuyDateTimestamp() == removeDate)
@@ -452,7 +445,6 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
      * @return result of deletion as boolean
      * @apiNote this method search only for the buy date of a transaction
      **/
-    @Override
     public boolean deleteTxNote(String removeDate) {
         return deleteTxNote(getDateTimestamp(removeDate));
     }
@@ -464,7 +456,6 @@ public class Wallet implements TxNote.TxNotesListManager, RecordDetails {
      * @return result of deletion as boolean
      * @apiNote this method search only for the buy date of a transaction
      **/
-    @Override
     public boolean deleteTxNote(Date removeDate) {
         return deleteTxNote(removeDate.getTime());
     }

@@ -27,12 +27,13 @@ public class BinanceFetcher extends TxNotesFetcher {
     /**
      * Constructor to init {@link BinanceFetcher}
      *
-     * @param apiKey:    your Binance's api key
-     * @param secretKey: your Binance's secret key
+     * @param apiKey:      your Binance's api key
+     * @param secretKey:   your Binance's secret key
+     * @param baseCurrency : base currency to get all amount value of traders routine es. EUR
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceFetcher(String apiKey, String secretKey) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey));
+    public BinanceFetcher(String apiKey, String secretKey, String baseCurrency) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey), baseCurrency);
     }
 
     /**
@@ -41,10 +42,11 @@ public class BinanceFetcher extends TxNotesFetcher {
      * @param apiKey:       your Binance's api key
      * @param secretKey:    your Binance's secret key
      * @param baseEndpoint: base endpoint choose from {@link #BINANCE_BASE_ENDPOINTS} array
+     * @param baseCurrency  : base currency to get all amount value of traders routine es. EUR
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceFetcher(String apiKey, String secretKey, String baseEndpoint) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint));
+    public BinanceFetcher(String apiKey, String secretKey, String baseEndpoint, String baseCurrency) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint), baseCurrency);
     }
 
     /**
@@ -53,11 +55,12 @@ public class BinanceFetcher extends TxNotesFetcher {
      * @param apiKey:      your Binance's api key
      * @param secretKey:   your Binance's secret key
      * @param refreshTime: is time in seconds to set for refresh the latest prices
+     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceFetcher(String apiKey, String secretKey, int refreshTime) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, refreshTime));
+    public BinanceFetcher(String apiKey, String secretKey, int refreshTime, String baseCurrency) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, refreshTime), baseCurrency);
     }
 
     /**
@@ -65,13 +68,15 @@ public class BinanceFetcher extends TxNotesFetcher {
      *
      * @param apiKey:       your Binance's api key
      * @param secretKey:    your Binance's secret key
-     * @param refreshTime:  is time in seconds to set for refresh the latest prices
      * @param baseEndpoint: base endpoint choose from {@link #BINANCE_BASE_ENDPOINTS} array
+     * @param refreshTime:  is time in seconds to set for refresh the latest prices
+     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceFetcher(String apiKey, String secretKey, String baseEndpoint, int refreshTime) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, refreshTime));
+    public BinanceFetcher(String apiKey, String secretKey, String baseEndpoint, int refreshTime,
+                          String baseCurrency) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, refreshTime), baseCurrency);
     }
 
     /**
@@ -79,14 +84,15 @@ public class BinanceFetcher extends TxNotesFetcher {
      *
      * @param apiKey:          your Binance's api key
      * @param secretKey:       your Binance's secret key
-     * @param refreshTime:     is time in seconds to set to refresh data
      * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
+     * @param refreshTime:     is time in seconds to set to refresh data
+     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceFetcher(String apiKey, String secretKey, ArrayList<String> quoteCurrencies,
-                          int refreshTime) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies, refreshTime));
+    public BinanceFetcher(String apiKey, String secretKey, ArrayList<String> quoteCurrencies, int refreshTime,
+                          String baseCurrency) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies, refreshTime), baseCurrency);
     }
 
     /**
@@ -94,15 +100,16 @@ public class BinanceFetcher extends TxNotesFetcher {
      *
      * @param apiKey:          your Binance's api key
      * @param secretKey:       your Binance's secret key
-     * @param refreshTime:     is time in seconds to set to refresh data
      * @param baseEndpoint:    base endpoint choose from {@link #BINANCE_BASE_ENDPOINTS} array
      * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
+     * @param refreshTime:     is time in seconds to set to refresh data
+     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
     public BinanceFetcher(String apiKey, String secretKey, String baseEndpoint, ArrayList<String> quoteCurrencies,
-                          int refreshTime) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, quoteCurrencies, refreshTime));
+                          int refreshTime, String baseCurrency) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, quoteCurrencies, refreshTime), baseCurrency);
     }
 
     /**
@@ -111,10 +118,12 @@ public class BinanceFetcher extends TxNotesFetcher {
      * @param apiKey:          your Binance's api key
      * @param secretKey:       your Binance's secret key
      * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
+     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceFetcher(String apiKey, String secretKey, ArrayList<String> quoteCurrencies) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies));
+    public BinanceFetcher(String apiKey, String secretKey, ArrayList<String> quoteCurrencies,
+                          String baseCurrency) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies), baseCurrency);
     }
 
     /**
@@ -124,11 +133,12 @@ public class BinanceFetcher extends TxNotesFetcher {
      * @param secretKey:       your Binance's secret key
      * @param baseEndpoint:    base endpoint choose from {@link #BINANCE_BASE_ENDPOINTS} array
      * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
+     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public BinanceFetcher(String apiKey, String secretKey, String baseEndpoint,
-                          ArrayList<String> quoteCurrencies) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, quoteCurrencies));
+    public BinanceFetcher(String apiKey, String secretKey, String baseEndpoint, ArrayList<String> quoteCurrencies,
+                          String baseCurrency) throws Exception {
+        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, quoteCurrencies), baseCurrency);
     }
 
 

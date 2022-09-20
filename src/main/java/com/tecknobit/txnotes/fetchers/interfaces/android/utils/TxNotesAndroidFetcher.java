@@ -10,13 +10,20 @@ import com.tecknobit.txnotes.fetchers.interfaces.android.AndroidBinanceFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.android.AndroidCoinbaseFetcher;
 import com.tecknobit.txnotes.records.TxNote;
 import com.tecknobit.txnotes.records.Wallet;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import static com.tecknobit.traderbot.Records.Account.BotDetails.RUNNING_BOT_STATUS;
 import static com.tecknobit.traderbot.Records.Account.BotDetails.STOPPED_BOT_STATUS;
+import static com.tecknobit.traderbot.Records.Portfolio.Cryptocurrency.SYMBOL_KEY;
+import static com.tecknobit.traderbot.Records.Portfolio.Token.QUANTITY_KEY;
+import static com.tecknobit.traderbot.Records.Portfolio.Transaction.TRANSACTIONS_KEY;
 import static com.tecknobit.traderbot.Routines.Android.AndroidWorkflow.Credentials;
+import static com.tecknobit.traderbot.Routines.Android.ServerRequest.response;
 import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow.TX_HOST;
 import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow.TX_PORT;
+import static com.tecknobit.txnotes.records.TxNote.*;
+import static com.tecknobit.txnotes.records.Wallet.DELETED_TX_NOTES_KEY;
 
 /**
  * The {@code TxNotesAndroidFetcher} class is useful to fetch all transactions from exchange's account autonomously <br>
@@ -43,11 +50,6 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
     private final BotDetails botDetails;
 
     /**
-     * {@code baseCurrency} is instance that memorizes base currency to get all amount value of traders routine es. EUR
-     **/
-    private String baseCurrency;
-
-    /**
      * {@code runningFetcher} is instance that memorizes flag that indicates if the fetcher is running
      **/
     private boolean runningFetcher;
@@ -69,8 +71,7 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
      **/
     public TxNotesAndroidFetcher(TraderCoreRoutines fetcherPlatform, BotDetails botDetails, Credentials credentials,
                                  boolean printRoutineMessages, String baseCurrency, int refreshTime) throws Exception {
-        super(fetcherPlatform);
-        this.baseCurrency = baseCurrency;
+        super(fetcherPlatform, baseCurrency);
         this.botDetails = botDetails;
         initCredentials(credentials);
         txNotesWorkflow = new TxNotesWorkflow(new ServerRequest(credentials.getIvSpec(), credentials.getSecretKey(),
@@ -93,6 +94,29 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
             credentials.sendRegistrationRequest(TX_HOST, TX_PORT);
         else {
             credentials.sendLoginRequest(baseCurrency, TX_HOST, TX_PORT, fetcherPlatform.getQuoteCurrencies());
+            JSONArray deletedNotes = response.getJSONArray(DELETED_TX_NOTES_KEY);
+            for (int j = 0; j < deletedNotes.length(); j++)
+                txNotesDeleted.add(deletedNotes.getString(j));
+            JSONArray txNotes = response.getJSONArray(TRANSACTIONS_KEY);
+            for (int j = 0; j < txNotes.length(); j++) {
+                JSONObject mTxNote = txNotes.getJSONObject(j);
+                String baseAsset = mTxNote.getString("symbol"); // TODO: 20/09/2022 TO TAKE FROM
+                long buyDate = mTxNote.getLong(BUY_DATE_KEY);
+                TxNote txNote = new TxNote(mTxNote.getString(SYMBOL_KEY),
+                        mTxNote.getString(STATUS_KEY),
+                        buyDate,
+                        mTxNote.getDouble(INITIAL_BALANCE_KEY),
+                        mTxNote.getDouble(QUANTITY_KEY),
+                        1, // TODO: 20/09/2022 TO THINK HOW TO REFRESH
+                        baseAsset,
+                        "PROVA" // TODO: 20/09/2022 TO THINK HO TO IMPLEMENT THIS AND BASE ASSET
+                );
+                if (mTxNote.has(SELL_DATE_KEY)) {
+                    txNote.setSellPrice(mTxNote.getDouble(SELL_PRICE_KEY));
+                    txNote.setSellDate(mTxNote.getLong(SELL_DATE_KEY));
+                }
+                this.txNotes.put(baseAsset + buyDate, txNote);
+            }
         }
     }
 
@@ -131,11 +155,14 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
                         while (runningFetcher) {
                             loadAllData();
                             currentWallet.clear();
-                            for (Wallet wallet : wallets.values())
+                            for (Wallet wallet : wallets.values()) {
+                                if (canPrintRoutineMessages())
+                                    wallet.printDetails();
                                 currentWallet.put(wallet.getIndex(), wallet.getWallet());
-                            if (pastWallet == null || !pastWallet.equals(currentWallet)) {
+                            }
+                            if (pastWallet == null || !pastWallet.toMap().equals(new JSONObject(currentWallet.toString()).toMap())) {
                                 txNotesWorkflow.insertWallet(currentWallet);
-                                pastWallet = currentWallet;
+                                pastWallet = new JSONObject(currentWallet.toString());
                             }
                             sleep(fetcherPlatform.getRefreshTime());
                         }
@@ -156,8 +183,23 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
      **/
     @Override
     public void setRefreshTime(int refreshTime) {
-        super.setRefreshTime(refreshTime);
-        botDetails.setRefreshTime(refreshTime);
+        boolean isInMillis = refreshTime > 3600;
+        if (isInMillis)
+            refreshTime /= 1000;
+        if (fetcherPlatform.getRefreshTime() / 1000 != refreshTime) {
+            if (refreshTime >= 5 && refreshTime <= 3600) {
+                if (txNotesWorkflow != null) {
+                    if (txNotesWorkflow.changeRefreshTime(refreshTime)) {
+                        botDetails.setRefreshTime(refreshTime);
+                        fetcherPlatform.setRefreshTime(refreshTime);
+                    }
+                } else {
+                    botDetails.setRefreshTime(refreshTime);
+                    fetcherPlatform.setRefreshTime(refreshTime * 1000);
+                }
+            } else
+                throw new IllegalArgumentException("Refresh time must be more than 5 (5s) and less than 3600 (1h)");
+        }
     }
 
     /**
@@ -178,8 +220,17 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
      **/
     @Override
     public void disableBot() {
-        runningFetcher = false;
-        botDetails.setBotStatus(STOPPED_BOT_STATUS);
+        if (isBotRunning()) {
+            if (txNotesWorkflow != null) {
+                if (txNotesWorkflow.disableBot()) {
+                    runningFetcher = false;
+                    botDetails.setBotStatus(STOPPED_BOT_STATUS);
+                }
+            } else {
+                runningFetcher = false;
+                botDetails.setBotStatus(STOPPED_BOT_STATUS);
+            }
+        }
     }
 
     /**
@@ -190,8 +241,17 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
      **/
     @Override
     public void enableBot() {
-        runningFetcher = true;
-        botDetails.setBotStatus(RUNNING_BOT_STATUS);
+        if (!isBotRunning()) {
+            if (txNotesWorkflow != null) {
+                if (txNotesWorkflow.enableBot()) {
+                    runningFetcher = true;
+                    botDetails.setBotStatus(RUNNING_BOT_STATUS);
+                }
+            } else {
+                runningFetcher = true;
+                botDetails.setBotStatus(RUNNING_BOT_STATUS);
+            }
+        }
     }
 
     /**
@@ -288,7 +348,13 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
     public void setBaseCurrency(String baseCurrency) {
         if (baseCurrency == null || baseCurrency.isEmpty())
             throw new IllegalArgumentException("Currency cannot be null or empty, but for example EUR or USDT");
-        this.baseCurrency = baseCurrency;
+        if (!this.baseCurrency.equals(baseCurrency)) {
+            if (txNotesWorkflow != null) {
+                if (txNotesWorkflow.changeBaseCurrency(baseCurrency))
+                    this.baseCurrency = baseCurrency;
+            } else
+                this.baseCurrency = baseCurrency;
+        }
     }
 
     /**
