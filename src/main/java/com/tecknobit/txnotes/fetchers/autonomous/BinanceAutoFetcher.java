@@ -3,8 +3,6 @@ package com.tecknobit.txnotes.fetchers.autonomous;
 import com.tecknobit.traderbot.Traders.Interfaces.Native.BinanceTraderBot;
 import com.tecknobit.txnotes.fetchers.interfaces.BinanceFetcher;
 
-import java.util.ArrayList;
-
 /**
  * The {@code BinanceAutoFetcher} class is useful to fetch all transactions from your Binance's account autonomously <br>
  * Extends its methods from {@link TxNotesAutoFetcher}
@@ -83,81 +81,6 @@ public class BinanceAutoFetcher extends TxNotesAutoFetcher {
                               boolean autoLoadWalletList, boolean printRoutineMessages, String baseCurrency) throws Exception {
         super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, refreshTime), baseCurrency, autoLoadWalletList,
                 printRoutineMessages);
-    }
-
-    /**
-     * Constructor to init {@link BinanceFetcher}
-     *
-     * @param apiKey:               your Binance's api key
-     * @param secretKey:            your Binance's secret key
-     * @param quoteCurrencies:      is a list of quote currencies used in past orders es (USD or EUR)
-     * @param refreshTime:          is time in seconds to set to refresh data
-     * @param autoLoadWalletList:   flag that allows the library to autoload {@link #wallets} list
-     * @param printRoutineMessages: flag to insert to print or not routine messages
-     * @param baseCurrency          : base currency to get all amount value of traders routine es. EUR
-     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public BinanceAutoFetcher(String apiKey, String secretKey, ArrayList<String> quoteCurrencies, int refreshTime,
-                              boolean autoLoadWalletList, boolean printRoutineMessages, String baseCurrency) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies, refreshTime), baseCurrency, autoLoadWalletList,
-                printRoutineMessages);
-    }
-
-    /**
-     * Constructor to init {@link BinanceFetcher}
-     *
-     * @param apiKey:               your Binance's api key
-     * @param secretKey:            your Binance's secret key
-     * @param baseEndpoint:         base endpoint choose from {@link BinanceTraderBot#BINANCE_BASE_ENDPOINTS} array
-     * @param quoteCurrencies:      is a list of quote currencies used in past orders es (USD or EUR)
-     * @param refreshTime:          is time in seconds to set to refresh data
-     * @param autoLoadWalletList:   flag that allows the library to autoload {@link #wallets} list
-     * @param printRoutineMessages: flag to insert to print or not routine messages
-     * @param baseCurrency          : base currency to get all amount value of traders routine es. EUR
-     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public BinanceAutoFetcher(String apiKey, String secretKey, String baseEndpoint, ArrayList<String> quoteCurrencies,
-                              int refreshTime, boolean autoLoadWalletList, boolean printRoutineMessages,
-                              String baseCurrency) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, quoteCurrencies, refreshTime), baseCurrency,
-                autoLoadWalletList, printRoutineMessages);
-    }
-
-    /**
-     * Constructor to init {@link BinanceFetcher}
-     *
-     * @param apiKey:               your Binance's api key
-     * @param secretKey:            your Binance's secret key
-     * @param quoteCurrencies:      is a list of quote currencies used in past orders es (USD or EUR)
-     * @param autoLoadWalletList:   flag that allows the library to autoload {@link #wallets} list
-     * @param printRoutineMessages: flag to insert to print or not routine messages
-     * @param baseCurrency          : base currency to get all amount value of traders routine es. EUR
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public BinanceAutoFetcher(String apiKey, String secretKey, ArrayList<String> quoteCurrencies,
-                              boolean autoLoadWalletList, boolean printRoutineMessages, String baseCurrency) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies), baseCurrency, autoLoadWalletList,
-                printRoutineMessages);
-    }
-
-    /**
-     * Constructor to init {@link BinanceFetcher}
-     *
-     * @param apiKey:               your Binance's api key
-     * @param secretKey:            your Binance's secret key
-     * @param baseEndpoint:         base endpoint choose from {@link BinanceTraderBot#BINANCE_BASE_ENDPOINTS} array
-     * @param quoteCurrencies:      is a list of quote currencies used in past orders es (USD or EUR)
-     * @param autoLoadWalletList:   flag that allows the library to autoload {@link #wallets} list
-     * @param printRoutineMessages: flag to insert to print or not routine messages
-     * @param baseCurrency          : base currency to get all amount value of traders routine es. EUR
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public BinanceAutoFetcher(String apiKey, String secretKey, String baseEndpoint, ArrayList<String> quoteCurrencies,
-                              boolean autoLoadWalletList, boolean printRoutineMessages, String baseCurrency) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, quoteCurrencies), baseCurrency,
-                autoLoadWalletList, printRoutineMessages);
     }
 
 }

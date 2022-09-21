@@ -5,7 +5,6 @@ import com.tecknobit.traderbot.Traders.Interfaces.Native.CoinbaseTraderBot;
 import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesAndroidFetcher;
 import com.tecknobit.txnotes.records.TxNote;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import static com.tecknobit.traderbot.Records.Account.BotDetails.*;
@@ -124,90 +123,6 @@ public class AndroidCoinbaseFetcher extends TxNotesAndroidFetcher {
      * @param passphrase:          your Coinbase's api passphrase
      * @param defaultErrorMessage: custom error to show when is not a request error
      * @param timeout:             custom timeout for request
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param credentials          : is object that contains your Tecknobit's account credentials, not your private exchange keys
-     * @param printRoutineMessages : flag to insert to print or not routine messages
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @param refreshTime          : is time in seconds to set to refresh data
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage, int timeout,
-                                  ArrayList<String> quoteCurrencies, Credentials credentials, boolean printRoutineMessages,
-                                  String baseCurrency, int refreshTime) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout, quoteCurrencies),
-                featherDetails, credentials, printRoutineMessages, baseCurrency, refreshTime);
-    }
-
-    /**
-     * Constructor to init {@link AndroidCoinbaseFetcher}
-     *
-     * @param apiKey:              your Coinbase's api key
-     * @param apiSecret:           your Coinbase's secret key
-     * @param passphrase:          your Coinbase's api passphrase
-     * @param timeout:             custom timeout for request
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param credentials          : is object that contains your Tecknobit's account credentials, not your private exchange keys
-     * @param printRoutineMessages : flag to insert to print or not routine messages
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @param refreshTime          : is time in seconds to set to refresh data
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int timeout,
-                                  ArrayList<String> quoteCurrencies, Credentials credentials,
-                                  boolean printRoutineMessages, String baseCurrency, int refreshTime) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, quoteCurrencies), featherDetails, credentials,
-                printRoutineMessages, baseCurrency, refreshTime);
-    }
-
-    /**
-     * Constructor to init {@link AndroidCoinbaseFetcher}
-     *
-     * @param apiKey:              your Coinbase's api key
-     * @param apiSecret:           your Coinbase's secret key
-     * @param passphrase:          your Coinbase's api passphrase
-     * @param defaultErrorMessage: custom error to show when is not a request error
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param credentials          : is object that contains your Tecknobit's account credentials, not your private exchange keys
-     * @param printRoutineMessages : flag to insert to print or not routine messages
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @param refreshTime          : is time in seconds to set to refresh data
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                                  ArrayList<String> quoteCurrencies, Credentials credentials, boolean printRoutineMessages,
-                                  String baseCurrency, int refreshTime) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, quoteCurrencies), featherDetails,
-                credentials, printRoutineMessages, baseCurrency, refreshTime);
-    }
-
-    /**
-     * Constructor to init {@link AndroidCoinbaseFetcher}
-     *
-     * @param apiKey:              your Coinbase's api key
-     * @param apiSecret:           your Coinbase's secret key
-     * @param passphrase:          your Coinbase's api passphrase
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param credentials          : is object that contains your Tecknobit's account credentials, not your private exchange keys
-     * @param printRoutineMessages : flag to insert to print or not routine messages
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @param refreshTime          : is time in seconds to set to refresh data
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, ArrayList<String> quoteCurrencies,
-                                  Credentials credentials, boolean printRoutineMessages, String baseCurrency,
-                                  int refreshTime) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, quoteCurrencies), featherDetails, credentials,
-                printRoutineMessages, baseCurrency, refreshTime);
-    }
-
-    /**
-     * Constructor to init {@link AndroidCoinbaseFetcher}
-     *
-     * @param apiKey:              your Coinbase's api key
-     * @param apiSecret:           your Coinbase's secret key
-     * @param passphrase:          your Coinbase's api passphrase
-     * @param defaultErrorMessage: custom error to show when is not a request error
-     * @param timeout:             custom timeout for request
      * @param refreshTime:         is time in seconds to set to refresh data
      * @param credentials          : is object that contains your Tecknobit's account credentials, not your private exchange keys
      * @param printRoutineMessages : flag to insert to print or not routine messages
@@ -279,94 +194,6 @@ public class AndroidCoinbaseFetcher extends TxNotesAndroidFetcher {
     public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int refreshTime, Credentials credentials,
                                   boolean printRoutineMessages, String baseCurrency) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, refreshTime), featherDetails, credentials,
-                printRoutineMessages, baseCurrency, refreshTime);
-    }
-
-    /**
-     * Constructor to init {@link AndroidCoinbaseFetcher}
-     *
-     * @param apiKey:              your Coinbase's api key
-     * @param apiSecret:           your Coinbase's secret key
-     * @param passphrase:          your Coinbase's api passphrase
-     * @param defaultErrorMessage: custom error to show when is not a request error
-     * @param timeout:             custom timeout for request
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param refreshTime:         is time in seconds to set to refresh data
-     * @param credentials          : is object that contains your Tecknobit's account credentials, not your private exchange keys
-     * @param printRoutineMessages : flag to insert to print or not routine messages
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage, int timeout,
-                                  ArrayList<String> quoteCurrencies, int refreshTime, Credentials credentials,
-                                  boolean printRoutineMessages, String baseCurrency) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout, quoteCurrencies,
-                refreshTime), featherDetails, credentials, printRoutineMessages, baseCurrency, refreshTime);
-    }
-
-    /**
-     * Constructor to init {@link AndroidCoinbaseFetcher}
-     *
-     * @param apiKey:              your Coinbase's api key
-     * @param apiSecret:           your Coinbase's secret key
-     * @param passphrase:          your Coinbase's api passphrase
-     * @param timeout:             custom timeout for request
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param refreshTime:         is time in seconds to set to refresh data
-     * @param credentials          : is object that contains your Tecknobit's account credentials, not your private exchange keys
-     * @param printRoutineMessages : flag to insert to print or not routine messages
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int timeout,
-                                  ArrayList<String> quoteCurrencies, int refreshTime, Credentials credentials,
-                                  boolean printRoutineMessages, String baseCurrency) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, quoteCurrencies, refreshTime), featherDetails,
-                credentials, printRoutineMessages, baseCurrency, refreshTime);
-    }
-
-    /**
-     * Constructor to init {@link AndroidCoinbaseFetcher}
-     *
-     * @param apiKey:              your Coinbase's api key
-     * @param apiSecret:           your Coinbase's secret key
-     * @param passphrase:          your Coinbase's api passphrase
-     * @param defaultErrorMessage: custom error to show when is not a request error
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param refreshTime:         is time in seconds to set to refresh data
-     * @param credentials          : is object that contains your Tecknobit's account credentials, not your private exchange keys
-     * @param printRoutineMessages : flag to insert to print or not routine messages
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                                  ArrayList<String> quoteCurrencies, int refreshTime, Credentials credentials,
-                                  boolean printRoutineMessages, String baseCurrency) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, quoteCurrencies, refreshTime),
-                featherDetails, credentials, printRoutineMessages, baseCurrency, refreshTime);
-    }
-
-    /**
-     * Constructor to init {@link AndroidCoinbaseFetcher}
-     *
-     * @param apiKey:              your Coinbase's api key
-     * @param apiSecret:           your Coinbase's secret key
-     * @param passphrase:          your Coinbase's api passphrase
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param refreshTime:         is time in seconds to set to refresh data
-     * @param credentials          : is object that contains your Tecknobit's account credentials, not your private exchange keys
-     * @param printRoutineMessages : flag to insert to print or not routine messages
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, ArrayList<String> quoteCurrencies,
-                                  int refreshTime, Credentials credentials, boolean printRoutineMessages,
-                                  String baseCurrency) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, quoteCurrencies, refreshTime), featherDetails, credentials,
                 printRoutineMessages, baseCurrency, refreshTime);
     }
 

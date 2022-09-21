@@ -4,7 +4,6 @@ import com.tecknobit.traderbot.Traders.Interfaces.Native.CoinbaseTraderBot;
 import com.tecknobit.txnotes.fetchers.TxNotesFetcher;
 import com.tecknobit.txnotes.records.TxNote;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -86,71 +85,6 @@ public class CoinbaseFetcher extends TxNotesFetcher {
      * @param passphrase:          your Coinbase's api passphrase
      * @param defaultErrorMessage: custom error to show when is not a request error
      * @param timeout:             custom timeout for request
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage, int timeout,
-                           ArrayList<String> quoteCurrencies, String baseCurrency) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout, quoteCurrencies),
-                baseCurrency);
-    }
-
-    /**
-     * Constructor to init {@link CoinbaseFetcher}
-     *
-     * @param apiKey:          your Coinbase's api key
-     * @param apiSecret:       your Coinbase's secret key
-     * @param passphrase:      your Coinbase's api passphrase
-     * @param timeout:         custom timeout for request
-     * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int timeout,
-                           ArrayList<String> quoteCurrencies, String baseCurrency) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, quoteCurrencies), baseCurrency);
-    }
-
-    /**
-     * Constructor to init {@link CoinbaseFetcher}
-     *
-     * @param apiKey:              your Coinbase's api key
-     * @param apiSecret:           your Coinbase's secret key
-     * @param passphrase:          your Coinbase's api passphrase
-     * @param defaultErrorMessage: custom error to show when is not a request error
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                           ArrayList<String> quoteCurrencies, String baseCurrency) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, quoteCurrencies), baseCurrency);
-    }
-
-    /**
-     * Constructor to init {@link CoinbaseFetcher}
-     *
-     * @param apiKey:          your Coinbase's api key
-     * @param apiSecret:       your Coinbase's secret key
-     * @param passphrase:      your Coinbase's api passphrase
-     * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase,
-                           ArrayList<String> quoteCurrencies, String baseCurrency) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, quoteCurrencies), baseCurrency);
-    }
-
-    /**
-     * Constructor to init {@link CoinbaseFetcher}
-     *
-     * @param apiKey:              your Coinbase's api key
-     * @param apiSecret:           your Coinbase's secret key
-     * @param passphrase:          your Coinbase's api passphrase
-     * @param defaultErrorMessage: custom error to show when is not a request error
-     * @param timeout:             custom timeout for request
      * @param refreshTime:         is time in seconds to set to refresh data
      * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
@@ -209,80 +143,6 @@ public class CoinbaseFetcher extends TxNotesFetcher {
     public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, short refreshTime,
                            String baseCurrency) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, refreshTime), baseCurrency);
-    }
-
-    /**
-     * Constructor to init {@link CoinbaseFetcher}
-     *
-     * @param apiKey:              your Coinbase's api key
-     * @param apiSecret:           your Coinbase's secret key
-     * @param passphrase:          your Coinbase's api passphrase
-     * @param defaultErrorMessage: custom error to show when is not a request error
-     * @param timeout:             custom timeout for request
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param refreshTime:         is time in seconds to set to refresh data
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage, int timeout,
-                           ArrayList<String> quoteCurrencies, int refreshTime, String baseCurrency) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout, quoteCurrencies,
-                refreshTime), baseCurrency);
-    }
-
-    /**
-     * Constructor to init {@link CoinbaseFetcher}
-     *
-     * @param apiKey:          your Coinbase's api key
-     * @param apiSecret:       your Coinbase's secret key
-     * @param passphrase:      your Coinbase's api passphrase
-     * @param timeout:         custom timeout for request
-     * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
-     * @param refreshTime:     is time in seconds to set to refresh data
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int timeout, ArrayList<String> quoteCurrencies,
-                           int refreshTime, String baseCurrency) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, quoteCurrencies, refreshTime), baseCurrency);
-    }
-
-    /**
-     * Constructor to init {@link CoinbaseFetcher}
-     *
-     * @param apiKey:              your Coinbase's api key
-     * @param apiSecret:           your Coinbase's secret key
-     * @param passphrase:          your Coinbase's api passphrase
-     * @param defaultErrorMessage: custom error to show when is not a request error
-     * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
-     * @param refreshTime:     is time in seconds to set to refresh data
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                           ArrayList<String> quoteCurrencies, int refreshTime, String baseCurrency) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, quoteCurrencies,
-                refreshTime), baseCurrency);
-    }
-
-    /**
-     * Constructor to init {@link CoinbaseFetcher}
-     *
-     * @param apiKey:          your Coinbase's api key
-     * @param apiSecret:       your Coinbase's secret key
-     * @param passphrase:      your Coinbase's api passphrase
-     * @param quoteCurrencies: is a list of quote currencies used in past orders es (USD or EUR)
-     * @param refreshTime:     is time in seconds to set to refresh data
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public CoinbaseFetcher(String apiKey, String apiSecret, String passphrase, ArrayList<String> quoteCurrencies,
-                           int refreshTime, String baseCurrency) throws Exception {
-        super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, quoteCurrencies, refreshTime), baseCurrency);
     }
 
     /**

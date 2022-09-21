@@ -127,8 +127,8 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                     BUY,
                     times[0],
                     23,
-                    100,
-                    0.23,
+                    99,
+                    new Random().nextInt(10),
                     "BTC",
                     "USDT"
             ));
@@ -137,16 +137,27 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                     times[1],
                     23,
                     100,
-                    11,
+                    new Random().nextInt(10),
                     "BTC",
                     "USDT"
             ));
+            /*txNotes.put("BTC" + times[3], new TxNote("BTCUSDT",
+                    SELL,
+                    times[3],
+                    23,
+                    100,
+                    new Random().nextInt(10),
+                    22,
+                    times[3],
+                    "BTC",
+                    "USDT"
+            ));*/
             txNotes.put("ETH" + times[4], new TxNote("ETHUSDT",
                     SELL,
                     times[4],
                     23,
                     100,
-                    11,
+                    new Random().nextInt(10),
                     22,
                     times[4],
                     "ETH",
@@ -171,18 +182,21 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
         for (TxNote soldTx : txNotes.values()) {
             long sellDateTimestamp = soldTx.getSellDateTimestamp();
             if (sellDateTimestamp != 0 && soldTx.getBuyDateTimestamp() == sellDateTimestamp) {
-                for (TxNote boughtTx : txNotes.values()) {
+                ArrayList<String> keys = new ArrayList<>(txNotes.keySet());
+                boolean continueLoop = true;
+                for (int j = 0; j < txNotes.size() && continueLoop; j++) {
+                    TxNote boughtTx = txNotes.get(keys.get(j));
                     String boughtSymbol = boughtTx.getSymbol();
                     if (boughtTx.getStatus().equals(BUY) && boughtSymbol.equals(soldTx.getSymbol())) {
                         String baseAsset = boughtTx.getBaseAsset();
                         String quoteAsset = boughtTx.getQuoteAsset();
-                        boolean replaceSoldTx = true;
                         long boughtTimestamp = boughtTx.getBuyDateTimestamp();
                         String txNoteKey = baseAsset + boughtTimestamp;
                         double soldInitialBalance = soldTx.getInitialBalance();
                         double soldQuantity = soldTx.getQuantity();
                         double boughtQuantity = boughtTx.getQuantity();
                         double lastPrice = fetcherPlatform.getLastPrice(boughtSymbol);
+                        boolean replaceSoldTx = true;
                         if (soldQuantity < boughtQuantity) {
                             txNotes.replace(txNoteKey, new TxNote(boughtSymbol,
                                     BUY,
@@ -209,8 +223,8 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                                     baseAsset,
                                     quoteAsset
                             ));
+                            continueLoop = false;
                         }
-                        break;
                     }
                 }
             }
@@ -365,8 +379,11 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
     /**
      * This method is used to clear {@link #txNotesDeleted} list to readmit all {@link TxNote} available<br>
      * Any params required
+     *
+     * @apiNote this means that if these transactions are still available on the platform they will be re-entered, but if they are not
+     * more stored on the exchange platform will no longer be recoverable
      **/
-    public void reAllowsAllTxNotes() {
+    public void allowsAllTxNotes() {
         txNotesDeleted.clear();
     }
 
@@ -387,10 +404,11 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
             }
         }
         for (String index : notes.keySet()) {
+            ArrayList<TxNote> mNotes = notes.get(index);
             wallets.put(index, new Wallet(index,
-                    fetcherPlatform.getLastPrice(index + baseCurrency),
+                    mNotes.get(0).getLastPrice(),
                     1, // TODO: 11/09/2022 FETCH FROM METHOD
-                    notes.get(index)
+                    mNotes
             ));
         }
     }

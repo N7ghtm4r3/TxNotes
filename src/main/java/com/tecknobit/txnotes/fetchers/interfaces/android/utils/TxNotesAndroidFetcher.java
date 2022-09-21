@@ -15,7 +15,9 @@ import org.json.JSONObject;
 
 import static com.tecknobit.traderbot.Records.Account.BotDetails.RUNNING_BOT_STATUS;
 import static com.tecknobit.traderbot.Records.Account.BotDetails.STOPPED_BOT_STATUS;
+import static com.tecknobit.traderbot.Records.Portfolio.Cryptocurrency.QUOTE_ASSET_KEY;
 import static com.tecknobit.traderbot.Records.Portfolio.Cryptocurrency.SYMBOL_KEY;
+import static com.tecknobit.traderbot.Records.Portfolio.Token.BASE_ASSET_KEY;
 import static com.tecknobit.traderbot.Records.Portfolio.Token.QUANTITY_KEY;
 import static com.tecknobit.traderbot.Records.Portfolio.Transaction.TRANSACTIONS_KEY;
 import static com.tecknobit.traderbot.Routines.Android.AndroidWorkflow.Credentials;
@@ -36,7 +38,6 @@ import static com.tecknobit.txnotes.records.Wallet.DELETED_TX_NOTES_KEY;
  * @see AndroidBinanceFetcher
  * @see AndroidCoinbaseFetcher
  **/
-// TODO: 13/09/2022 AUTORELOADING TRANSACTIONS LIST IN LOGIN OPE
 public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCoreRoutines {
 
     /**
@@ -93,23 +94,23 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
         if (credentials.getToken() == null)
             credentials.sendRegistrationRequest(TX_HOST, TX_PORT);
         else {
-            credentials.sendLoginRequest(baseCurrency, TX_HOST, TX_PORT, fetcherPlatform.getQuoteCurrencies());
+            credentials.sendLoginRequest(baseCurrency, TX_HOST, TX_PORT, null);
             JSONArray deletedNotes = response.getJSONArray(DELETED_TX_NOTES_KEY);
             for (int j = 0; j < deletedNotes.length(); j++)
                 txNotesDeleted.add(deletedNotes.getString(j));
             JSONArray txNotes = response.getJSONArray(TRANSACTIONS_KEY);
             for (int j = 0; j < txNotes.length(); j++) {
                 JSONObject mTxNote = txNotes.getJSONObject(j);
-                String baseAsset = mTxNote.getString("symbol"); // TODO: 20/09/2022 TO TAKE FROM
+                String baseAsset = mTxNote.getString(BASE_ASSET_KEY);
                 long buyDate = mTxNote.getLong(BUY_DATE_KEY);
                 TxNote txNote = new TxNote(mTxNote.getString(SYMBOL_KEY),
                         mTxNote.getString(STATUS_KEY),
                         buyDate,
                         mTxNote.getDouble(INITIAL_BALANCE_KEY),
                         mTxNote.getDouble(QUANTITY_KEY),
-                        1, // TODO: 20/09/2022 TO THINK HOW TO REFRESH
+                        0,
                         baseAsset,
-                        "PROVA" // TODO: 20/09/2022 TO THINK HO TO IMPLEMENT THIS AND BASE ASSET
+                        mTxNote.getString(QUOTE_ASSET_KEY)
                 );
                 if (mTxNote.has(SELL_DATE_KEY)) {
                     txNote.setSellPrice(mTxNote.getDouble(SELL_PRICE_KEY));
@@ -136,7 +137,7 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
     public void workflowHandler() {
         enableBot();
         refreshWalletList();
-        txNotesWorkflow.startWorkflow();
+        //txNotesWorkflow.startWorkflow();
     }
 
     /**
@@ -172,6 +173,36 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
                 }
             }
         }.start();
+    }
+
+    /**
+     * This method is used to delete a transaction note from {@link #txNotes}
+     *
+     * @param asset:      identifier of the asset with transaction has been made
+     * @param removeDate: timestamp of the date to delete from {@link #txNotes} list
+     * @return result of deletion as boolean
+     * @implNote if a {@link TxNote} corresponds with removeDate param its timestamp will be inserted
+     * in {@link #txNotesDeleted} list so to not be reinserted anymore in {@link #txNotes} main list
+     * @apiNote this method search only for the buy date of a transaction
+     **/
+    @Override
+    public boolean deleteTxNote(String asset, long removeDate) {
+        if (txNotesWorkflow.deleteTxNote(asset, removeDate))
+            return super.deleteTxNote(asset, removeDate);
+        return false;
+    }
+
+    /**
+     * This method is used to clear {@link #txNotesDeleted} list to readmit all {@link TxNote} available<br>
+     * Any params required
+     *
+     * @apiNote this means that if these transactions are still available on the platform they will be re-entered, but if they are not
+     * more stored on the exchange platform will no longer be recoverable
+     **/
+    @Override
+    public void allowsAllTxNotes() {
+        if (!txNotesDeleted.isEmpty() && txNotesWorkflow.allowAllTxNotes())
+            super.allowsAllTxNotes();
     }
 
     /**

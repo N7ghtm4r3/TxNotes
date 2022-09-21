@@ -6,7 +6,6 @@ import com.tecknobit.traderbot.Traders.Interfaces.Native.BinanceTraderBot;
 import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesAndroidFetcher;
 import com.tecknobit.txnotes.records.TxNote;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import static com.tecknobit.traderbot.Records.Account.BotDetails.*;
@@ -114,64 +113,6 @@ public class AndroidBinanceFetcher extends TxNotesAndroidFetcher {
         super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, refreshTime), featherDetails, credentials,
                 printRoutineMessages, baseCurrency, refreshTime);
     }
-
-    /**
-     * Constructor to init {@link AndroidBinanceFetcher}
-     *
-     * @param apiKey:              your Binance's api key
-     * @param secretKey:           your Binance's secret key
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param refreshTime:         is time in seconds to set to refresh data
-     * @param credentials:         is object that contains your Tecknobit's account credentials, not your private exchange keys
-     * @param printRoutineMessages : flag to insert to print or not routine messages
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public AndroidBinanceFetcher(String apiKey, String secretKey, ArrayList<String> quoteCurrencies, int refreshTime,
-                                 Credentials credentials, boolean printRoutineMessages, String baseCurrency) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies, refreshTime), featherDetails, credentials,
-                printRoutineMessages, baseCurrency, refreshTime);
-    }
-
-    /**
-     * Constructor to init {@link AndroidBinanceFetcher}
-     *
-     * @param apiKey:              your Binance's api key
-     * @param secretKey:           your Binance's secret key
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param credentials:         is object that contains your Tecknobit's account credentials, not your private exchange keys
-     * @param printRoutineMessages : flag to insert to print or not routine messages
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @param refreshTime          : is time in seconds to set to refresh data
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public AndroidBinanceFetcher(String apiKey, String secretKey, ArrayList<String> quoteCurrencies, Credentials credentials,
-                                 boolean printRoutineMessages, String baseCurrency, int refreshTime) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, quoteCurrencies), featherDetails, credentials, printRoutineMessages,
-                baseCurrency, refreshTime);
-    }
-
-    /**
-     * Constructor to init {@link AndroidBinanceFetcher}
-     *
-     * @param apiKey:              your Binance's api key
-     * @param secretKey:           your Binance's secret key
-     * @param baseEndpoint:        base endpoint choose from {@link #BINANCE_BASE_ENDPOINTS} array
-     * @param quoteCurrencies:     is a list of quote currencies used in past orders es (USD or EUR)
-     * @param credentials:         is object that contains your Tecknobit's account credentials, not your private exchange keys
-     * @param printRoutineMessages : flag to insert to print or not routine messages
-     * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
-     * @param refreshTime          : is time in seconds to set to refresh data
-     * @implNote these keys will NOT store by library anywhere.
-     **/
-    public AndroidBinanceFetcher(String apiKey, String secretKey, String baseEndpoint, ArrayList<String> quoteCurrencies,
-                                 Credentials credentials, boolean printRoutineMessages, String baseCurrency,
-                                 int refreshTime) throws Exception {
-        super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, quoteCurrencies), featherDetails, credentials,
-                printRoutineMessages, baseCurrency, refreshTime);
-    }
-
 
     /**
      * This method is used to assemble a {@link TxNote}'s list fetched from your Binance's account<br>
