@@ -137,7 +137,7 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
     public void workflowHandler() {
         enableBot();
         refreshWalletList();
-        //txNotesWorkflow.startWorkflow();
+        txNotesWorkflow.startWorkflow();
     }
 
     /**

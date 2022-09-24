@@ -20,7 +20,7 @@ import static com.tecknobit.traderbot.Routines.Android.ServerRequest.*;
  * @see AndroidWorkflow
  * @see RoutineMessages
  **/
-// TODO: 21/09/2022 EXECUTE CUSTOM ROUTINES 
+// TODO: 21/09/2022 EXECUTE CUSTOM ROUTINES
 public class TxNotesWorkflow extends AndroidWorkflow {
 
     /**
