@@ -106,7 +106,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
             String status = transaction.getSide();
             long timestamp = transaction.getTransactionTimestamp();
             String txKey = transaction.getBaseAsset() + timestamp;
-            double lastPrice = fetcherPlatform.getLastPrice(symbol);
+            double lastPrice = fetcherPlatform.getLastPrice(symbol).getLastPrice();
             if (!txNotesDeleted.contains(txKey) && txNotes.get(txKey) == null) {
                 double value = transaction.getValue();
                 double quantity = transaction.getQuantity();
@@ -195,7 +195,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                         double soldInitialBalance = soldTx.getInitialBalance();
                         double soldQuantity = soldTx.getQuantity();
                         double boughtQuantity = boughtTx.getQuantity();
-                        double lastPrice = fetcherPlatform.getLastPrice(boughtSymbol);
+                        double lastPrice = fetcherPlatform.getLastPrice(boughtSymbol).getLastPrice();
                         boolean replaceSoldTx = true;
                         if (soldQuantity < boughtQuantity) {
                             txNotes.replace(txNoteKey, new TxNote(boughtSymbol,
@@ -407,7 +407,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
             ArrayList<TxNote> mNotes = notes.get(index);
             wallets.put(index, new Wallet(index,
                     mNotes.get(0).getLastPrice(),
-                    1, // TODO: 11/09/2022 FETCH FROM METHOD
+                    fetcherPlatform.getLastPrice(index).getPriceChangePercent(),
                     mNotes
             ));
         }

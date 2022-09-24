@@ -1,7 +1,6 @@
 package com.tecknobit.txnotes.fetchers.interfaces.android.utils;
 
 import com.tecknobit.traderbot.Routines.Android.AndroidWorkflow;
-import com.tecknobit.traderbot.Routines.Android.ServerRequest;
 import com.tecknobit.traderbot.Routines.Interfaces.RoutineMessages;
 import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
 import com.tecknobit.txnotes.records.TxNote;
@@ -10,6 +9,7 @@ import org.json.JSONObject;
 import static com.tecknobit.traderbot.Records.Portfolio.Transaction.TRANSACTIONS_KEY;
 import static com.tecknobit.traderbot.Records.Portfolio.Transaction.TRANSACTION_KEY;
 import static com.tecknobit.traderbot.Routines.Android.ServerRequest.*;
+import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesServerRequest.ALLOW_ALL_TXS_NOTE_OPE;
 
 /**
  * The {@code TxNotesWorkflow} class is useful to manage {@code TxNotes} Android's fetchers workflow<br>
@@ -21,23 +21,7 @@ import static com.tecknobit.traderbot.Routines.Android.ServerRequest.*;
  * @see RoutineMessages
  **/
 // TODO: 21/09/2022 EXECUTE CUSTOM ROUTINES
-public class TxNotesWorkflow extends AndroidWorkflow {
-
-    /**
-     * {@code TX_HOST} host value
-     **/
-    // TODO: 19/09/2022 TO CHANGE
-    public static final String TX_HOST = "localhost";
-
-    /**
-     * {@code TX_PORT} port value
-     **/
-    public static final int TX_PORT = 6898;
-
-    /**
-     * {@code ALLOW_ALL_TXS_NOTE_OPE} request
-     **/
-    public static final String ALLOW_ALL_TXS_NOTE_OPE = "allow_all_txs_ope";
+public class TxNotesWorkflow extends AndroidWorkflow implements AndroidWorkflow.CustomAndroidWorkflow {
 
     /**
      * Constructor to init {@link TxNotesWorkflow}
@@ -47,7 +31,7 @@ public class TxNotesWorkflow extends AndroidWorkflow {
      * @param credentials          : instance contains your Tecknobit's account credentials, not your private exchange keys
      * @param printRoutineMessages : flag to insert to print or not routine messages
      **/
-    public TxNotesWorkflow(ServerRequest serverRequest, TraderCoreRoutines trader, Credentials credentials,
+    public TxNotesWorkflow(TxNotesServerRequest serverRequest, TraderCoreRoutines trader, Credentials credentials,
                            boolean printRoutineMessages) {
         super(serverRequest, trader, credentials, printRoutineMessages);
     }
@@ -134,6 +118,15 @@ public class TxNotesWorkflow extends AndroidWorkflow {
             printOperationFailed(ALLOW_ALL_TXS_NOTE_OPE);
             return false;
         }
+    }
+
+    /**
+     * This method is used to perform customs routines<br>
+     * Any params required
+     **/
+    @Override
+    public <T> T performExtraRoutines() {
+        return null;
     }
 
 }

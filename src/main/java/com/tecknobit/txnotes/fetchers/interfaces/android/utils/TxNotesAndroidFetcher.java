@@ -3,7 +3,6 @@ package com.tecknobit.txnotes.fetchers.interfaces.android.utils;
 import com.tecknobit.traderbot.Records.Account.BotDetails;
 import com.tecknobit.traderbot.Routines.Android.AndroidCoreRoutines;
 import com.tecknobit.traderbot.Routines.Android.AndroidWorkflow;
-import com.tecknobit.traderbot.Routines.Android.ServerRequest;
 import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
 import com.tecknobit.txnotes.fetchers.TxNotesFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.android.AndroidBinanceFetcher;
@@ -22,8 +21,8 @@ import static com.tecknobit.traderbot.Records.Portfolio.Token.QUANTITY_KEY;
 import static com.tecknobit.traderbot.Records.Portfolio.Transaction.TRANSACTIONS_KEY;
 import static com.tecknobit.traderbot.Routines.Android.AndroidWorkflow.Credentials;
 import static com.tecknobit.traderbot.Routines.Android.ServerRequest.response;
-import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow.TX_HOST;
-import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow.TX_PORT;
+import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesServerRequest.TX_HOST;
+import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesServerRequest.TX_PORT;
 import static com.tecknobit.txnotes.records.TxNote.*;
 import static com.tecknobit.txnotes.records.Wallet.DELETED_TX_NOTES_KEY;
 
@@ -75,7 +74,7 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
         super(fetcherPlatform, baseCurrency);
         this.botDetails = botDetails;
         initCredentials(credentials);
-        txNotesWorkflow = new TxNotesWorkflow(new ServerRequest(credentials.getIvSpec(), credentials.getSecretKey(),
+        txNotesWorkflow = new TxNotesWorkflow(new TxNotesServerRequest(credentials.getIvSpec(), credentials.getSecretKey(),
                 credentials.getAuthToken(), credentials.getToken(), TX_HOST, TX_PORT), fetcherPlatform, credentials,
                 printRoutineMessages);
         runningFetcher = false;
