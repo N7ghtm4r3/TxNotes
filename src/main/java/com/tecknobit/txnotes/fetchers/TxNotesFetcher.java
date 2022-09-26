@@ -340,10 +340,13 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      **/
     @Override
     public boolean deleteTxNote(String asset, long removeDate) {
-        boolean delete = txNotes.remove(asset + removeDate) != null;
-        if (delete)
-            txNotesDeleted.add(asset + removeDate);
-        return delete;
+        if (!txNotesDeleted.contains(asset + removeDate)) {
+            boolean delete = txNotes.remove(asset + removeDate) != null;
+            if (delete)
+                txNotesDeleted.add(asset + removeDate);
+            return delete;
+        }
+        return false;
     }
 
     /**
@@ -384,7 +387,17 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      * more stored on the exchange platform will no longer be recoverable
      **/
     public void allowsAllTxNotes() {
-        txNotesDeleted.clear();
+        if (!txNotesDeleted.isEmpty())
+            txNotesDeleted.clear();
+    }
+
+    /**
+     * This method is used to get list of {@link TxNote} that have been deleted
+     *
+     * @return list of {@link TxNote} deleted
+     **/
+    public ArrayList<String> getTxNotesDeleted() {
+        return txNotesDeleted;
     }
 
     /**
@@ -392,6 +405,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      * Any params required
      **/
     public void loadWalletList() {
+        wallets.clear();
         HashMap<String, ArrayList<TxNote>> notes = new HashMap<>();
         for (TxNote txNote : txNotes.values()) {
             String index = txNote.getBaseAsset();
@@ -489,6 +503,16 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      **/
     public void setRefreshTime(int refreshTime) {
         fetcherPlatform.setRefreshTime(refreshTime);
+    }
+
+    /**
+     * This method is used to get time to refresh data
+     * Any params required.
+     *
+     * @return time to refresh data as int
+     **/
+    public int getRefreshTime() {
+        return fetcherPlatform.getRefreshTime();
     }
 
     /**

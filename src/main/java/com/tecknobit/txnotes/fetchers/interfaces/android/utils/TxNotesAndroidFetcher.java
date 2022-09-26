@@ -1,6 +1,7 @@
 package com.tecknobit.txnotes.fetchers.interfaces.android.utils;
 
 import com.tecknobit.traderbot.Records.Account.BotDetails;
+import com.tecknobit.traderbot.Routines.Android.AndroidBotController;
 import com.tecknobit.traderbot.Routines.Android.AndroidCoreRoutines;
 import com.tecknobit.traderbot.Routines.Android.AndroidWorkflow;
 import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
@@ -37,7 +38,7 @@ import static com.tecknobit.txnotes.records.Wallet.DELETED_TX_NOTES_KEY;
  * @see AndroidBinanceFetcher
  * @see AndroidCoinbaseFetcher
  **/
-public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCoreRoutines {
+public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCoreRoutines, AndroidBotController {
 
     /**
      * {@code txNotesWorkflow} is instance helpful to manage TxNotes Android's workflow
@@ -76,7 +77,7 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
         initCredentials(credentials);
         txNotesWorkflow = new TxNotesWorkflow(new TxNotesServerRequest(credentials.getIvSpec(), credentials.getSecretKey(),
                 credentials.getAuthToken(), credentials.getToken(), TX_HOST, TX_PORT), fetcherPlatform, credentials,
-                printRoutineMessages);
+                printRoutineMessages, this);
         runningFetcher = false;
         fetcherPlatform.setRefreshTime(refreshTime);
     }
@@ -166,70 +167,14 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
                             }
                             sleep(fetcherPlatform.getRefreshTime());
                         }
+                        System.out.println("Bot is stopped, waiting for reactivation");
+                        Thread.sleep(5000);
                     }
                 } catch (Exception e) {
                     printRed(e.getMessage());
                 }
             }
         }.start();
-    }
-
-    /**
-     * This method is used to delete a transaction note from {@link #txNotes}
-     *
-     * @param asset:      identifier of the asset with transaction has been made
-     * @param removeDate: timestamp of the date to delete from {@link #txNotes} list
-     * @return result of deletion as boolean
-     * @implNote if a {@link TxNote} corresponds with removeDate param its timestamp will be inserted
-     * in {@link #txNotesDeleted} list so to not be reinserted anymore in {@link #txNotes} main list
-     * @apiNote this method search only for the buy date of a transaction
-     **/
-    @Override
-    public boolean deleteTxNote(String asset, long removeDate) {
-        if (txNotesWorkflow.deleteTxNote(asset, removeDate))
-            return super.deleteTxNote(asset, removeDate);
-        return false;
-    }
-
-    /**
-     * This method is used to clear {@link #txNotesDeleted} list to readmit all {@link TxNote} available<br>
-     * Any params required
-     *
-     * @apiNote this means that if these transactions are still available on the platform they will be re-entered, but if they are not
-     * more stored on the exchange platform will no longer be recoverable
-     **/
-    @Override
-    public void allowsAllTxNotes() {
-        if (!txNotesDeleted.isEmpty() && txNotesWorkflow.allowAllTxNotes())
-            super.allowsAllTxNotes();
-    }
-
-    /**
-     * This method is used to set time to refresh data
-     *
-     * @param refreshTime: is time in seconds to set to refresh data
-     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
-     * @implNote in Android's interfaces this method updates also {@link #botDetails} instance
-     **/
-    @Override
-    public void setRefreshTime(int refreshTime) {
-        boolean isInMillis = refreshTime > 3600;
-        if (isInMillis)
-            refreshTime /= 1000;
-        if (fetcherPlatform.getRefreshTime() / 1000 != refreshTime) {
-            if (refreshTime >= 5 && refreshTime <= 3600) {
-                if (txNotesWorkflow != null) {
-                    if (txNotesWorkflow.changeRefreshTime(refreshTime)) {
-                        botDetails.setRefreshTime(refreshTime);
-                        fetcherPlatform.setRefreshTime(refreshTime);
-                    }
-                } else {
-                    botDetails.setRefreshTime(refreshTime);
-                    fetcherPlatform.setRefreshTime(refreshTime * 1000);
-                }
-            } else
-                throw new IllegalArgumentException("Refresh time must be more than 5 (5s) and less than 3600 (1h)");
-        }
     }
 
     /**
@@ -251,15 +196,8 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
     @Override
     public void disableBot() {
         if (isBotRunning()) {
-            if (txNotesWorkflow != null) {
-                if (txNotesWorkflow.disableBot()) {
-                    runningFetcher = false;
-                    botDetails.setBotStatus(STOPPED_BOT_STATUS);
-                }
-            } else {
-                runningFetcher = false;
-                botDetails.setBotStatus(STOPPED_BOT_STATUS);
-            }
+            runningFetcher = false;
+            botDetails.setBotStatus(STOPPED_BOT_STATUS);
         }
     }
 
@@ -272,15 +210,8 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
     @Override
     public void enableBot() {
         if (!isBotRunning()) {
-            if (txNotesWorkflow != null) {
-                if (txNotesWorkflow.enableBot()) {
-                    runningFetcher = true;
-                    botDetails.setBotStatus(RUNNING_BOT_STATUS);
-                }
-            } else {
-                runningFetcher = true;
-                botDetails.setBotStatus(RUNNING_BOT_STATUS);
-            }
+            runningFetcher = true;
+            botDetails.setBotStatus(RUNNING_BOT_STATUS);
         }
     }
 
@@ -370,24 +301,6 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
     }
 
     /**
-     * This method is used to set base currency for change amount value
-     *
-     * @param baseCurrency: base currency to get all amount value of traders routine es. EUR
-     **/
-    @Override
-    public void setBaseCurrency(String baseCurrency) {
-        if (baseCurrency == null || baseCurrency.isEmpty())
-            throw new IllegalArgumentException("Currency cannot be null or empty, but for example EUR or USDT");
-        if (!this.baseCurrency.equals(baseCurrency)) {
-            if (txNotesWorkflow != null) {
-                if (txNotesWorkflow.changeBaseCurrency(baseCurrency))
-                    this.baseCurrency = baseCurrency;
-            } else
-                this.baseCurrency = baseCurrency;
-        }
-    }
-
-    /**
      * This method is used to get credentials inserted for trader login
      *
      * @return trader credentials as {@link Credentials} object
@@ -415,6 +328,108 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
     @Override
     public boolean canPrintRoutineMessages() {
         return txNotesWorkflow.canPrintRoutineMessages();
+    }
+
+    /**
+     * This method is used to delete a transaction note from {@link #txNotes}
+     *
+     * @param asset:      identifier of the asset with transaction has been made
+     * @param removeDate: timestamp of the date to delete from {@link #txNotes} list
+     * @return result of deletion as boolean
+     * @implNote if a {@link TxNote} corresponds with removeDate param its timestamp will be inserted
+     * in {@link #txNotesDeleted} list so to not be reinserted anymore in {@link #txNotes} main list
+     * @apiNote this method search only for the buy date of a transaction
+     * @apiNote this method is useful to interact with
+     * <a href="https://play.google.com/store/apps/details?id=com.tecknobit.txnotes">TxNotes</a>'s interface
+     **/
+    public boolean removeTxNote(String asset, long removeDate) {
+        if (txNotesWorkflow.deleteTxNote(asset, removeDate))
+            return deleteTxNote(asset, removeDate);
+        return false;
+    }
+
+    /**
+     * This method is used to clear {@link #txNotesDeleted} list to readmit all {@link TxNote} available<br>
+     * Any params required
+     *
+     * @apiNote this means that if these transactions are still available on the platform they will be re-entered, but if they are not
+     * more stored on the exchange platform will no longer be recoverable
+     * @apiNote this method is useful to interact with
+     * <a href="https://play.google.com/store/apps/details?id=com.tecknobit.txnotes">TxNotes</a>'s interface
+     **/
+    public void reinsertTxNotesDeleted() {
+        txNotesWorkflow.allowAllTxNotes();
+        super.allowsAllTxNotes();
+    }
+
+    /**
+     * This method is used to run the bot
+     *
+     * @apiNote this method is useful to interact with
+     * <a href="https://play.google.com/store/apps/details?id=com.tecknobit.txnotes">TxNotes</a>'s interface
+     **/
+    @Override
+    public void runBot() {
+        if (!runningFetcher)
+            if (txNotesWorkflow.enableBot())
+                enableBot();
+    }
+
+    /**
+     * This method is used to stop the bot
+     *
+     * @apiNote this method is useful to interact with
+     * <a href="https://play.google.com/store/apps/details?id=com.tecknobit.txnotes">TxNotes</a>'s interface
+     **/
+    @Override
+    public void stopBot() {
+        if (runningFetcher)
+            if (txNotesWorkflow.disableBot())
+                disableBot();
+    }
+
+    /**
+     * This method is used to change time to refresh data
+     *
+     * @param refreshTime: is time in seconds to set to refresh data
+     * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
+     * @implNote in Android's interfaces this method updates also {@link #botDetails} instance
+     * @apiNote this method is useful to interact with
+     * <a href="https://play.google.com/store/apps/details?id=com.tecknobit.txnotes">TxNotes</a>'s interface
+     **/
+    @Override
+    public void changeRefreshTime(int refreshTime) {
+        if (refreshTime >= 5 && refreshTime <= 3600) {
+            if (fetcherPlatform.getRefreshTimeSeconds() != refreshTime) {
+                if (txNotesWorkflow != null) {
+                    if (txNotesWorkflow.changeRefreshTime(refreshTime)) {
+                        botDetails.setRefreshTime(refreshTime);
+                        fetcherPlatform.setRefreshTime(refreshTime);
+                    }
+                } else {
+                    botDetails.setRefreshTime(refreshTime);
+                    fetcherPlatform.setRefreshTime(refreshTime);
+                }
+            }
+        } else
+            throw new IllegalArgumentException("Refresh time must be more than 5 (5s) and less than 3600 (1h)");
+    }
+
+    /**
+     * This method is used to set base currency for change amount value
+     *
+     * @param baseCurrency: base currency to get all amount value of traders routine es. EUR
+     * @apiNote this method is useful to interact with
+     * <a href="https://play.google.com/store/apps/details?id=com.tecknobit.txnotes">TxNotes</a>'s interface
+     **/
+    @Override
+    public void changeBaseCurrency(String baseCurrency) {
+        if (baseCurrency == null || baseCurrency.isEmpty())
+            throw new IllegalArgumentException("Currency cannot be null or empty, but for example EUR or USD");
+        if (!this.baseCurrency.equals(baseCurrency)) {
+            if (txNotesWorkflow.changeBaseCurrency(baseCurrency))
+                this.baseCurrency = baseCurrency;
+        }
     }
 
 }
