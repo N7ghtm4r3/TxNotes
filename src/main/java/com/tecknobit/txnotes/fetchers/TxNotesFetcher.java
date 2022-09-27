@@ -119,51 +119,6 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
                 txNotes.put(txKey, txNote);
             }
         }
-        // TODO: 11/09/2022 REMOVE
-        long time = 1662455785000L;
-        long[] times = new long[]{time, time + 1000, time + 2000, time + 3000, time + 4000};
-        if (!txNotesDeleted.contains("BTC" + time)) {
-            txNotes.put("BTC" + times[0], new TxNote("BTCUSDT",
-                    BUY,
-                    times[0],
-                    23,
-                    99,
-                    new Random().nextInt(10),
-                    "BTC",
-                    "USDT"
-            ));
-            txNotes.put("BTC" + times[1], new TxNote("BTCUSDT",
-                    BUY,
-                    times[1],
-                    23,
-                    100,
-                    new Random().nextInt(10),
-                    "BTC",
-                    "USDT"
-            ));
-            /*txNotes.put("BTC" + times[3], new TxNote("BTCUSDT",
-                    SELL,
-                    times[3],
-                    23,
-                    100,
-                    new Random().nextInt(10),
-                    22,
-                    times[3],
-                    "BTC",
-                    "USDT"
-            ));*/
-            txNotes.put("ETH" + times[4], new TxNote("ETHUSDT",
-                    SELL,
-                    times[4],
-                    23,
-                    100,
-                    new Random().nextInt(10),
-                    22,
-                    times[4],
-                    "ETH",
-                    "USDT"
-            ));
-        }
         mergeTxNotesList();
         return txNotes.values();
     }
@@ -513,6 +468,16 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      **/
     public int getRefreshTime() {
         return fetcherPlatform.getRefreshTime();
+    }
+
+    /**
+     * This method is used to get time to refresh data in seconds (s) format
+     * Any params required.
+     *
+     * @return time to refresh data in seconds (s) format as int
+     **/
+    public int getRefreshTimeSeconds() {
+        return fetcherPlatform.getRefreshTimeSeconds();
     }
 
     /**

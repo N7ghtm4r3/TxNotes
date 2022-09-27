@@ -15,8 +15,7 @@ public class TxNotesServerRequest extends ServerRequest {
     /**
      * {@code TX_HOST} host value
      **/
-    // TODO: 19/09/2022 TO CHANGE
-    public static final String TX_HOST = "localhost";
+    public static final String TX_HOST = HOST;
 
     /**
      * {@code TX_PORT} port value

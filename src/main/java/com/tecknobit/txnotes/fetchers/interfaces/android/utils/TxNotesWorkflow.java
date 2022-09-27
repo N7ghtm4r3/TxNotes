@@ -68,7 +68,7 @@ public class TxNotesWorkflow extends AndroidWorkflow {
                 case CHANGE_REFRESH_TIME_OPE:
                     if (fetcher instanceof TxNotesAndroidFetcher) {
                         int refreshTime = parseInt(routine.getExtraValue());
-                        if (fetcher.getRefreshTime() / 1000 != refreshTime) {
+                        if (fetcher.getRefreshTimeSeconds() != refreshTime) {
                             fetcher.setRefreshTime(refreshTime);
                             printOperationStatus("[" + CHANGE_REFRESH_TIME_OPE + "] Refresh prices time successfully changed",
                                     true);
@@ -128,7 +128,7 @@ public class TxNotesWorkflow extends AndroidWorkflow {
      **/
     @Override
     public boolean changeRefreshTime(int refreshTime) {
-        if (fetcher.getRefreshTime() / 1000 != refreshTime)
+        if (fetcher.getRefreshTimeSeconds() != refreshTime)
             return super.changeRefreshTime(refreshTime);
         return true;
     }
