@@ -461,7 +461,7 @@ public class TxNote extends Transaction implements RecordDetails {
         double lastValue = lastPrice;
         if (sellPrice != 0)
             lastValue = sellPrice;
-        return computeProportion(startPrice, lastValue, 8);
+        return computeAssetPercent(startPrice, lastValue, 8);
     }
 
     /**
