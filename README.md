@@ -85,7 +85,7 @@ You have to create your code flow to use fetcher
 //Platform means Binance or Coinbase actually
 PlatformFetcher fetcher = new PlatformPlatformFetcher(/*your keys and constructor params*/);
 //Operation example
-        fetcher.fetchTxNotesList();
+fetcher.fetchTxNotesList();
 ```
 
 #### Autonomous
@@ -96,7 +96,7 @@ Fetchers fetch autonomously all the newest transactions
 //Platform means Binance or Coinbase actually
 PlatformAutoFetcher fetcher = new PlatformAutoFetcher(/*your keys and constructor params*/);
 //Start autonomous trader flow 
-        fetcher.start();
+fetcher.start();
 ```
 
 ### Android use
@@ -152,7 +152,7 @@ Credentials credentials = new Credentials(
 
 //Then you have to insert credentials object in Android's trader constructor and trader will start with your Tecknobit's account.
 
-        AndroidPlatformFetcher fetcher = new AndroidPlatformFetcher(/*your keys and constructor params*/,credentials);
+AndroidPlatformFetcher fetcher = new AndroidPlatformFetcher(/*your keys and constructor params*/,credentials);
 
 ```
 
@@ -165,7 +165,7 @@ operations will be performed by itself, following the procedure:
 //Platform means Binance or Coinbase actually
 AndroidPlatformFetcher fetcher = new AndroidPlatformFetcher(/*your keys and constructor params*/,credentials);
 //Operation example
-        fetcher.startWorkflow();
+fetcher.startWorkflow();
 ```
 
 ## Authors
