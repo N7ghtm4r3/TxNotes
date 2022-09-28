@@ -83,7 +83,7 @@ You have to create your code flow to use fetcher
 
 ```java
 //Platform means Binance or Coinbase actually
-PlatformFetcher fetcher=new PlatformPlatformFetcher(/*your keys and constructor params*/);
+PlatformFetcher fetcher = new PlatformPlatformFetcher(/*your keys and constructor params*/);
 //Operation example
         fetcher.fetchTxNotesList();
 ```
@@ -94,7 +94,7 @@ Fetchers fetch autonomously all the newest transactions
 
 ```java
 //Platform means Binance or Coinbase actually
-PlatformAutoFetcher fetcher=new PlatformAutoFetcher(/*your keys and constructor params*/);
+PlatformAutoFetcher fetcher = new PlatformAutoFetcher(/*your keys and constructor params*/);
 //Start autonomous trader flow 
         fetcher.start();
 ```
@@ -117,7 +117,7 @@ All data will be stored and restored automatically, **will be not saved** your e
 ```java
 //In registration, you have to init Credentials object with your email and password for Tecknobit's account.
 
-Credentials credentials=new Credentials(
+Credentials credentials = new Credentials(
         "yourEmail@email.com",
         "yourPassword"
         );
@@ -142,7 +142,7 @@ Credentials credentials=new Credentials(
 ```java
 //In login operation you have to init Credentials object with your credentials given from Registration
 
-Credentials credentials=new Credentials(
+Credentials credentials = new Credentials(
         "valueOfAuthToken",
         "yourEmail@email.com",
         "yourPassword",
@@ -152,7 +152,7 @@ Credentials credentials=new Credentials(
 
 //Then you have to insert credentials object in Android's trader constructor and trader will start with your Tecknobit's account.
 
-        AndroidPlatformFetcher fetcher=new AndroidPlatformFetcher(/*your keys and constructor params*/,credentials);
+        AndroidPlatformFetcher fetcher = new AndroidPlatformFetcher(/*your keys and constructor params*/,credentials);
 
 ```
 
@@ -163,7 +163,7 @@ operations will be performed by itself, following the procedure:
 
 ```java
 //Platform means Binance or Coinbase actually
-AndroidPlatformFetcher fetcher=new AndroidPlatformFetcher(/*your keys and constructor params*/,credentials);
+AndroidPlatformFetcher fetcher = new AndroidPlatformFetcher(/*your keys and constructor params*/,credentials);
 //Operation example
         fetcher.startWorkflow();
 ```
