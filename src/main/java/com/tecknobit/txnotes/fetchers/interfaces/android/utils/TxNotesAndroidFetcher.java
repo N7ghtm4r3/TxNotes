@@ -8,6 +8,7 @@ import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
 import com.tecknobit.txnotes.fetchers.TxNotesFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.android.AndroidBinanceFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.android.AndroidCoinbaseFetcher;
+import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow.TxNotesCredentials;
 import com.tecknobit.txnotes.records.TxNote;
 import com.tecknobit.txnotes.records.Wallet;
 import org.json.JSONArray;
@@ -65,15 +66,16 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
      *
      * @param fetcherPlatform:     fetcher platform to fetch transactions
      * @param botDetails:          details of bot used
-     * @param credentials:         is object that contains your Tecknobit's account credentials, not your private exchange keys
+     * @param txCredentials:       is object that contains your Tecknobit's account txCredentials, not your private exchange keys
      * @param printRoutineMessages : flag to insert to print or not routine messages
      * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
      * @param refreshTime          : is time in seconds to set to refresh data
      **/
-    public TxNotesAndroidFetcher(TraderCoreRoutines fetcherPlatform, BotDetails botDetails, Credentials credentials,
+    public TxNotesAndroidFetcher(TraderCoreRoutines fetcherPlatform, BotDetails botDetails, TxNotesCredentials txCredentials,
                                  boolean printRoutineMessages, String baseCurrency, int refreshTime) throws Exception {
         super(fetcherPlatform, baseCurrency);
         this.botDetails = botDetails;
+        Credentials credentials = txCredentials.getCredentials();
         initCredentials(credentials);
         txNotesWorkflow = new TxNotesWorkflow(new TxNotesServerRequest(credentials.getIvSpec(), credentials.getSecretKey(),
                 credentials.getAuthToken(), credentials.getToken(), TX_HOST, TX_PORT), fetcherPlatform, credentials,

@@ -1,9 +1,10 @@
 package com.tecknobit.txnotes.fetchers.interfaces.android;
 
 import com.tecknobit.traderbot.Records.Account.BotDetails;
-import com.tecknobit.traderbot.Routines.Android.AndroidWorkflow.Credentials;
 import com.tecknobit.traderbot.Traders.Interfaces.Native.BinanceTraderBot;
 import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesAndroidFetcher;
+import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow;
+import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow.TxNotesCredentials;
 import com.tecknobit.txnotes.records.TxNote;
 
 import java.util.Collection;
@@ -53,7 +54,7 @@ public class AndroidBinanceFetcher extends TxNotesAndroidFetcher {
      * @param refreshTime          : is time in seconds to set to refresh data
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public AndroidBinanceFetcher(String apiKey, String secretKey, Credentials credentials, boolean printRoutineMessages,
+    public AndroidBinanceFetcher(String apiKey, String secretKey, TxNotesWorkflow.TxNotesCredentials credentials, boolean printRoutineMessages,
                                  String baseCurrency, int refreshTime) throws Exception {
         super(new BinanceTraderBot(apiKey, secretKey), featherDetails, credentials, printRoutineMessages, baseCurrency,
                 refreshTime);
@@ -71,7 +72,7 @@ public class AndroidBinanceFetcher extends TxNotesAndroidFetcher {
      * @param refreshTime          : is time in seconds to set to refresh data
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public AndroidBinanceFetcher(String apiKey, String secretKey, String baseEndpoint, Credentials credentials,
+    public AndroidBinanceFetcher(String apiKey, String secretKey, String baseEndpoint, TxNotesCredentials credentials,
                                  boolean printRoutineMessages, String baseCurrency, int refreshTime) throws Exception {
         super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint), featherDetails, credentials, printRoutineMessages,
                 baseCurrency, refreshTime);
@@ -89,7 +90,7 @@ public class AndroidBinanceFetcher extends TxNotesAndroidFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public AndroidBinanceFetcher(String apiKey, String secretKey, int refreshTime, Credentials credentials,
+    public AndroidBinanceFetcher(String apiKey, String secretKey, int refreshTime, TxNotesCredentials credentials,
                                  boolean printRoutineMessages, String baseCurrency) throws Exception {
         super(new BinanceTraderBot(apiKey, secretKey, refreshTime), featherDetails, credentials, printRoutineMessages,
                 baseCurrency, refreshTime);
@@ -108,7 +109,7 @@ public class AndroidBinanceFetcher extends TxNotesAndroidFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public AndroidBinanceFetcher(String apiKey, String secretKey, String baseEndpoint, int refreshTime, Credentials credentials,
+    public AndroidBinanceFetcher(String apiKey, String secretKey, String baseEndpoint, int refreshTime, TxNotesCredentials credentials,
                                  boolean printRoutineMessages, String baseCurrency) throws Exception {
         super(new BinanceTraderBot(apiKey, secretKey, baseEndpoint, refreshTime), featherDetails, credentials,
                 printRoutineMessages, baseCurrency, refreshTime);

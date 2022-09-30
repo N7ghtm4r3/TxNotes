@@ -1,6 +1,6 @@
 # TxNotes
 
-**v1.0.0**
+**v1.0.1**
 
 This is a Java Based library useful to take note about your transactions that you have made on the biggest crypto
 exchanges and analyse your crypto-wallet trend. Good use! <br>
@@ -28,7 +28,7 @@ allprojects {
 
 ```gradle
 dependencies {
-	implementation 'com.github.N7ghtm4r3:TxNotes:1.0.0'
+	implementation 'com.github.N7ghtm4r3:TxNotes:1.0.1'
 }
 ```
 
@@ -53,7 +53,7 @@ dependencies {
 <dependency>
   <groupId>com.github.N7ghtm4r3</groupId>
   <artifactId>TxNotes</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
@@ -101,8 +101,6 @@ fetcher.start();
 
 ### Android use
 
-###### Available soon!
-
 Fetchers work with <a href="https://play.google.com/store/apps/details?id=com.tecknobit.txnotes">Tecknobit's Android
 interface </a><br>
 All data will be stored and restored automatically, **will be not saved** your exchange platform api keys. <br>
@@ -115,35 +113,33 @@ All data will be stored and restored automatically, **will be not saved** your e
   In first attempt will throw a SaveData exception, so you can save credentials generated.
 
 ```java
-//In registration, you have to init Credentials object with your email and password for Tecknobit's account.
+//In registration, you have to init TxNotesCredentials object with your email and password for Tecknobit's account.
 
-Credentials credentials = new Credentials(
-        "yourEmail@email.com",
-        "yourPassword"
-        );
+TxNotesCredentials credentials=new TxNotesCredentials("yourEmail@email.com","yourPassword");
 
 //Program will automatically stop and will give to you auth credentials in this format:
 
-/*{
-        "secret_key": "valueOfSecretKey",
-        "password": "yourPasswordInserted",
-        "email": "yourEmailInserted@email.com",
-        "iv_spec": "valueOfIvSpec",
-        "auth_token": "valueOfAuthToken",
-        "token": "valueOfToken"
-}*/
+/*     
+    {
+      "secret_key": "valueOfSecretKey",
+      "password": "yourPasswordInserted",
+      "email": "yourEmailInserted@email.com",
+      "iv_spec": "valueOfIvSpec",
+      "auth_token": "valueOfAuthToken",
+      "token": "valueOfToken"
+    }
+*/
 
 //Note you must save these credentials where you retain safe because them are needed in auth operations.
 ```
 
 - #### Login
-  In login operation you have to use Credentials object to init your Tecknobit's account credentials.
+  In login operation you have to use TxNotesCredentials object to init your Tecknobit's account credentials.
 
 ```java
-//In login operation you have to init Credentials object with your credentials given from Registration
+//In login operation you have to init TxNotesCredentials object with your credentials given from Registration
 
-Credentials credentials = new Credentials(
-        "valueOfAuthToken",
+TxNotesCredentials credentials=new TxNotesCredentials("valueOfAuthToken",
         "yourEmail@email.com",
         "yourPassword",
         "valueOfIvSpec",

@@ -3,6 +3,7 @@ package com.tecknobit.txnotes.fetchers.interfaces.android.utils;
 import com.tecknobit.traderbot.Records.Android.Routine;
 import com.tecknobit.traderbot.Routines.Android.AndroidCoreRoutines;
 import com.tecknobit.traderbot.Routines.Android.AndroidWorkflow;
+import com.tecknobit.traderbot.Routines.Android.ServerRequest;
 import com.tecknobit.traderbot.Routines.Interfaces.RoutineMessages;
 import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
 import com.tecknobit.txnotes.fetchers.TxNotesFetcher;
@@ -230,6 +231,72 @@ public class TxNotesWorkflow extends AndroidWorkflow {
                 printOperationFailed(ALLOW_ALL_TXS_NOTE_OPE);
             }
         }
+    }
+
+    /**
+     * The {@code TxNotesCredentials} class is object for Tecknobit's account credentials
+     *
+     * @author Tecknobit N7ghtm4r3
+     * @implNote it not saves your exchange keys
+     * Is useful for Android's type traders.
+     **/
+
+    public static class TxNotesCredentials {
+
+        /**
+         * {@code credentials} instance to init {@link Credentials} for Android's bots
+         **/
+        private final Credentials credentials;
+
+        /**
+         * Constructor to init {@link TxNotesCredentials}
+         *
+         * @param authToken: is instance that memorizes identifier of server trader to log in and requests operations
+         * @param email:     is instance that memorizes email of user
+         * @param password:  is instance that memorizes password of user
+         * @param token:     instance that memorizes identifier of user to log in and requests operations
+         * @param ivSpec:    instance initialization vector used in server requests
+         * @param secretKey: is instance secret key used in server requests
+         * @implNote this constructor must call to log in
+         **/
+        public TxNotesCredentials(String authToken, String email, String password, String token, String ivSpec,
+                                  String secretKey) {
+            credentials = new Credentials(authToken, email, password, token, ivSpec, secretKey);
+        }
+
+        /**
+         * Constructor to init {@link TxNotesCredentials}
+         *
+         * @param email:    is instance that memorizes email of user
+         * @param password: is instance that memorizes password of user
+         * @implNote this constructor must call to register a new account
+         **/
+        public TxNotesCredentials(String email, String password) {
+            credentials = new Credentials(email, password);
+        }
+
+        /**
+         * Constructor to init {@link TxNotesCredentials}
+         *
+         * @param credentials : instance that contains your Tecknobit's account credentials, not your private exchange keys in {@link JSONObject}
+         *                    format
+         * @implNote this constructor is to create dynamically a {@link Credentials} object
+         * @apiNote to work correctly it needs specific keys for credentials -> available on {@link ServerRequest}
+         * @see ServerRequest
+         **/
+        public TxNotesCredentials(JSONObject credentials) {
+            this.credentials = new Credentials(credentials);
+        }
+
+        /**
+         * This method is used to get credentials inserted for auth operation
+         *
+         * @return Tecknobit's credentials as {@link Credentials} object
+         **/
+        public Credentials getCredentials() {
+            return credentials;
+        }
+
     }
 
 }

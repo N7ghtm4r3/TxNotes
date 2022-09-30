@@ -3,12 +3,13 @@ package com.tecknobit.txnotes.fetchers.interfaces.android;
 import com.tecknobit.traderbot.Records.Account.BotDetails;
 import com.tecknobit.traderbot.Traders.Interfaces.Native.CoinbaseTraderBot;
 import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesAndroidFetcher;
+import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow;
 import com.tecknobit.txnotes.records.TxNote;
 
 import java.util.Collection;
 
 import static com.tecknobit.traderbot.Records.Account.BotDetails.*;
-import static com.tecknobit.traderbot.Routines.Android.AndroidWorkflow.Credentials;
+import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow.TxNotesCredentials;
 
 /**
  * The {@code AndroidCoinbaseFetcher} class is useful to fetch all transactions from your Coinbase's account autonomously<br>
@@ -52,7 +53,7 @@ public class AndroidCoinbaseFetcher extends TxNotesAndroidFetcher {
      * @implNote these keys will NOT store by library anywhere.
      **/
     public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage, int timeout,
-                                  Credentials credentials, boolean printRoutineMessages, String baseCurrency,
+                                  TxNotesWorkflow.TxNotesCredentials credentials, boolean printRoutineMessages, String baseCurrency,
                                   int refreshTime) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout), featherDetails, credentials,
                 printRoutineMessages, baseCurrency, refreshTime);
@@ -71,7 +72,7 @@ public class AndroidCoinbaseFetcher extends TxNotesAndroidFetcher {
      * @param refreshTime          : is time in seconds to set to refresh data
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int timeout, Credentials credentials,
+    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int timeout, TxNotesWorkflow.TxNotesCredentials credentials,
                                   boolean printRoutineMessages, String baseCurrency, int refreshTime) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout), featherDetails, credentials, printRoutineMessages,
                 baseCurrency, refreshTime);
@@ -91,7 +92,7 @@ public class AndroidCoinbaseFetcher extends TxNotesAndroidFetcher {
      * @implNote these keys will NOT store by library anywhere.
      **/
     public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                                  Credentials credentials, boolean printRoutineMessages, String baseCurrency,
+                                  TxNotesWorkflow.TxNotesCredentials credentials, boolean printRoutineMessages, String baseCurrency,
                                   int refreshTime) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage), featherDetails, credentials,
                 printRoutineMessages, baseCurrency, refreshTime);
@@ -109,7 +110,7 @@ public class AndroidCoinbaseFetcher extends TxNotesAndroidFetcher {
      * @param refreshTime          : is time in seconds to set to refresh data
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, Credentials credentials,
+    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, TxNotesCredentials credentials,
                                   boolean printRoutineMessages, String baseCurrency, int refreshTime) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase), featherDetails, credentials, printRoutineMessages,
                 baseCurrency, refreshTime);
@@ -131,7 +132,7 @@ public class AndroidCoinbaseFetcher extends TxNotesAndroidFetcher {
      * @implNote these keys will NOT store by library anywhere.
      **/
     public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                                  int timeout, int refreshTime, Credentials credentials, boolean printRoutineMessages,
+                                  int timeout, int refreshTime, TxNotesCredentials credentials, boolean printRoutineMessages,
                                   String baseCurrency) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, timeout, refreshTime), featherDetails,
                 credentials, printRoutineMessages, baseCurrency, refreshTime);
@@ -152,7 +153,7 @@ public class AndroidCoinbaseFetcher extends TxNotesAndroidFetcher {
      * @implNote these keys will NOT store by library anywhere.
      **/
     public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int timeout, int refreshTime,
-                                  Credentials credentials, boolean printRoutineMessages, String baseCurrency) throws Exception {
+                                  TxNotesWorkflow.TxNotesCredentials credentials, boolean printRoutineMessages, String baseCurrency) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, timeout, refreshTime), featherDetails, credentials,
                 printRoutineMessages, baseCurrency, refreshTime);
     }
@@ -172,7 +173,7 @@ public class AndroidCoinbaseFetcher extends TxNotesAndroidFetcher {
      * @implNote these keys will NOT store by library anywhere.
      **/
     public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, String defaultErrorMessage,
-                                  int refreshTime, Credentials credentials, boolean printRoutineMessages,
+                                  int refreshTime, TxNotesWorkflow.TxNotesCredentials credentials, boolean printRoutineMessages,
                                   String baseCurrency) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, defaultErrorMessage, refreshTime), featherDetails,
                 credentials, printRoutineMessages, baseCurrency, refreshTime);
@@ -191,8 +192,9 @@ public class AndroidCoinbaseFetcher extends TxNotesAndroidFetcher {
      * @throws IllegalArgumentException if {@code refreshTime} value is less than 5(5s) and if is bigger than 3600(1h)
      * @implNote these keys will NOT store by library anywhere.
      **/
-    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int refreshTime, Credentials credentials,
-                                  boolean printRoutineMessages, String baseCurrency) throws Exception {
+    public AndroidCoinbaseFetcher(String apiKey, String apiSecret, String passphrase, int refreshTime,
+                                  TxNotesWorkflow.TxNotesCredentials credentials, boolean printRoutineMessages,
+                                  String baseCurrency) throws Exception {
         super(new CoinbaseTraderBot(apiKey, apiSecret, passphrase, refreshTime), featherDetails, credentials,
                 printRoutineMessages, baseCurrency, refreshTime);
     }
