@@ -9,7 +9,7 @@ import com.tecknobit.txnotes.records.TxNote;
 
 import java.util.Collection;
 
-import static com.tecknobit.traderbot.Records.Account.BotDetails.*;
+import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.*;
 
 /**
  * The {@code AndroidBinanceFetcher} class is useful to fetch all transactions from your Binance's account autonomously <br>
@@ -26,11 +26,6 @@ import static com.tecknobit.traderbot.Records.Account.BotDetails.*;
  **/
 
 public class AndroidBinanceFetcher extends TxNotesAndroidFetcher {
-
-    /**
-     * {@code BINANCE_BASE_ENDPOINTS} is a list constant that contains list of Binance's main endpoints
-     **/
-    public static final String[] BINANCE_BASE_ENDPOINTS = BinanceTraderBot.BINANCE_BASE_ENDPOINTS;
 
     /**
      * {@code featherDetails} is instance that memorize fetcher details as {@link BotDetails} object
@@ -65,7 +60,7 @@ public class AndroidBinanceFetcher extends TxNotesAndroidFetcher {
      *
      * @param apiKey:              your Binance's api key
      * @param secretKey:           your Binance's secret key
-     * @param baseEndpoint:        base endpoint choose from {@link #BINANCE_BASE_ENDPOINTS} array
+     * @param baseEndpoint:        base endpoint choose from {@link BinanceTraderBot#BINANCE_BASE_ENDPOINTS} array
      * @param credentials:         is object that contains your Tecknobit's account credentials, not your private exchange keys
      * @param printRoutineMessages : flag to insert to print or not routine messages
      * @param baseCurrency         : base currency to get all amount value of traders routine es. EUR
@@ -101,7 +96,7 @@ public class AndroidBinanceFetcher extends TxNotesAndroidFetcher {
      *
      * @param apiKey:              your Binance's api key
      * @param secretKey:           your Binance's secret key
-     * @param baseEndpoint:        base endpoint choose from {@link #BINANCE_BASE_ENDPOINTS} array
+     * @param baseEndpoint:        base endpoint choose from {@link BinanceTraderBot#BINANCE_BASE_ENDPOINTS} array
      * @param refreshTime:         is time in seconds to set for refresh the latest prices
      * @param credentials:         is object that contains your Tecknobit's account credentials, not your private exchange keys
      * @param printRoutineMessages : flag to insert to print or not routine messages

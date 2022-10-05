@@ -23,11 +23,6 @@ public class TxNotesServerRequest extends ServerRequest {
     public static final int TX_PORT = 6898;
 
     /**
-     * {@code ALLOW_ALL_TXS_NOTE_OPE} request
-     **/
-    public static final String ALLOW_ALL_TXS_NOTE_OPE = "allow_all_txs_ope";
-
-    /**
      * Constructor to init {@link TxNotesServerRequest}
      *
      * @param ivSpec    : initialization vector used in server requests

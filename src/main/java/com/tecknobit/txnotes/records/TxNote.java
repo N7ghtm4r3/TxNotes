@@ -9,11 +9,9 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.*;
-import static com.tecknobit.traderbot.Records.Portfolio.Cryptocurrency.*;
-import static com.tecknobit.traderbot.Records.Portfolio.Token.QUANTITY_KEY;
 import static com.tecknobit.traderbot.Routines.Interfaces.RoutineMessages.*;
-import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.BUY;
-import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.SELL;
+import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.*;
+import static com.tecknobit.txnotes.fetchers.interfaces.TxNotesConstants.*;
 import static java.lang.Math.toIntExact;
 import static java.lang.System.out;
 import static java.util.concurrent.TimeUnit.DAYS;
@@ -31,63 +29,34 @@ import static java.util.concurrent.TimeUnit.DAYS;
 public class TxNote extends Transaction implements RecordDetails {
 
     /**
-     * {@code STATUS_KEY} key
-     **/
-    public static final String STATUS_KEY = "status";
-
-    /**
-     * {@code BUY_DATE_KEY} key
-     **/
-    public static final String BUY_DATE_KEY = "buy_date";
-
-    /**
-     * {@code INITIAL_BALANCE_KEY} key
-     **/
-    public static final String INITIAL_BALANCE_KEY = "initial_balance";
-
-    /**
-     * {@code SELL_DATE_KEY} key
-     **/
-    public static final String SELL_DATE_KEY = "sell_date";
-
-    /**
-     * {@code SELL_PRICE_KEY} key
-     **/
-    public static final String SELL_PRICE_KEY = "sell_price";
-
-    /**
-     * {@code TRADE_DAYS_KEY} key
-     **/
-    public static final String TRADE_DAYS_KEY = "trade_days";
-
-    /**
      * {@code startPrice} is instance that memorizes start price value
      **/
-    private final double startPrice;
+    protected final double startPrice;
+
     /**
      * {@code status} is instance that memorizes status of transaction -> BUY or SELL
      **/
-    private String status;
+    protected String status;
 
     /**
      * {@code sellPrice} is instance that memorizes sell price value
      **/
-    private double sellPrice;
+    protected double sellPrice;
 
     /**
      * {@code sellDateTimestamp} is instance that memorizes sell date timestamp value
      **/
-    private long sellDateTimestamp;
+    protected long sellDateTimestamp;
 
     /**
      * {@code sellDate} is instance that memorizes sell date value
      **/
-    private String sellDate;
+    protected String sellDate;
 
     /**
      * {@code lastPrice} is instance that memorizes last price value
      **/
-    private double lastPrice;
+    protected double lastPrice;
 
     /**
      * Constructor to init {@link TxNote}

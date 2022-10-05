@@ -5,7 +5,7 @@ import com.tecknobit.traderbot.Routines.Android.AndroidBotController;
 import com.tecknobit.traderbot.Routines.Android.AndroidCoreRoutines;
 import com.tecknobit.traderbot.Routines.Android.AndroidWorkflow;
 import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
-import com.tecknobit.txnotes.fetchers.TxNotesFetcher;
+import com.tecknobit.txnotes.fetchers.interfaces.TxNotesFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.android.AndroidBinanceFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.android.AndroidCoinbaseFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow.TxNotesCredentials;
@@ -14,19 +14,12 @@ import com.tecknobit.txnotes.records.Wallet;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import static com.tecknobit.traderbot.Records.Account.BotDetails.RUNNING_BOT_STATUS;
-import static com.tecknobit.traderbot.Records.Account.BotDetails.STOPPED_BOT_STATUS;
-import static com.tecknobit.traderbot.Records.Portfolio.Cryptocurrency.QUOTE_ASSET_KEY;
-import static com.tecknobit.traderbot.Records.Portfolio.Cryptocurrency.SYMBOL_KEY;
-import static com.tecknobit.traderbot.Records.Portfolio.Token.BASE_ASSET_KEY;
-import static com.tecknobit.traderbot.Records.Portfolio.Token.QUANTITY_KEY;
-import static com.tecknobit.traderbot.Records.Portfolio.Transaction.TRANSACTIONS_KEY;
 import static com.tecknobit.traderbot.Routines.Android.AndroidWorkflow.Credentials;
 import static com.tecknobit.traderbot.Routines.Android.ServerRequest.response;
+import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.*;
+import static com.tecknobit.txnotes.fetchers.interfaces.TxNotesConstants.*;
 import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesServerRequest.TX_HOST;
 import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesServerRequest.TX_PORT;
-import static com.tecknobit.txnotes.records.TxNote.*;
-import static com.tecknobit.txnotes.records.Wallet.DELETED_TX_NOTES_KEY;
 
 /**
  * The {@code TxNotesAndroidFetcher} class is useful to fetch all transactions from exchange's account autonomously <br>

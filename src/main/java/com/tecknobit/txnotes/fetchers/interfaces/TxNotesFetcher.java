@@ -1,10 +1,8 @@
-package com.tecknobit.txnotes.fetchers;
+package com.tecknobit.txnotes.fetchers.interfaces;
 
 import com.tecknobit.traderbot.Records.Portfolio.Transaction;
 import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
 import com.tecknobit.txnotes.fetchers.autonomous.TxNotesAutoFetcher;
-import com.tecknobit.txnotes.fetchers.interfaces.BinanceFetcher;
-import com.tecknobit.txnotes.fetchers.interfaces.CoinbaseFetcher;
 import com.tecknobit.txnotes.records.TxNote;
 import com.tecknobit.txnotes.records.Wallet;
 
@@ -13,6 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tecknobit.apimanager.Tools.Trading.CryptocurrencyTool.getCryptocurrencySymbol;
 import static com.tecknobit.traderbot.Records.Portfolio.Transaction.getDateTimestamp;
+import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.BUY;
+import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.SELL;
 
 /**
  * The {@code TxNotesFetcher} class is useful to fetch all transactions from exchange's account <br>
@@ -24,16 +24,6 @@ import static com.tecknobit.traderbot.Records.Portfolio.Transaction.getDateTimes
  **/
 
 public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
-
-    /**
-     * {@code BUY} is constant for buy side
-     **/
-    public static final String BUY = TraderCoreRoutines.BUY;
-
-    /**
-     * {@code SELL} is constant for sell side
-     **/
-    public static final String SELL = TraderCoreRoutines.SELL;
 
     /**
      * {@code fetcherPlatform} is instance of {@link TraderCoreRoutines} to use to fetch transactions

@@ -8,7 +8,7 @@ import com.tecknobit.txnotes.records.TxNote;
 
 import java.util.Collection;
 
-import static com.tecknobit.traderbot.Records.Account.BotDetails.*;
+import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.*;
 import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow.TxNotesCredentials;
 
 /**

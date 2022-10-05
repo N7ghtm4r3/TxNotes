@@ -6,16 +6,13 @@ import com.tecknobit.traderbot.Routines.Android.AndroidWorkflow;
 import com.tecknobit.traderbot.Routines.Android.ServerRequest;
 import com.tecknobit.traderbot.Routines.Interfaces.RoutineMessages;
 import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
-import com.tecknobit.txnotes.fetchers.TxNotesFetcher;
+import com.tecknobit.txnotes.fetchers.interfaces.TxNotesFetcher;
 import com.tecknobit.txnotes.records.TxNote;
 import org.json.JSONObject;
 
-import static com.tecknobit.traderbot.Records.Account.BotDetails.RUNNING_BOT_STATUS;
-import static com.tecknobit.traderbot.Records.Account.BotDetails.STOPPED_BOT_STATUS;
-import static com.tecknobit.traderbot.Records.Portfolio.Transaction.TRANSACTIONS_KEY;
-import static com.tecknobit.traderbot.Records.Portfolio.Transaction.TRANSACTION_KEY;
-import static com.tecknobit.traderbot.Routines.Android.ServerRequest.*;
-import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesServerRequest.ALLOW_ALL_TXS_NOTE_OPE;
+import static com.tecknobit.traderbot.Routines.Android.ServerRequest.response;
+import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.*;
+import static com.tecknobit.txnotes.fetchers.interfaces.TxNotesConstants.ALLOW_ALL_TXS_NOTE_OPE;
 import static java.lang.Integer.parseInt;
 
 /**

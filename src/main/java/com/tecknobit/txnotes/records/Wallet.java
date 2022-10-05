@@ -10,12 +10,8 @@ import java.util.HashMap;
 import static com.tecknobit.apimanager.Tools.Trading.CryptocurrencyTool.getCryptocurrencyName;
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.roundValue;
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.textualizeAssetPercent;
-import static com.tecknobit.traderbot.Records.Portfolio.Cryptocurrency.*;
-import static com.tecknobit.traderbot.Records.Portfolio.Token.QUANTITY_KEY;
-import static com.tecknobit.traderbot.Records.Portfolio.Transaction.TRANSACTIONS_KEY;
 import static com.tecknobit.traderbot.Records.Portfolio.Transaction.getDateTimestamp;
-import static com.tecknobit.traderbot.Routines.Android.ServerRequest.BALANCE_KEY;
-import static com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines.BUY;
+import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.*;
 import static com.tecknobit.txnotes.records.TxNote.getDetailsColoured;
 import static java.lang.System.out;
 
@@ -30,39 +26,29 @@ import static java.lang.System.out;
 public class Wallet implements RecordDetails {
 
     /**
-     * {@code WALLET_KEY} is instance that memorizes wallet key
-     **/
-    public static final String WALLET_KEY = "wallet";
-
-    /**
-     * {@code DELETED_TX_NOTES_KEY} is instance that memorizes deleted tx notes key
-     **/
-    public static final String DELETED_TX_NOTES_KEY = "deleted_tx_notes";
-
-    /**
      * {@code index} is instance that memorizes index value
      **/
-    private final String index;
+    protected final String index;
 
     /**
      * {@code name} is instance that memorizes name of the asset of this wallet es. Bitcoin
      **/
-    private final String name;
+    protected final String name;
 
     /**
      * {@code lastPrice} is instance that memorizes last price value
      **/
-    private double lastPrice;
+    protected double lastPrice;
 
     /**
      * {@code trend} is instance that memorizes trend value
      **/
-    private double trend;
+    protected double trend;
 
     /**
      * {@code txNotes} is instance that memorizes list of {@link TxNote}
      **/
-    private ArrayList<TxNote> txNotes;
+    protected ArrayList<TxNote> txNotes;
 
     /**
      * Constructor to init {@link Wallet}
@@ -90,11 +76,7 @@ public class Wallet implements RecordDetails {
      * @param trend:     trend value
      **/
     public Wallet(String index, String name, double lastPrice, double trend) {
-        this.index = index;
-        this.name = name;
-        this.lastPrice = lastPrice;
-        this.trend = trend;
-        txNotes = new ArrayList<>();
+        this(index, name, lastPrice, trend, new ArrayList<>());
     }
 
     /**
@@ -107,13 +89,7 @@ public class Wallet implements RecordDetails {
      * @implSpec this constructor inserts automatically the name of the asset of this wallet es. Bitcoin
      **/
     public Wallet(String index, double lastPrice, double trend, ArrayList<TxNote> txNotes) {
-        String assetName;
-        this.index = index;
-        assetName = getCryptocurrencyName(index);
-        this.name = assetName;
-        this.lastPrice = lastPrice;
-        this.trend = trend;
-        this.txNotes = txNotes;
+        this(index, getCryptocurrencyName(index), lastPrice, trend, txNotes);
     }
 
     /**
@@ -125,13 +101,7 @@ public class Wallet implements RecordDetails {
      * @implSpec this constructor inserts automatically the name of the asset of this wallet es. Bitcoin
      **/
     public Wallet(String index, double lastPrice, double trend) {
-        String assetName;
-        this.index = index;
-        assetName = getCryptocurrencyName(index);
-        this.name = assetName;
-        this.lastPrice = lastPrice;
-        this.trend = trend;
-        txNotes = new ArrayList<>();
+        this(index, getCryptocurrencyName(index), lastPrice, trend, new ArrayList<>());
     }
 
     public String getIndex() {
