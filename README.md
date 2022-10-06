@@ -29,7 +29,7 @@ allprojects {
 ```gradle
 dependencies {
 	implementation 'com.github.N7ghtm4r3:TxNotes:1.0.2'
-	//to make TxNotes works correctly you must implement also
+	//to make TxNotes works correctly you must implement also the main library:
 	implementation 'com.github.N7ghtm4r3:TraderBot:1.0.9'
 }
 ```
@@ -48,7 +48,7 @@ dependencies {
 </repositories>
 ```
 
-- Add the dependency
+- Add the dependencies
 
 ```xml
 
@@ -56,6 +56,15 @@ dependencies {
   <groupId>com.github.N7ghtm4r3</groupId>
   <artifactId>TxNotes</artifactId>
   <version>1.0.2</version>
+</dependency>
+```
+###### To make TxNotes works correctly you must implement also the main library:
+	
+```xml
+<dependency>
+    <groupId>com.github.N7ghtm4r3</groupId>
+  <artifactId>TraderBot</artifactId>
+  <version>1.0.9</version>
 </dependency>
 ```
 
