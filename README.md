@@ -24,11 +24,13 @@ allprojects {
 }
 ```
 
-- Add the dependency
+- Add the dependencies
 
 ```gradle
 dependencies {
 	implementation 'com.github.N7ghtm4r3:TxNotes:1.0.2'
+	//to make TxNotes works correctly you must implement also
+	implementation 'com.github.N7ghtm4r3:TraderBot:1.0.9'
 }
 ```
 
