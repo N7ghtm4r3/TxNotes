@@ -1,5 +1,6 @@
 package com.tecknobit.txnotes.fetchers.interfaces;
 
+import com.tecknobit.traderbot.Records.Portfolio.MarketCoin;
 import com.tecknobit.traderbot.Records.Portfolio.Transaction;
 import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
 import com.tecknobit.txnotes.fetchers.autonomous.TxNotesAutoFetcher;
@@ -91,7 +92,8 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
      * @throws Exception when an operation fails
      **/
     public Collection<TxNote> fetchTxNotesList() throws Exception {
-        for (Transaction transaction : fetcherPlatform.getAllTransactions(false)) {
+        for (Transaction transaction : fetcherPlatform.getTransactionsList(baseCurrency,
+                "dd/MM/yyyy HH:mm:ss", true)) {
             String symbol = transaction.getSymbol();
             String status = transaction.getSide();
             long timestamp = transaction.getTransactionTimestamp();
@@ -363,11 +365,11 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
             }
         }
         for (String index : notes.keySet()) {
-            ArrayList<TxNote> mNotes = notes.get(index);
+            MarketCoin market = fetcherPlatform.getLastPrice(index + baseCurrency);
             wallets.put(index, new Wallet(index,
-                    mNotes.get(0).getLastPrice(),
-                    fetcherPlatform.getLastPrice(index).getPriceChangePercent(),
-                    mNotes
+                    market.getLastPrice(),
+                    market.getPriceChangePercent(),
+                    notes.get(index)
             ));
         }
     }

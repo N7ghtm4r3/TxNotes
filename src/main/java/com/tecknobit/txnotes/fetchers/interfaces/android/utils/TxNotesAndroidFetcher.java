@@ -5,6 +5,7 @@ import com.tecknobit.traderbot.Routines.Android.AndroidBotController;
 import com.tecknobit.traderbot.Routines.Android.AndroidCoreRoutines;
 import com.tecknobit.traderbot.Routines.Android.AndroidWorkflow;
 import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
+import com.tecknobit.traderbot.Traders.Interfaces.Native.BinanceTraderBot;
 import com.tecknobit.txnotes.fetchers.interfaces.TxNotesFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.android.AndroidBinanceFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.android.AndroidCoinbaseFetcher;
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 import static com.tecknobit.traderbot.Routines.Android.AndroidWorkflow.Credentials;
 import static com.tecknobit.traderbot.Routines.Android.ServerRequest.response;
 import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.*;
+import static com.tecknobit.traderbot.Traders.Interfaces.Native.BinanceTraderBot.BUSD_CURRENCY;
 import static com.tecknobit.txnotes.fetchers.interfaces.TxNotesConstants.*;
 import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesServerRequest.TX_HOST;
 import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesServerRequest.TX_PORT;
@@ -425,6 +427,18 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
             if (txNotesWorkflow.changeBaseCurrency(baseCurrency))
                 this.baseCurrency = baseCurrency;
         }
+    }
+
+    /**
+     * This method is used to set base currency for change amount value
+     *
+     * @param baseCurrency: base currency to get all amount value of traders routine es. EUR
+     **/
+    @Override
+    public void setBaseCurrency(String baseCurrency) {
+        if (fetcherPlatform instanceof BinanceTraderBot && baseCurrency.equals(USD_CURRENCY))
+            baseCurrency = BUSD_CURRENCY;
+        super.setBaseCurrency(baseCurrency);
     }
 
 }

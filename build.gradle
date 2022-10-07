@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.tecknobit'
-version '1.0.2'
+version '1.0.3'
 
 repositories {
     mavenCentral()
@@ -24,7 +24,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.tecknobit.txnotes'
             artifactId = 'TxNotes'
-            version = '1.0.2'
+            version = '1.0.3'
             from components.java
         }
     }
