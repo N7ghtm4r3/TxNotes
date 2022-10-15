@@ -1,7 +1,7 @@
 package com.tecknobit.txnotes.fetchers.interfaces.android;
 
-import com.tecknobit.traderbot.Records.Account.BotDetails;
-import com.tecknobit.traderbot.Traders.Interfaces.Native.BinanceTraderBot;
+import com.tecknobit.traderbot.records.account.BotDetails;
+import com.tecknobit.traderbot.traders.interfaces.BinanceTraderBot;
 import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesAndroidFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow;
 import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow.TxNotesCredentials;
@@ -9,7 +9,7 @@ import com.tecknobit.txnotes.records.TxNote;
 
 import java.util.Collection;
 
-import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.*;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.*;
 
 /**
  * The {@code AndroidBinanceFetcher} class is useful to fetch all transactions from your Binance's account autonomously <br>

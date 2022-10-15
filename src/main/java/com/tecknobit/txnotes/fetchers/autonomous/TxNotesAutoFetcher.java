@@ -1,7 +1,7 @@
 package com.tecknobit.txnotes.fetchers.autonomous;
 
-import com.tecknobit.traderbot.Routines.Interfaces.RoutineMessages;
-import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
+import com.tecknobit.traderbot.routines.interfaces.RoutineMessages;
+import com.tecknobit.traderbot.routines.interfaces.TraderCoreRoutines;
 import com.tecknobit.txnotes.fetchers.interfaces.TxNotesFetcher;
 import com.tecknobit.txnotes.records.TxNote;
 import com.tecknobit.txnotes.records.Wallet;

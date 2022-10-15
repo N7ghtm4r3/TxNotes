@@ -1,6 +1,6 @@
 package com.tecknobit.txnotes.fetchers.autonomous;
 
-import com.tecknobit.traderbot.Traders.Interfaces.Native.BinanceTraderBot;
+import com.tecknobit.traderbot.traders.interfaces.BinanceTraderBot;
 import com.tecknobit.txnotes.fetchers.interfaces.BinanceFetcher;
 
 /**

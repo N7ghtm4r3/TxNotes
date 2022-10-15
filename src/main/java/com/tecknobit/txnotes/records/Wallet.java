@@ -1,7 +1,8 @@
 package com.tecknobit.txnotes.records;
 
-import com.tecknobit.traderbot.Routines.Interfaces.RecordDetails;
+import com.tecknobit.traderbot.routines.interfaces.RecordDetails;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,8 +11,8 @@ import java.util.HashMap;
 import static com.tecknobit.apimanager.Tools.Trading.CryptocurrencyTool.getCryptocurrencyName;
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.roundValue;
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.textualizeAssetPercent;
-import static com.tecknobit.traderbot.Records.Portfolio.Transaction.getDateTimestamp;
-import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.*;
+import static com.tecknobit.traderbot.records.portfolio.Transaction.getDateTimestamp;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.*;
 import static com.tecknobit.txnotes.records.TxNote.getDetailsColoured;
 import static java.lang.System.out;
 
@@ -471,6 +472,12 @@ public class Wallet implements RecordDetails {
         return wallet;
     }
 
+    /**
+     * Returns a string representation of the object <br>
+     * Any params required
+     *
+     * @return a string representation of the object as {@link String}
+     */
     @Override
     public String toString() {
         return "## [" + index + "]\n" +
@@ -482,6 +489,16 @@ public class Wallet implements RecordDetails {
                 getDetailsColoured("Total income", getTotalIncomePercentText()) +
                 "## Transaction notes size: " + txNotes.size() + "\n" +
                 "######################";
+    }
+
+    /**
+     * Returns a string pretty printed of the representation of the object <br>
+     * Any params required
+     *
+     * @return a string representation of the object as {@link String}
+     */
+    public String prettyPrint() {
+        return new JSONObject(this).toString();
     }
 
 }

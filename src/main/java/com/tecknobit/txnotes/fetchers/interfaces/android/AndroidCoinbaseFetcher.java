@@ -1,14 +1,14 @@
 package com.tecknobit.txnotes.fetchers.interfaces.android;
 
-import com.tecknobit.traderbot.Records.Account.BotDetails;
-import com.tecknobit.traderbot.Traders.Interfaces.Native.CoinbaseTraderBot;
+import com.tecknobit.traderbot.records.account.BotDetails;
+import com.tecknobit.traderbot.traders.interfaces.CoinbaseTraderBot;
 import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesAndroidFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow;
 import com.tecknobit.txnotes.records.TxNote;
 
 import java.util.Collection;
 
-import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.*;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.*;
 import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesWorkflow.TxNotesCredentials;
 
 /**

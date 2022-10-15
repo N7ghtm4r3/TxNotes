@@ -1,7 +1,8 @@
 package com.tecknobit.txnotes.fetchers.interfaces.android.utils;
 
-import com.tecknobit.traderbot.Routines.Android.AndroidWorkflow;
-import com.tecknobit.traderbot.Routines.Android.ServerRequest;
+import com.tecknobit.traderbot.routines.android.ServerRequest;
+
+import static com.tecknobit.traderbot.routines.android.AndroidWorkflow.Credentials;
 
 /**
  * The {@code TxNotesServerRequest} class is useful to make server request for Android's bots<br>
@@ -56,7 +57,7 @@ public class TxNotesServerRequest extends ServerRequest {
      * @param host:       host value
      * @param port:       port value
      **/
-    public TxNotesServerRequest(AndroidWorkflow.Credentials credentials, String host, int port) throws Exception {
+    public TxNotesServerRequest(Credentials credentials, String host, int port) throws Exception {
         super(credentials, host, port);
     }
 

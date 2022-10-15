@@ -1,6 +1,6 @@
 package com.tecknobit.txnotes.fetchers.autonomous;
 
-import com.tecknobit.traderbot.Traders.Interfaces.Native.CoinbaseTraderBot;
+import com.tecknobit.traderbot.traders.interfaces.CoinbaseTraderBot;
 
 /**
  * The {@code CoinbaseAutoFetcher} class is useful to fetch all transactions from your Coinbase's account autonomously <br>

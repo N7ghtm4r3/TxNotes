@@ -1,11 +1,12 @@
 package com.tecknobit.txnotes.fetchers.interfaces.android.utils;
 
-import com.tecknobit.traderbot.Records.Account.BotDetails;
-import com.tecknobit.traderbot.Routines.Android.AndroidBotController;
-import com.tecknobit.traderbot.Routines.Android.AndroidCoreRoutines;
-import com.tecknobit.traderbot.Routines.Android.AndroidWorkflow;
-import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
-import com.tecknobit.traderbot.Traders.Interfaces.Native.BinanceTraderBot;
+import com.tecknobit.traderbot.records.account.BotDetails;
+import com.tecknobit.traderbot.routines.android.AndroidBotController;
+import com.tecknobit.traderbot.routines.android.AndroidCoreRoutines;
+import com.tecknobit.traderbot.routines.android.AndroidWorkflow;
+import com.tecknobit.traderbot.routines.android.AndroidWorkflow.Credentials;
+import com.tecknobit.traderbot.routines.interfaces.TraderCoreRoutines;
+import com.tecknobit.traderbot.traders.interfaces.BinanceTraderBot;
 import com.tecknobit.txnotes.fetchers.interfaces.TxNotesFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.android.AndroidBinanceFetcher;
 import com.tecknobit.txnotes.fetchers.interfaces.android.AndroidCoinbaseFetcher;
@@ -15,10 +16,9 @@ import com.tecknobit.txnotes.records.Wallet;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import static com.tecknobit.traderbot.Routines.Android.AndroidWorkflow.Credentials;
-import static com.tecknobit.traderbot.Routines.Android.ServerRequest.response;
-import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.*;
-import static com.tecknobit.traderbot.Traders.Interfaces.Native.BinanceTraderBot.BUSD_CURRENCY;
+import static com.tecknobit.traderbot.routines.android.ServerRequest.response;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.*;
+import static com.tecknobit.traderbot.traders.interfaces.BinanceTraderBot.BUSD_CURRENCY;
 import static com.tecknobit.txnotes.fetchers.interfaces.TxNotesConstants.*;
 import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesServerRequest.TX_HOST;
 import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesServerRequest.TX_PORT;
@@ -34,6 +34,7 @@ import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesSer
  * @see AndroidBinanceFetcher
  * @see AndroidCoinbaseFetcher
  **/
+
 public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCoreRoutines, AndroidBotController {
 
     /**

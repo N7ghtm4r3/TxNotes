@@ -1,8 +1,8 @@
 package com.tecknobit.txnotes.fetchers.interfaces;
 
-import com.tecknobit.traderbot.Records.Portfolio.MarketCoin;
-import com.tecknobit.traderbot.Records.Portfolio.Transaction;
-import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
+import com.tecknobit.traderbot.records.portfolio.MarketCoin;
+import com.tecknobit.traderbot.records.portfolio.Transaction;
+import com.tecknobit.traderbot.routines.interfaces.TraderCoreRoutines;
 import com.tecknobit.txnotes.fetchers.autonomous.TxNotesAutoFetcher;
 import com.tecknobit.txnotes.records.TxNote;
 import com.tecknobit.txnotes.records.Wallet;
@@ -11,9 +11,9 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tecknobit.apimanager.Tools.Trading.CryptocurrencyTool.getCryptocurrencySymbol;
-import static com.tecknobit.traderbot.Records.Portfolio.Transaction.getDateTimestamp;
-import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.BUY;
-import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.SELL;
+import static com.tecknobit.traderbot.records.portfolio.Transaction.getDateTimestamp;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.BUY;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.SELL;
 
 /**
  * The {@code TxNotesFetcher} class is useful to fetch all transactions from exchange's account <br>

@@ -1,17 +1,17 @@
 package com.tecknobit.txnotes.fetchers.interfaces.android.utils;
 
-import com.tecknobit.traderbot.Records.Android.Routine;
-import com.tecknobit.traderbot.Routines.Android.AndroidCoreRoutines;
-import com.tecknobit.traderbot.Routines.Android.AndroidWorkflow;
-import com.tecknobit.traderbot.Routines.Android.ServerRequest;
-import com.tecknobit.traderbot.Routines.Interfaces.RoutineMessages;
-import com.tecknobit.traderbot.Routines.Interfaces.TraderCoreRoutines;
+import com.tecknobit.traderbot.records.android.Routine;
+import com.tecknobit.traderbot.routines.android.AndroidCoreRoutines;
+import com.tecknobit.traderbot.routines.android.AndroidWorkflow;
+import com.tecknobit.traderbot.routines.android.ServerRequest;
+import com.tecknobit.traderbot.routines.interfaces.RoutineMessages;
+import com.tecknobit.traderbot.routines.interfaces.TraderCoreRoutines;
 import com.tecknobit.txnotes.fetchers.interfaces.TxNotesFetcher;
 import com.tecknobit.txnotes.records.TxNote;
 import org.json.JSONObject;
 
-import static com.tecknobit.traderbot.Routines.Android.ServerRequest.response;
-import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.*;
+import static com.tecknobit.traderbot.routines.android.ServerRequest.response;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.*;
 import static com.tecknobit.txnotes.fetchers.interfaces.TxNotesConstants.ALLOW_ALL_TXS_NOTE_OPE;
 import static java.lang.Integer.parseInt;
 

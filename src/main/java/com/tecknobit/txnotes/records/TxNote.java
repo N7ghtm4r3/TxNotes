@@ -1,7 +1,8 @@
 package com.tecknobit.txnotes.records;
 
-import com.tecknobit.traderbot.Records.Portfolio.Transaction;
-import com.tecknobit.traderbot.Routines.Interfaces.RecordDetails;
+import com.tecknobit.traderbot.records.portfolio.Transaction;
+import com.tecknobit.traderbot.routines.interfaces.RecordDetails;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -9,8 +10,8 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import static com.tecknobit.apimanager.Tools.Trading.TradingTools.*;
-import static com.tecknobit.traderbot.Routines.Interfaces.RoutineMessages.*;
-import static com.tecknobit.traderbot.Routines.Interfaces.TraderBotConstants.*;
+import static com.tecknobit.traderbot.routines.interfaces.RoutineMessages.*;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.*;
 import static com.tecknobit.txnotes.fetchers.interfaces.TxNotesConstants.*;
 import static java.lang.Math.toIntExact;
 import static java.lang.System.out;
@@ -509,6 +510,12 @@ public class TxNote extends Transaction implements RecordDetails {
         return txNote;
     }
 
+    /**
+     * Returns a string representation of the object <br>
+     * Any params required
+     *
+     * @return a string representation of the object as {@link String}
+     */
     @Override
     public String toString() {
         String txNote = "## [" + symbol + "]\n" +
@@ -527,6 +534,16 @@ public class TxNote extends Transaction implements RecordDetails {
                     "## Days traded: " + getTradeDays() + "\n";
         }
         return txNote + "######################";
+    }
+
+    /**
+     * Returns a string pretty printed of the representation of the object <br>
+     * Any params required
+     *
+     * @return a string representation of the object as {@link String}
+     */
+    public String prettyPrint() {
+        return new JSONObject(this).toString();
     }
 
     /**

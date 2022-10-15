@@ -1,6 +1,5 @@
 # TxNotes
-
-**v1.0.3**
+**v1.0.4**
 
 This is a Java Based library useful to take note about your transactions that you have made on the biggest crypto
 exchanges and analyse your crypto-wallet trend. Good use! <br>
@@ -28,9 +27,9 @@ allprojects {
 
 ```gradle
 dependencies {
-	implementation 'com.github.N7ghtm4r3:TxNotes:1.0.3'
+	implementation 'com.github.N7ghtm4r3:TxNotes:1.0.4'
 	//to make TxNotes works correctly you must implement also the main library:
-	implementation 'com.github.N7ghtm4r3:TraderBot:1.0.9'
+	implementation 'com.github.N7ghtm4r3:TraderBot:1.1.0'
 }
 ```
 
@@ -55,7 +54,7 @@ dependencies {
 <dependency>
   <groupId>com.github.N7ghtm4r3</groupId>
   <artifactId>TxNotes</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
 </dependency>
 ```
 ###### To make TxNotes works correctly you must implement also the main library:
@@ -64,7 +63,7 @@ dependencies {
 <dependency>
     <groupId>com.github.N7ghtm4r3</groupId>
   <artifactId>TraderBot</artifactId>
-  <version>1.0.9</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 
