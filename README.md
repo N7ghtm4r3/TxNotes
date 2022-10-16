@@ -29,7 +29,7 @@ allprojects {
 dependencies {
 	implementation 'com.github.N7ghtm4r3:TxNotes:1.0.4'
 	//to make TxNotes works correctly you must implement also the main library:
-	implementation 'com.github.N7ghtm4r3:TraderBot:1.1.0'
+	implementation 'com.github.N7ghtm4r3:TraderBot:1.1.1'
 }
 ```
 
@@ -63,7 +63,7 @@ dependencies {
 <dependency>
     <groupId>com.github.N7ghtm4r3</groupId>
   <artifactId>TraderBot</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
 </dependency>
 ```
 
