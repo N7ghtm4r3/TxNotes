@@ -1,5 +1,5 @@
 # TxNotes
-**v1.0.4**
+**v1.0.5**
 
 This is a Java Based library useful to take note about your transactions that you have made on the biggest crypto
 exchanges and analyse your crypto-wallet trend. Good use! <br>
@@ -27,9 +27,9 @@ allprojects {
 
 ```gradle
 dependencies {
-	implementation 'com.github.N7ghtm4r3:TxNotes:1.0.4'
+	implementation 'com.github.N7ghtm4r3:TxNotes:1.0.5'
 	//to make TxNotes works correctly you must implement also the main library:
-	implementation 'com.github.N7ghtm4r3:TraderBot:1.1.1'
+	implementation 'com.github.N7ghtm4r3:TraderBot:1.1.3'
 }
 ```
 
@@ -54,7 +54,7 @@ dependencies {
 <dependency>
   <groupId>com.github.N7ghtm4r3</groupId>
   <artifactId>TxNotes</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
 </dependency>
 ```
 ###### To make TxNotes works correctly you must implement also the main library:
@@ -63,7 +63,7 @@ dependencies {
 <dependency>
     <groupId>com.github.N7ghtm4r3</groupId>
   <artifactId>TraderBot</artifactId>
-  <version>1.1.1</version>
+  <version>1.1.3</version>
 </dependency>
 ```
 
@@ -125,7 +125,7 @@ All data will be stored and restored automatically, **will be not saved** your e
 ```java
 //In registration, you have to init TxNotesCredentials object with your email and password for Tecknobit's account.
 
-TxNotesCredentials credentials=new TxNotesCredentials("yourEmail@email.com","yourPassword");
+TxNotesCredentials credentials = new TxNotesCredentials("yourEmail@email.com", "yourPassword");
 
 //Program will automatically stop and will give to you auth credentials in this format:
 
@@ -149,11 +149,11 @@ TxNotesCredentials credentials=new TxNotesCredentials("yourEmail@email.com","you
 ```java
 //In login operation you have to init TxNotesCredentials object with your credentials given from Registration
 
-TxNotesCredentials credentials=new TxNotesCredentials("valueOfAuthToken",
-        "yourEmail@email.com",
-        "yourPassword",
-        "valueOfIvSpec",
-        "valueOfSecretKey"
+TxNotesCredentials credentials = new TxNotesCredentials("valueOfAuthToken", 
+            "yourEmail@email.com", 
+            "yourPassword", 
+            "valueOfIvSpec", 
+            "valueOfSecretKey"
         );
 
 //Then you have to insert credentials object in Android's trader constructor and trader will start with your Tecknobit's account.
