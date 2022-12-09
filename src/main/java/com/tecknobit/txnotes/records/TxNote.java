@@ -9,9 +9,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-import static com.tecknobit.apimanager.Tools.Trading.TradingTools.*;
+import static com.tecknobit.apimanager.trading.TradingTools.*;
 import static com.tecknobit.traderbot.routines.interfaces.RoutineMessages.*;
 import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.*;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.Side.BUY;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.Side.SELL;
 import static com.tecknobit.txnotes.fetchers.interfaces.TxNotesConstants.*;
 import static java.lang.Math.toIntExact;
 import static java.lang.System.out;
@@ -37,7 +39,7 @@ public class TxNote extends Transaction implements RecordDetails {
     /**
      * {@code status} is instance that memorizes status of transaction -> BUY or SELL
      **/
-    protected String status;
+    protected Side status;
 
     /**
      * {@code sellPrice} is instance that memorizes sell price value
@@ -70,7 +72,7 @@ public class TxNote extends Transaction implements RecordDetails {
      * @param lastPrice:      last price value
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, long buyDate, double initialBalance, double quantity, double lastPrice) {
+    public TxNote(String symbol, Side status, long buyDate, double initialBalance, double quantity, double lastPrice) {
         super(symbol, null, buyDate, initialBalance, quantity);
         this.status = status;
         this.lastPrice = lastPrice;
@@ -88,7 +90,7 @@ public class TxNote extends Transaction implements RecordDetails {
      * @param lastPrice:      last price value
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, String buyDate, double initialBalance, double quantity, double lastPrice) {
+    public TxNote(String symbol, Side status, String buyDate, double initialBalance, double quantity, double lastPrice) {
         super(symbol, null, buyDate, initialBalance, quantity);
         this.status = status;
         this.lastPrice = lastPrice;
@@ -108,7 +110,7 @@ public class TxNote extends Transaction implements RecordDetails {
      * @param sellDate:       date when this trade has being sold in long format es. 1656624150000
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, long buyDate, double initialBalance, double quantity, double lastPrice,
+    public TxNote(String symbol, Side status, long buyDate, double initialBalance, double quantity, double lastPrice,
                   double sellPrice, long sellDate) {
         super(symbol, null, buyDate, initialBalance, quantity);
         this.status = status;
@@ -132,7 +134,7 @@ public class TxNote extends Transaction implements RecordDetails {
      * @param sellDate:       date when this trade has being sold in {@link String} format es. 21:22:30 30/06/2022
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, String buyDate, double initialBalance, double quantity, double lastPrice,
+    public TxNote(String symbol, Side status, String buyDate, double initialBalance, double quantity, double lastPrice,
                   double sellPrice, String sellDate) {
         super(symbol, null, buyDate, initialBalance, quantity);
         this.status = status;
@@ -156,7 +158,7 @@ public class TxNote extends Transaction implements RecordDetails {
      * @param quoteAsset:     quote asset used in that transaction es. EUR
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, long buyDate, double initialBalance, double quantity, double lastPrice,
+    public TxNote(String symbol, Side status, long buyDate, double initialBalance, double quantity, double lastPrice,
                   String baseAsset, String quoteAsset) {
         super(symbol, null, buyDate, initialBalance, quantity, quoteAsset, baseAsset);
         this.status = status;
@@ -177,7 +179,7 @@ public class TxNote extends Transaction implements RecordDetails {
      * @param quoteAsset:     quote asset used in that transaction es. EUR
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, String buyDate, double initialBalance, double quantity, double lastPrice,
+    public TxNote(String symbol, Side status, String buyDate, double initialBalance, double quantity, double lastPrice,
                   String baseAsset, String quoteAsset) {
         super(symbol, null, buyDate, initialBalance, quantity, quoteAsset, baseAsset);
         this.status = status;
@@ -200,7 +202,7 @@ public class TxNote extends Transaction implements RecordDetails {
      * @param quoteAsset:     quote asset used in that transaction es. EUR
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, long buyDate, double initialBalance, double quantity, double lastPrice,
+    public TxNote(String symbol, Side status, long buyDate, double initialBalance, double quantity, double lastPrice,
                   double sellPrice, long sellDate, String baseAsset, String quoteAsset) {
         super(symbol, null, buyDate, initialBalance, quantity, quoteAsset, baseAsset);
         this.status = status;
@@ -226,7 +228,7 @@ public class TxNote extends Transaction implements RecordDetails {
      * @param quoteAsset:     quote asset used in that transaction es. EUR
      * @throws IllegalArgumentException when parameters inserted do not respect right value form.
      **/
-    public TxNote(String symbol, String status, String buyDate, double initialBalance, double quantity, double lastPrice,
+    public TxNote(String symbol, Side status, String buyDate, double initialBalance, double quantity, double lastPrice,
                   double sellPrice, String sellDate, String baseAsset, String quoteAsset) {
         super(symbol, null, buyDate, initialBalance, quantity, quoteAsset, baseAsset);
         this.status = status;
@@ -235,10 +237,6 @@ public class TxNote extends Transaction implements RecordDetails {
         this.sellDate = sellDate;
         sellDateTimestamp = getDateTimestamp(sellDate);
         startPrice = roundValue(initialBalance / quantity, 8);
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     /**
@@ -250,13 +248,29 @@ public class TxNote extends Transaction implements RecordDetails {
      **/
     public static String getDetailsColoured(String tail, String value) {
         String color = "";
-        if (value.equals(BUY) || value.contains("+"))
+        if (value.equals(BUY.name()) || value.contains("+"))
             color = ANSI_GREEN;
         else if (!value.contains("="))
             color = ANSI_RED;
         return "## " + tail + ": " + color + value + ANSI_RESET + "\n";
     }
 
+    /**
+     * Method to get {@link #status} instance <br>
+     * Any params required
+     *
+     * @return {@link #status} instance as {@link Side}
+     **/
+    public Side getStatus() {
+        return status;
+    }
+
+    /**
+     * Method to get {@link #transactionDate} instance <br>
+     * Any params required
+     *
+     * @return {@link #transactionDate} instance as {@link String}
+     **/
     public String getBuyDate() {
         return transactionDate;
     }
@@ -272,6 +286,12 @@ public class TxNote extends Transaction implements RecordDetails {
         return getTransactionTimestamp();
     }
 
+    /**
+     * Method to get {@link #startPrice} instance <br>
+     * Any params required
+     *
+     * @return {@link #startPrice} instance as double
+     **/
     public double getStartPrice() {
         return startPrice;
     }
@@ -287,6 +307,12 @@ public class TxNote extends Transaction implements RecordDetails {
         return roundValue(startPrice, decimals);
     }
 
+    /**
+     * Method to get {@link #value} instance <br>
+     * Any params required
+     *
+     * @return {@link #value} instance as double
+     **/
     public double getInitialBalance() {
         return value;
     }
@@ -302,10 +328,21 @@ public class TxNote extends Transaction implements RecordDetails {
         return roundValue(value, decimals);
     }
 
+    /**
+     * Method to get {@link #sellPrice} instance <br>
+     * Any params required
+     *
+     * @return {@link #sellPrice} instance as double
+     **/
     public double getSellPrice() {
         return sellPrice;
     }
 
+    /**
+     * Method to set {@link #sellPrice}
+     *
+     * @param sellPrice: sell price value
+     **/
     public void setSellPrice(double sellPrice) {
         this.sellPrice = sellPrice;
     }
@@ -321,15 +358,31 @@ public class TxNote extends Transaction implements RecordDetails {
         return roundValue(sellPrice, decimals);
     }
 
+    /**
+     * Method to get {@link #sellDate} instance <br>
+     * Any params required
+     *
+     * @return {@link #sellDate} instance as {@link String}
+     **/
     public String getSellDate() {
         return sellDate;
     }
 
+    /**
+     * Method to set {@link #sellDate}
+     *
+     * @param sellDate: sell date value
+     **/
     public void setSellDate(String sellDate) {
         this.sellDate = sellDate;
         sellDateTimestamp = getDateTimestamp(sellDate);
     }
 
+    /**
+     * Method to set {@link #sellDate}
+     *
+     * @param sellDate: sell date value
+     **/
     public void setSellDate(long sellDate) {
         this.sellDateTimestamp = sellDate;
         this.sellDate = getDate(sellDate);
@@ -345,10 +398,21 @@ public class TxNote extends Transaction implements RecordDetails {
         return sellDateTimestamp;
     }
 
+    /**
+     * Method to get {@link #lastPrice} instance <br>
+     * Any params required
+     *
+     * @return {@link #lastPrice} instance as double
+     **/
     public double getLastPrice() {
         return lastPrice;
     }
 
+    /**
+     * Method to set {@link #lastPrice}
+     *
+     * @param lastPrice: last price value
+     **/
     public void setLastPrice(double lastPrice) {
         this.lastPrice = lastPrice;
     }
@@ -519,7 +583,7 @@ public class TxNote extends Transaction implements RecordDetails {
     @Override
     public String toString() {
         String txNote = "## [" + symbol + "]\n" +
-                getDetailsColoured("Status", status) +
+                getDetailsColoured("Status", status.name()) +
                 "## Initial balance: " + value + "\n" +
                 "## Buy-Date: " + transactionDate + "\n" +
                 "## Start price: " + startPrice + "\n" +

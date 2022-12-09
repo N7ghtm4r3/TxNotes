@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import static com.tecknobit.apimanager.Tools.Trading.CryptocurrencyTool.getCryptocurrencyName;
-import static com.tecknobit.apimanager.Tools.Trading.TradingTools.roundValue;
-import static com.tecknobit.apimanager.Tools.Trading.TradingTools.textualizeAssetPercent;
+import static com.tecknobit.apimanager.trading.CryptocurrencyTool.getCryptocurrencyName;
+import static com.tecknobit.apimanager.trading.TradingTools.roundValue;
+import static com.tecknobit.apimanager.trading.TradingTools.textualizeAssetPercent;
 import static com.tecknobit.traderbot.records.portfolio.Transaction.getDateTimestamp;
 import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.*;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.Side.BUY;
 import static com.tecknobit.txnotes.records.TxNote.getDetailsColoured;
 import static java.lang.System.out;
 
@@ -105,18 +106,41 @@ public class Wallet implements RecordDetails {
         this(index, getCryptocurrencyName(index), lastPrice, trend, new ArrayList<>());
     }
 
+    /**
+     * Method to get {@link #index} instance <br>
+     * Any params required
+     *
+     * @return {@link #index} instance as {@link String}
+     **/
     public String getIndex() {
         return index;
     }
 
+    /**
+     * Method to get {@link #name} instance <br>
+     * Any params required
+     *
+     * @return {@link #name} instance as {@link String}
+     **/
     public String getName() {
         return name;
     }
 
+    /**
+     * Method to get {@link #lastPrice} instance <br>
+     * Any params required
+     *
+     * @return {@link #lastPrice} instance as double
+     **/
     public double getLastPrice() {
         return lastPrice;
     }
 
+    /**
+     * Method to set {@link #lastPrice}
+     *
+     * @param lastPrice: last price value
+     **/
     public void setLastPrice(double lastPrice) {
         this.lastPrice = lastPrice;
     }
@@ -132,10 +156,21 @@ public class Wallet implements RecordDetails {
         return roundValue(lastPrice, decimals);
     }
 
+    /**
+     * Method to get {@link #trend} instance <br>
+     * Any params required
+     *
+     * @return {@link #trend} instance as double
+     **/
     public double getTrend() {
         return trend;
     }
 
+    /**
+     * Method to set {@link #trend}
+     *
+     * @param trend: trend value
+     **/
     public void setTrend(double trend) {
         this.trend = trend;
     }
@@ -301,16 +336,42 @@ public class Wallet implements RecordDetails {
         return textualizeAssetPercent(getTotalIncomePercent(), decimals);
     }
 
+    /**
+     * Method to get {@link #txNotes} instance <br>
+     * Any params required
+     *
+     * @return {@link #txNotes} instance as {@link ArrayList} of {@link TxNote}
+     **/
     public ArrayList<TxNote> getTxNotes() {
         return txNotes;
     }
 
+    /**
+     * Method to set {@link #txNotes}
+     *
+     * @param txNotes: list of {@link TxNote}
+     **/
     public void setTxNotes(ArrayList<TxNote> txNotes) {
         this.txNotes = txNotes;
     }
 
+    /**
+     * Method to add a {@link TxNote} to {@link #txNotes} list
+     *
+     * @param txNote: tx note to add to {@link #txNotes} list
+     **/
     public void addTxNote(TxNote txNote) {
-        txNotes.add(txNote);
+        if (!txNotes.contains(txNote))
+            txNotes.add(txNote);
+    }
+
+    /**
+     * Method to remove a {@link TxNote} from {@link #txNotes} list
+     *
+     * @param txNote: tx note to remove from {@link #txNotes} list
+     **/
+    public boolean removeTxNote(TxNote txNote) {
+        return txNotes.remove(txNote);
     }
 
     /**

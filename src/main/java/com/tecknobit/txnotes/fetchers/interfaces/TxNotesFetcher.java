@@ -2,6 +2,7 @@ package com.tecknobit.txnotes.fetchers.interfaces;
 
 import com.tecknobit.traderbot.records.portfolio.MarketCoin;
 import com.tecknobit.traderbot.records.portfolio.Transaction;
+import com.tecknobit.traderbot.routines.interfaces.TraderBotConstants;
 import com.tecknobit.traderbot.routines.interfaces.TraderCoreRoutines;
 import com.tecknobit.txnotes.fetchers.autonomous.TxNotesAutoFetcher;
 import com.tecknobit.txnotes.records.TxNote;
@@ -10,10 +11,10 @@ import com.tecknobit.txnotes.records.Wallet;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.tecknobit.apimanager.Tools.Trading.CryptocurrencyTool.getCryptocurrencySymbol;
+import static com.tecknobit.apimanager.trading.CryptocurrencyTool.getCryptocurrencySymbol;
 import static com.tecknobit.traderbot.records.portfolio.Transaction.getDateTimestamp;
-import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.BUY;
-import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.SELL;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.Side.BUY;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.Side.SELL;
 
 /**
  * The {@code TxNotesFetcher} class is useful to fetch all transactions from exchange's account <br>
@@ -95,7 +96,7 @@ public abstract class TxNotesFetcher implements TxNote.TxNotesListManager {
         for (Transaction transaction : fetcherPlatform.getTransactionsList(baseCurrency,
                 "dd/MM/yyyy HH:mm:ss", true)) {
             String symbol = transaction.getSymbol();
-            String status = transaction.getSide();
+            TraderBotConstants.Side status = transaction.getSide();
             long timestamp = transaction.getTransactionTimestamp();
             String txKey = transaction.getBaseAsset() + timestamp;
             double lastPrice = fetcherPlatform.getLastPrice(symbol).getLastPrice();

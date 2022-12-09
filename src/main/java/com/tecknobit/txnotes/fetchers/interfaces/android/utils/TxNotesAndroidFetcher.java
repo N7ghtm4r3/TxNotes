@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import static com.tecknobit.traderbot.routines.android.ServerRequest.response;
 import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.*;
+import static com.tecknobit.traderbot.routines.interfaces.TraderBotConstants.Side.SELL;
 import static com.tecknobit.traderbot.traders.interfaces.BinanceTraderBot.BUSD_CURRENCY;
 import static com.tecknobit.txnotes.fetchers.interfaces.TxNotesConstants.*;
 import static com.tecknobit.txnotes.fetchers.interfaces.android.utils.TxNotesServerRequest.TX_HOST;
@@ -102,7 +103,7 @@ public class TxNotesAndroidFetcher extends TxNotesFetcher implements AndroidCore
                 String baseAsset = mTxNote.getString(BASE_ASSET_KEY);
                 long buyDate = mTxNote.getLong(BUY_DATE_KEY);
                 TxNote txNote = new TxNote(mTxNote.getString(SYMBOL_KEY),
-                        mTxNote.getString(STATUS_KEY),
+                        Side.valueOf(mTxNote.getString(STATUS_KEY)),
                         buyDate,
                         mTxNote.getDouble(INITIAL_BALANCE_KEY),
                         mTxNote.getDouble(QUANTITY_KEY),
